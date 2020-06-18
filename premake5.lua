@@ -36,6 +36,7 @@ project "Engine"
 	{
 		"%{prj.name}/enginecode/",
 		"%{prj.name}/enginecode/include/independent",
+		"%{prj.name}/enginecode/include/platform",
 		"%{prj.name}/precompiled/",
 		"vendor/spdlog/include",
 		"vendor/glfw/include",
@@ -44,9 +45,7 @@ project "Engine"
 		"vendor/stb_image",
 		"vendor/freetype2/include",
 		"vendor/json/single_include/nlohmann",
-		"vendor/assimp/include",
-		"vendor/IMGui",
-		"vendor/ReactPhysics3d/src"
+		"vendor/IMGui"
 	}
 	
 	links 
@@ -54,9 +53,7 @@ project "Engine"
 		"GLFW",
 		"Glad",
 		"Freetype",
-		"assimp",
-		"IMGui",
-		"ReactPhysics3d"
+		"IMGui"
 	}
 	
 	filter "system:windows"
@@ -91,7 +88,6 @@ project "Sandbox"
 	{
 		"%{prj.name}/include/**.h",
 		"%{prj.name}/src/**.cpp",
-		"vendor/stb_image/stb_image.cpp"
 	}
 
 	includedirs
@@ -99,13 +95,12 @@ project "Sandbox"
 		"%{prj.name}/include",
 		"engine/enginecode/",
 		"engine/enginecode/include/independent",
+		"engine/enginecode/include/platform",
 		"engine/precompiled/",
 		"vendor/glm/",
 		"vendor/spdlog/include",
 		"vendor/json/single_include/nlohmann",
-		"vendor/assimp/include",
-		"vendor/IMGui",
-		"vendor/ReactPhysics3d/src"
+		"vendor/IMGui"
 	}
 
 	links
@@ -197,31 +192,25 @@ project "Spike"
 	{
 		"engine/enginecode/",
 		"engine/enginecode/include/independent",
+		"engine/enginecode/include/platform",
 		"engine/precompiled/",
 		"%{prj.name}/include",
 		"vendor/spdlog/include",
 		"vendor/stb_image",
 		"vendor/freetype2/include",
 		"vendor/glm/",
-		"vendor/assimp/include",
 		"vendor/Glad/include",
 		"vendor/glfw/include",
-		"vendor/json/single_include/nlohmann",
-		"vendor/ReactPhysics3d/src",
-		"vendor/lua",
-		"vendor/LuaBridge/Source"
+		"vendor/json/single_include/nlohmann"
 	}
 	
 	links 
 	{
 		"Engine",
 		"Freetype",
-		"assimp",
 		"Glad",
 		"GLFW",
-		"IMGui",
-		"ReactPhysics3d",
-		"lua"
+		"IMGui"
 	}
 	
 
@@ -249,9 +238,4 @@ group "Vendor"
 	include "vendor/googletest"
 	include "vendor/Glad"
 	include "vendor/freetype2"
-	include "vendor/zlib"
-	include "vendor/IrrXML"
-	include "vendor/assimp"
 	include "vendor/IMGui"
-	include "vendor/ReactPhysics3d"
-	include "vendor/lua"
