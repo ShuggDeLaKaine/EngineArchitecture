@@ -1,0 +1,36 @@
+[submodule "vendor/freetype2"]
+	path = vendor/freetype2
+	url = https://github.com/IMAT3904/simplifiedFreetype2.git
+	branch = master
+[submodule "vendor/glad"]
+	path = vendor/glad
+	url = https://github.com/IMAT3904/simplifiedGLAD.git
+	branch = master
+[submodule "vendor/glfw"]
+	path = vendor/glfw
+	url = https://github.com/IMAT3904/glfw.git
+	branch = master
+[submodule "vendor/glm"]
+	path = vendor/glm
+	url = https://github.com/g-truc/glm.git
+	branch = master
+[submodule "vendor/GoogleTest"]
+	path = vendor/GoogleTest
+	url = https://github.com/IMAT3904/googletest.git
+	branch = master
+[submodule "vendor/IMGui"]
+	path = vendor/IMGui
+	url = https://github.com/TheCherno/imgui.git
+	branch = docking
+[submodule "vendor/json"]
+	path = vendor/json
+	url = https://github.com/nlohmann/json.git
+	branch = master
+[submodule "vendor/spdlog"]
+	path = vendor/spdlog
+	url = https://github.com/gabime/spdlog.git
+	branch = master
+[submodule "vendor/STBimage"]
+	path = vendor/STBimage
+	url = https://github.com/nothings/stb.git
+	branch = master
