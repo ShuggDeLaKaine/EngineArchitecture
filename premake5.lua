@@ -36,13 +36,13 @@ project "Engine"
 	{
 		"%{prj.name}/enginecode/",
 		"%{prj.name}/enginecode/include/independent",
-		"%{prj.name}/enginecode/include/platform",
+		"%{prj.name}/enginecode/include/",
 		"%{prj.name}/precompiled/",
 		"vendor/spdlog/include",
 		"vendor/glfw/include",
 		"vendor/Glad/include",
 		"vendor/glm/",
-		"vendor/stb_image",
+		"vendor/STBimage",
 		"vendor/freetype2/include",
 		"vendor/json/single_include/nlohmann",
 		"vendor/IMGui"
@@ -95,8 +95,9 @@ project "Sandbox"
 		"%{prj.name}/include",
 		"engine/enginecode/",
 		"engine/enginecode/include/independent",
-		"engine/enginecode/include/platform",
+		"engine/enginecode/include/",
 		"engine/precompiled/",
+		"vendor/glfw/include",
 		"vendor/glm/",
 		"vendor/spdlog/include",
 		"vendor/json/single_include/nlohmann",
@@ -155,7 +156,7 @@ project "Sandbox"
 			"vendor/glfw/include",
 			"vendor/Glad/include",
 			"vendor/glm/",
-			"vendor/stb_image",
+			"vendor/STBimage",
 			"vendor/freetype2/include"
 			
 		}
@@ -196,7 +197,7 @@ project "Spike"
 		"engine/precompiled/",
 		"%{prj.name}/include",
 		"vendor/spdlog/include",
-		"vendor/stb_image",
+		"vendor/STBimage",
 		"vendor/freetype2/include",
 		"vendor/glm/",
 		"vendor/Glad/include",
