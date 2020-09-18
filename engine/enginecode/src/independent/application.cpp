@@ -14,10 +14,21 @@ namespace Engine {
 		{
 			s_instance = this;
 		}
+
+		//start the system.
+
+		//start the log system.
+		m_logSystem.reset(new Log);
+		m_logSystem->start();
 	}
 
 	Application::~Application()
 	{
+		//stop the systems.
+
+		//stop the log system.
+		m_logSystem->stop();
+
 	}
 
 
@@ -25,7 +36,7 @@ namespace Engine {
 	{
 		while (m_running)
 		{
-
+			Log::info("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
 		};
 	}
 

@@ -1,5 +1,4 @@
-/** \file system.h
-*/
+/** \file system.h */
 
 #pragma once
 
