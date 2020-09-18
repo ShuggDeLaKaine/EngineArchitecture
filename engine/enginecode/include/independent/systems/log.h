@@ -28,6 +28,9 @@ namespace Engine
 		template<class ...Args>
 		static void warn(Args&&... args);
 
+		template<class ...Args>
+		static void release(Args&&... args);
+
 	private:
 		static std::shared_ptr<spdlog::logger> s_consolelogger;		//!< Console logger.
 
@@ -39,7 +42,9 @@ namespace Engine
 		//need if statement to make sure it has been initialised 
 		
 		//perfect forwarding to forward to the logger
+		#ifdef NG_DEBUG
 		s_consolelogger->info(std::forward<Args>(args) ...);
+		#endif
 	}
 
 	template<class ...Args>
@@ -48,7 +53,9 @@ namespace Engine
 		//need if statement to make sure it has been initialised 
 
 		//perfect forwarding to forward to the logger
+		#ifdef NG_DEBUG
 		s_consolelogger->debug(std::forward<Args>(args) ...);
+		#endif
 	}
 
 	template<class ...Args>
@@ -57,7 +64,9 @@ namespace Engine
 		//need if statement to make sure it has been initialised 
 
 		//perfect forwarding to forward to the logger
+		#ifdef NG_DEBUG
 		s_consolelogger->error(std::forward<Args>(args) ...);
+		#endif
 	}
 
 	template<class ...Args>
@@ -66,7 +75,9 @@ namespace Engine
 		//need if statement to make sure it has been initialised 
 
 		//perfect forwarding to forward to the logger
+		#ifdef NG_DEBUG
 		s_consolelogger->trace(std::forward<Args>(args) ...);
+		#endif
 	}
 
 	template<class ...Args>
@@ -75,6 +86,18 @@ namespace Engine
 		//need if statement to make sure it has been initialised 
 
 		//perfect forwarding to forward to the logger
+		#ifdef NG_DEBUG
 		s_consolelogger->warn(std::forward<Args>(args) ...);
+		#endif
+	}
+
+	//release does the same as trace but works whatever mode that you are in.
+	template<class ...Args>
+	static void Log::release(Args&&... args)
+	{
+		//need if statement to make sure it has been initialised 
+
+		//perfect forwarding to forward to the logger
+		s_consolelogger->trace(std::forward<Args>(args) ...);
 	}
 }

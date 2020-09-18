@@ -12,7 +12,7 @@ namespace Engine {
 
 	void Log::start(SystemSignal init, ...)
 	{
-		//spdlog::set_pattern("---");
+
 		spdlog::set_pattern("%^{%T]: %v%$");
 		spdlog::set_level(spdlog::level::trace);
 
