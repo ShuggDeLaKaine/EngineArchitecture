@@ -31,73 +31,88 @@ namespace Engine
 		template<class ...Args>
 		static void release(Args&&... args);
 
+		template<class ...Args>
+		static void file(Args&&... args);
+
 	private:
 		static std::shared_ptr<spdlog::logger> s_consolelogger;		//!< Console logger.
+		static std::shared_ptr<spdlog::logger> s_filelogger;		//!< File logger, will make a .txt file of the log.
 
 	};
 
 	template<class ...Args>
 	static void Log::info(Args&&... args)
 	{
-		//need if statement to make sure it has been initialised 
-		
-		//perfect forwarding to forward to the logger
-		#ifdef NG_DEBUG
-		s_consolelogger->info(std::forward<Args>(args) ...);
-		#endif
+		if (s_consolelogger) {
+			//perfect forwarding to forward to the logger
+#ifdef NG_DEBUG
+			s_consolelogger->info(std::forward<Args>(args) ...);
+#endif
+		}
 	}
 
 	template<class ...Args>
 	static void Log::debug(Args&&... args)
 	{
-		//need if statement to make sure it has been initialised 
-
-		//perfect forwarding to forward to the logger
-		#ifdef NG_DEBUG
-		s_consolelogger->debug(std::forward<Args>(args) ...);
-		#endif
+		if (s_consolelogger) {
+			//perfect forwarding to forward to the logger
+#ifdef NG_DEBUG
+			s_consolelogger->debug(std::forward<Args>(args) ...);
+#endif
+		}
 	}
 
 	template<class ...Args>
 	static void Log::error(Args&&... args)
 	{
-		//need if statement to make sure it has been initialised 
-
-		//perfect forwarding to forward to the logger
-		#ifdef NG_DEBUG
-		s_consolelogger->error(std::forward<Args>(args) ...);
-		#endif
+		if (s_consolelogger) {
+			//perfect forwarding to forward to the logger
+#ifdef NG_DEBUG
+			s_consolelogger->error(std::forward<Args>(args) ...);
+#endif
+		}
 	}
 
 	template<class ...Args>
 	static void Log::trace(Args&&... args)
 	{
-		//need if statement to make sure it has been initialised 
-
-		//perfect forwarding to forward to the logger
-		#ifdef NG_DEBUG
-		s_consolelogger->trace(std::forward<Args>(args) ...);
-		#endif
+		if(s_consolelogger) {
+			//perfect forwarding to forward to the logger
+#ifdef NG_DEBUG
+			s_consolelogger->trace(std::forward<Args>(args) ...);
+#endif
+		}
 	}
 
 	template<class ...Args>
 	static void Log::warn(Args&&... args)
 	{
-		//need if statement to make sure it has been initialised 
-
-		//perfect forwarding to forward to the logger
-		#ifdef NG_DEBUG
-		s_consolelogger->warn(std::forward<Args>(args) ...);
-		#endif
+		if (s_consolelogger) {
+			//perfect forwarding to forward to the logger
+#ifdef NG_DEBUG
+			s_consolelogger->warn(std::forward<Args>(args) ...);
+#endif
+		}
 	}
 
 	//release does the same as trace but works whatever mode that you are in.
 	template<class ...Args>
 	static void Log::release(Args&&... args)
 	{
-		//need if statement to make sure it has been initialised 
+		if (s_consolelogger) {
+			//perfect forwarding to forward to the logger
+			s_consolelogger->trace(std::forward<Args>(args) ...);
+		}
+	}
 
-		//perfect forwarding to forward to the logger
-		s_consolelogger->trace(std::forward<Args>(args) ...);
+	template<class ...Args>
+	static void Log::file(Args&&... args)
+	{
+		//an if statement to make sure it has been initialised.
+		//and perfect forwarding to forward to the logger.
+		if(s_filelogger)
+		{
+		s_filelogger->trace(std::forward<Args>(args) ...);
+		}
 	}
 }

@@ -36,7 +36,8 @@ namespace Engine {
 	{
 		while (m_running)
 		{
-			Log::info("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
+			Log::trace("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
+			//Log::file("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
 		};
 	}
 
