@@ -19,7 +19,7 @@ namespace Engine {
 		Application(); //!< Constructor
 
 		std::shared_ptr<Log> m_logSystem;	//!< the log system.
-		std::shared_ptr<ChronoTimer> m_timer;	//!< the timer system.
+		std::shared_ptr<ITimer> m_timer;	//!< the timer system.
 
 	private:
 		static Application* s_instance; //!< Singleton instance of the application
