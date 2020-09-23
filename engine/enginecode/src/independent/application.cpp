@@ -20,6 +20,10 @@ namespace Engine {
 		//start the log system.
 		m_logSystem.reset(new Log);
 		m_logSystem->start();
+
+		//reset & start the timer.
+		m_timer.reset(new ChronoTimer);
+		m_timer->start();
 	}
 
 	Application::~Application()
@@ -34,10 +38,24 @@ namespace Engine {
 
 	void Application::run()
 	{
+		//create a float for the time step and initialise at 0.
+		float timeStep = 0.0f;
+
 		while (m_running)
 		{
-			Log::trace("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
+			//update the time step with the timer function getElapsedTime()
+			timeStep = m_timer->getElaspsedTime();
+			m_timer->reset();
+
+
+			//Log::trace("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
 			//Log::file("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
+			Log::trace("FPS {0}", 1.0f / timeStep);
+
+			//things to do in the frame...
+
+			
+			
 		};
 	}
 
