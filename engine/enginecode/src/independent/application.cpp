@@ -4,6 +4,14 @@
 #include "engine_pch.h"
 #include "core/application.h"
 
+
+#ifdef  NG_PLATFORM_WINDOWS
+	#include "platform/windows/winTimer.h"
+#endif //  NG_PLATFORM_WINDOWS
+
+
+
+
 namespace Engine {
 	// Set static vars
 	Application* Application::s_instance = nullptr;
@@ -22,7 +30,12 @@ namespace Engine {
 		m_logSystem->start();
 
 		//reset & start the timer.
+		//if on a windows platform then make a windows timer, otherwise make a chrono timer.
+#ifdef  NG_PLATFORM_WINDOWS
+		m_timer.reset(new WinTimer);
+#else
 		m_timer.reset(new ChronoTimer);
+#endif //  NG_PLATFORM_WINDOWS
 		m_timer->start();
 	}
 
@@ -44,7 +57,7 @@ namespace Engine {
 		while (m_running)
 		{
 			//update the time step with the timer function getElapsedTime()
-			timeStep = m_timer->getElaspsedTime();
+			timeStep = m_timer->getElapsedTime();
 			m_timer->reset();
 
 
