@@ -26,7 +26,7 @@ namespace Engine
 		{
 			QueryPerformanceCounter(&m_LI_endTime);
 			float result = (m_LI_endTime.QuadPart - m_LI_startTime.QuadPart) * 1000.0f / m_LI_frequency.QuadPart;
-			result /= 1000.0f;
+			result /= 1000.0f;		//dividing again to get result in milliseconds.
 			return result;
 		}
 

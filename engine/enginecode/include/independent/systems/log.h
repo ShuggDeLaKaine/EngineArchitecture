@@ -10,11 +10,11 @@ namespace Engine
 	class Log : public System
 	{
 	public:
-		virtual void start(SystemSignal init = SystemSignal::None, ...) override;		//!< Start the logger.
-		virtual void stop(SystemSignal close = SystemSignal::None, ...) override;		//!< Stop the logger.
+		virtual void start(SystemSignal init = SystemSignal::None, ...) override;		//!< start the logger.
+		virtual void stop(SystemSignal close = SystemSignal::None, ...) override;		//!< stop the logger.
 
 		template<class ...Args>
-		static void info(Args&&... args);	//!<double reference for a paramater pack
+		static void info(Args&&... args);	//!< double reference for a paramater pack
 
 		template<class ...Args>
 		static void debug(Args&&... args);
@@ -35,8 +35,8 @@ namespace Engine
 		static void file(Args&&... args);
 
 	private:
-		static std::shared_ptr<spdlog::logger> s_consolelogger;		//!< Console logger.
-		static std::shared_ptr<spdlog::logger> s_filelogger;		//!< File logger, will make a .txt file of the log.
+		static std::shared_ptr<spdlog::logger> s_consolelogger;		//!< console logger.
+		static std::shared_ptr<spdlog::logger> s_filelogger;		//!< file logger, will make a .txt file of the log.
 
 	};
 
