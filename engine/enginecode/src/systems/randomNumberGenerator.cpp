@@ -15,6 +15,7 @@ namespace Engine
 	std::uniform_int_distribution<int32_t> RandomNumberGenerator::s_uniformInt = std::uniform_int_distribution<int32_t>(std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max());
 	std::uniform_real_distribution<float> RandomNumberGenerator::s_uniformFloat = std::uniform_real_distribution<float>(std::numeric_limits<float>::min(), std::numeric_limits<float>::max());
 	
+	//setting the ranges for int and float from max and min of their 32bit numeric limits.
 	float RandomNumberGenerator::s_intRange = static_cast<float>(std::numeric_limits<int32_t>::max() - std::numeric_limits<int32_t>::min());
 	float RandomNumberGenerator::s_floatRange = std::numeric_limits<float>::max() - std::numeric_limits<float>::min();
 
@@ -34,8 +35,8 @@ namespace Engine
 
 	int32_t RandomNumberGenerator::uniformIntBetween(int32_t min, int32_t max)
 	{
-		/*
 		//DEBUG STUFF - ***REMEMBER TO REMOVE***
+		/*
 		int32_t num = s_uniformInt(*s_generator);
 		float fNum = float(num);
 		float fRange = ((float)std::numeric_limits<int32_t>::max() - (float)std::numeric_limits<int32_t>::min());
@@ -51,7 +52,19 @@ namespace Engine
 
 	float RandomNumberGenerator::uniformFloatBetween(float min, float max)
 	{
-		//***NOTE*** - very similar uniformIntBetween() BUT DOES NOT HAVE THE SAME PROBLEM??? LOOK INTO!
+		//***NOTE*** - very similar uniformIntBetween() BUT DOES NOT HAVE THE SAME PROBLEM??? Look into!
 		return min + (fabs(s_uniformFloat(*s_generator)) / s_floatRange) * (max - min);
+	}
+
+	int32_t RandomNumberGenerator::normalIntBetween(float c, float sigma)
+	{
+		std::normal_distribution<float> distribution(c, sigma);
+		return static_cast<int32_t>(distribution(*s_generator));
+	}
+
+	float RandomNumberGenerator::normalFloatBetween(float c, float sigma)
+	{
+		std::normal_distribution<float> distribution(c, sigma);
+		return distribution(*s_generator);
 	}
 }

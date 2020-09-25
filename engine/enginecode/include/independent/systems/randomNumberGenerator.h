@@ -16,8 +16,9 @@ namespace Engine
 		static int32_t uniformIntBetween(int32_t min, int32_t max);		//!< get an int between min and max params.
 		static float uniformFloatBetween(float min, float max);			//!< get a float between min and max params.
 
-		//gaussian distribution of generated numbers.
-
+		//normal (gaussian) distribution of generated numbers.
+		static int32_t normalIntBetween(float c, float sigma);			//!< get an int from a gaussian distribution described by C & sigma.
+		static float normalFloatBetween(float c, float sigma);			//!< get an float from a gaussian distribution described by C & sigma.
 
 	private:
 		static std::shared_ptr<std::mt19937> s_generator;				//!< random number generating engine.

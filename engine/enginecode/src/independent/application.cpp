@@ -67,15 +67,20 @@ namespace Engine {
 			timeStep = m_timer->getElapsedTime();
 			m_timer->reset();
 
+			//logging system tests.
 
 			//Log::trace("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
 			//Log::file("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
 			//Log::trace("FPS {0}", 1.0f / timeStep);
 
 
-			//random number generator tests.
+			//random number generator system tests.
+
 			//Log::trace("{0}", RandomNumberGenerator::uniformIntBetween(-10, 10));
-			Log::trace("{0}", RandomNumberGenerator::uniformFloatBetween(-10, 10));
+			//Log::trace("{0}", RandomNumberGenerator::uniformFloatBetween(-10, 10));
+			Log::trace("{0}", RandomNumberGenerator::normalIntBetween(10.0f, 2.5f));
+			//Log::trace("{0}", RandomNumberGenerator::normalFloatBetween(5.0f, 1.25f));
+
 
 
 			//things to do in the frame...
