@@ -29,6 +29,10 @@ namespace Engine {
 		m_logSystem.reset(new Log);
 		m_logSystem->start();
 
+		//start the random number syste,
+		m_ranNumSytem.reset(new RandomNumberGenerator);
+		m_ranNumSytem->start();
+
 		//reset & start the timer.
 		//if on a windows platform then make a windows timer, otherwise make a chrono timer.
 #ifdef  NG_PLATFORM_WINDOWS
@@ -41,7 +45,10 @@ namespace Engine {
 
 	Application::~Application()
 	{
-		//stop the systems.
+		//stop the systems in the REVERSE ORDER to how they start.
+
+		//stop the random number system.
+		m_ranNumSytem->stop();
 
 		//stop the log system.
 		m_logSystem->stop();
@@ -63,7 +70,13 @@ namespace Engine {
 
 			//Log::trace("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
 			//Log::file("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
-			Log::trace("FPS {0}", 1.0f / timeStep);
+			//Log::trace("FPS {0}", 1.0f / timeStep);
+
+
+			//random number generator tests.
+			//Log::trace("{0}", RandomNumberGenerator::uniformIntBetween(-10, 10));
+			Log::trace("{0}", RandomNumberGenerator::uniformFloatBetween(-10, 10));
+
 
 			//things to do in the frame...
 

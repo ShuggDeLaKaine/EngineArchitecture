@@ -4,6 +4,8 @@
 
 #include "systems/log.h"
 #include "timer.h"
+#include "systems/randomNumberGenerator.h"
+
 
 namespace Engine {
 
@@ -20,6 +22,7 @@ namespace Engine {
 
 		std::shared_ptr<Log> m_logSystem;	//!< the log system.
 		std::shared_ptr<ITimer> m_timer;	//!< the timer system.
+		std::shared_ptr<RandomNumberGenerator> m_ranNumSytem;	//!< the random number generator system.
 
 	private:
 		static Application* s_instance; //!< Singleton instance of the application

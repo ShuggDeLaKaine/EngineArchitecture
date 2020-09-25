@@ -23,6 +23,9 @@ namespace Engine {
 		char filepath[256] = "logs/";
 		char time[128];
 		
+		//for now taken out
+		//for the file logging, gets current time, sets that and current date to the name of the file created.
+		//little check if an error in finding the file logger too.
 		/*
 		try
 		{
