@@ -23,8 +23,8 @@ namespace Engine
 		virtual inline EventType getEventType() const override { return EventType::WindowResize; }	//!< get the event type.
 		virtual int32_t getCategoryFlag() const override { return EventCategoryWindow; }			//!< get the category flag for the event.
 
-		inline int getWidth() const { return m_width; }		//!< 
-		inline int getHeight() const { return m_height; }	//!< 
+		inline int32_t getWidth() const { return m_width; }		//!< 
+		inline int32_t getHeight() const { return m_height; }	//!< 
 
 	private:
 		int32_t m_width;		//!< window width after resize.
