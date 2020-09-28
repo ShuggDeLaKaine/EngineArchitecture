@@ -70,10 +70,7 @@ namespace Engine {
 			//***logging system tests***
 			//Log::trace("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
 			//Log::file("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
-			Log::trace("FPS {0}", 1.0f / timeStep);
-
-
-
+			//Log::trace("FPS {0}", 1.0f / timeStep);
 
 			//***random number generator system tests***
 			//Log::trace("{0}", RandomNumberGenerator::uniformIntBetween(-10, 10));
