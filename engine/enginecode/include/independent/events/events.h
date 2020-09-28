@@ -1,6 +1,6 @@
 /* \file events.h */
-
 #pragma once
+#include <intTypes.h>
 
 namespace Engine
 {
@@ -37,13 +37,13 @@ namespace Engine
 	class Event
 	{
 	public:
-		virtual EventType getEventType() const = 0;		//!< get the event type.
-		virtual int getCategoryFlag() const = 0;		//!< get the event category.
-		inline bool isEventHandled() const { return m_eventHandled; }			//!< has the event in question been handled.
-		inline void handleEvent(bool isEventHandled) { m_eventHandled = isEventHandled; }				//!< handle the relevant event.
-		inline bool isEventInCategory(EventCategory category) { return getCategoryFlag() & category; }	//!< is this event in a category
-	private:
-		bool m_eventHandled = false;
+		virtual EventType getEventType() const = 0;			//!< get the event type, deferring implementation of this.
+		virtual int32_t getCategoryFlag() const = 0;		//!< get the event category, deferring implementation of this.
+		inline bool isEventHandled() const { return m_eventHandled; }				//!< has the event in question been handled.
+		inline void handleEvent(bool isHandled) { m_eventHandled = isHandled; }		//!< handle the relevant event.
+		inline bool isEventInCategory(EventCategory category) const { return getCategoryFlag() & category; }	//!< is this event in a category?
+	protected:
+		bool m_eventHandled = false;	//!< has the event been handled.
 	};
 
 

@@ -61,6 +61,8 @@ namespace Engine {
 		//create a float for the time step and initialise at 0.
 		float timeStep = 0.0f;
 
+		float accumulatedTime = 0.0f;
+
 		while (m_running)
 		{
 			//update the time step with the timer function getElapsedTime()
@@ -78,7 +80,13 @@ namespace Engine {
 			//Log::trace("{0}", RandomNumberGenerator::normalIntBetween(10.0f, 2.5f));
 			//Log::trace("{0}", RandomNumberGenerator::normalFloatBetween(5.0f, 1.25f));
 
-
+			//***event testing***
+			accumulatedTime += timeStep;
+			if (accumulatedTime > 3.0f)
+			{
+				WindowCloseEvent close();
+				WindowResizeEvent resize(800, 600);
+			}
 
 			//things to do in the frame...
 
