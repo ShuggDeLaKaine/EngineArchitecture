@@ -11,7 +11,7 @@ namespace Engine
 	*/
 	class MouseEvent : public Event
 	{
-		virtual int32_t getCategoryFlag() const override { return EventCategoryMouse | EventCategoryInput; }	//!< get the category flag for the event.
+		virtual inline int32_t getCategoryFlag() const override { return EventCategoryMouse | EventCategoryInput; }	//!< get the category flag for the event.
 	};
 
 	/**
@@ -20,12 +20,12 @@ namespace Engine
 	class MouseButtonPressEvent : public MouseEvent
 	{
 	public:
-		MouseButtonPressEvent(const int b) : m_Button(b) {}			//!< using initaliser list to set button straight to m_Button.
+		MouseButtonPressEvent(const int32_t b) : m_Button(b) {}			//!< using initaliser list to set button straight to m_Button.
 		static EventType getStaticType() { return EventType::MouseButtonPress; }	//!< get the static event type, can use to compare.
 		virtual inline EventType getEventType() const override { return getStaticType(); }	//!< get the event type.
 		inline int getButtonPressed() const { return m_Button; }	//!< get the mouse button pressed.
 	private:
-		int m_Button;		//!< int for mouse button pressed.
+		int32_t m_Button;		//!< int for mouse button pressed.
 	};
 
 	/**
@@ -34,12 +34,12 @@ namespace Engine
 	class MouseButtonReleaseEvent : public MouseEvent
 	{
 	public:
-		MouseButtonReleaseEvent(const int b) : m_Button(b) {}		//!< using initaliser list to set button straight to m_Button.
+		MouseButtonReleaseEvent(const int32_t b) : m_Button(b) {}		//!< using initaliser list to set button straight to m_Button.
 		static EventType getStaticType() { return EventType::MouseButtonRelease; }	//!< get the static event type, can use to compare.
 		virtual inline EventType getEventType() const override { return getStaticType(); }	//!< get the event type.
 		inline int getButtonReleased() const { return m_Button; }	//!< get the mouse button released.
 	private:
-		int m_Button;		//!< int for mouse button released.
+		int32_t m_Button;		//!< int for mouse button released.
 	};
 
 	/**
@@ -53,6 +53,7 @@ namespace Engine
 		virtual inline EventType getEventType() const override { return getStaticType(); }		//!< get the event type.
 		inline float getXMovement() const { return m_mouseMoveX; }		//!< get the mouse movement coords on the X axis.
 		inline float getYMovement() const { return m_mouseMoveY; }		//!< get the mouse movement coords on the Y axis.
+		inline glm::vec2 getMousePosition() const { return glm::vec2(m_mouseMoveX, m_mouseMoveY); }		//!< get the position of the mouse.
 	private:
 		float m_mouseMoveX;		//!< mouse movement X coords.
 		float m_mouseMoveY;		//!< mouse movement Y coords.

@@ -13,7 +13,7 @@ namespace Engine
 	{
 	public:
 		inline int32_t getKeycode() const { return m_keycode; }				//!< get the keycode that has been pressed.
-		virtual int32_t getCategoryFlag() const override { return EventCategoryKey | EventCategoryInput; }	//!< get the category flag/s for the event.
+		virtual inline int32_t getCategoryFlag() const override { return EventCategoryKey | EventCategoryInput; }	//!< get the category flag/s for the event.
 	protected:
 		KeyEvent(int32_t keycode) : m_keycode(keycode) {}		//!< 
 		int32_t m_keycode;		//!< int32_t to take keycode int.
