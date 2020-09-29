@@ -41,6 +41,18 @@ namespace Engine {
 		m_timer.reset(new ChronoTimer);
 #endif //  NG_PLATFORM_WINDOWS
 		m_timer->start();
+
+		m_eventHandler.setOnCloseCallback(std::bind(&Application::onClose, this, std::placeholders::_1));
+
+
+		m_timer->reset();
+	}
+
+	bool Application::onClose(WindowCloseEvent & event)
+	{
+		event.handleEvent(true);
+		m_running = false;
+		return event.isEventHandled();
 	}
 
 	Application::~Application()
@@ -60,7 +72,6 @@ namespace Engine {
 	{
 		//create a float for the time step and initialise at 0.
 		float timeStep = 0.0f;
-
 		float accumulatedTime = 0.0f;
 
 		while (m_running)
@@ -68,6 +79,17 @@ namespace Engine {
 			//update the time step with the timer function getElapsedTime()
 			timeStep = m_timer->getElapsedTime();
 			m_timer->reset();
+			accumulatedTime += timeStep;
+
+			//***event testing***
+			//testing that the window closes after a second.
+			if (accumulatedTime > 1.0f)
+			{
+				WindowCloseEvent close;
+				auto& callback = m_eventHandler.getOnCloseFunction();
+				callback(close);
+			}
+
 
 			//***logging system tests***
 			//Log::trace("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
@@ -80,13 +102,6 @@ namespace Engine {
 			//Log::trace("{0}", RandomNumberGenerator::normalIntBetween(10.0f, 2.5f));
 			//Log::trace("{0}", RandomNumberGenerator::normalFloatBetween(5.0f, 1.25f));
 
-			//***event testing***
-			accumulatedTime += timeStep;
-			if (accumulatedTime > 3.0f)
-			{
-				WindowCloseEvent close();
-				WindowResizeEvent resize(800, 600);
-			}
 
 			//things to do in the frame...
 

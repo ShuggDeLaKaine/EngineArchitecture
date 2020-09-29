@@ -6,6 +6,7 @@
 #include "timer.h"
 #include "systems/randomNumberGenerator.h"
 #include "events/eventHeaders.h"
+#include "events/eventHandler.h"
 
 namespace Engine {
 
@@ -23,6 +24,9 @@ namespace Engine {
 		std::shared_ptr<Log> m_logSystem;	//!< the log system.
 		std::shared_ptr<ITimer> m_timer;	//!< the timer system.
 		std::shared_ptr<RandomNumberGenerator> m_ranNumSytem;	//!< the random number generator system.
+
+		EventHandler m_eventHandler;	//!< the event handler.
+		bool onClose(WindowCloseEvent& event);	//!< run when the window closes.
 
 	private:
 		static Application* s_instance; //!< Singleton instance of the application
