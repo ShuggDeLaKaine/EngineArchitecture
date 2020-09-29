@@ -7,6 +7,9 @@
 
 namespace Engine
 {
+	/**
+	\class WindowCloseEvent - class for window closing event.
+	*/
 	class WindowCloseEvent : public Event
 	{
 	public:
@@ -15,6 +18,9 @@ namespace Engine
 		virtual int32_t getCategoryFlag() const override { return EventCategoryWindow; }			//!< get the category flag for the event.
 	};
 
+	/**
+	\class WindowResizeEvent - class for resizing window event.
+	*/
 	class WindowResizeEvent : public Event
 	{
 	public:
@@ -30,4 +36,48 @@ namespace Engine
 		int32_t m_width;		//!< window width after resize.
 		int32_t m_height;		//!< window height after resize.
 	};
+
+	/**
+	\class WindowFocusEvent - class for bringing window into focus event.
+	*/
+	class WindowFocusEvent : public Event
+	{
+	public:
+
+		static EventType getStaticType() { return EventType::WindowFocus; }		//!< returns static type; reason for static type is that is gives me something to compare with when implementing a handler.
+		virtual inline EventType getEventType() const override { return EventType::WindowFocus; }	//!< get the event type.
+		virtual int32_t getCategoryFlag() const override { return EventCategoryWindow; }			//!< get the category flag for the event.
+	private:
+
+	};
+
+	/**
+	\class WindowLostFocusEvent - class for minimising window out of focus event.
+	*/
+	class WindowLostFocusEvent : public Event
+	{
+	public:
+
+		static EventType getStaticType() { return EventType::WindowLostFocus; }		//!< returns static type; reason for static type is that is gives me something to compare with when implementing a handler.
+		virtual inline EventType getEventType() const override { return EventType::WindowLostFocus; }	//!< get the event type.
+		virtual int32_t getCategoryFlag() const override { return EventCategoryWindow; }				//!< get the category flag for the event.
+	private:
+
+	};
+
+	/**
+	\class WindowMoveEvent - class for window movement event.
+	*/
+	class WindowMoveEvent : public Event
+	{
+	public:
+
+		static EventType getStaticType() { return EventType::WindowMove; }		//!< returns static type; reason for static type is that is gives me something to compare with when implementing a handler.
+		virtual inline EventType getEventType() const override { return EventType::WindowMove; }	//!< get the event type.
+		virtual int32_t getCategoryFlag() const override { return EventCategoryWindow; }			//!< get the category flag for the event.
+	private:
+		//position moved too.
+
+	};
 }
+

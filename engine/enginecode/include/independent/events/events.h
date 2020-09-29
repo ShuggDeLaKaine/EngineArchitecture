@@ -11,7 +11,7 @@ namespace Engine
 	enum class EventType
 	{
 		None = 0,
-		WindowClose, WindowResize, WindowFocus, WindowNoFocus, WindowMove,
+		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMove,
 		KeyPress, KeyRelease, KeyType,
 		MouseMouse, MouseScroll, MouseButtonPress, MouseButtonRelease
 	};
