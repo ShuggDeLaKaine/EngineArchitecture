@@ -7,51 +7,51 @@
 namespace Engine
 {
 	/**
-	\class KeyPressedEvent - class for key pressed event.
+	\class KeyEvent - class to take a number of funcs and vars that will be common in all key event classes.
 	*/
-	class KeyPressedEvent : public Event
+	class KeyEvent : public Event
 	{
 	public:
+		inline int32_t getKeycode() const { return m_keycode; }				//!< get the keycode that has been pressed.
+		virtual int32_t getCategoryFlag() const override { return EventCategoryKey | EventCategoryInput; }	//!< get the category flag/s for the event.
+	protected:
+		KeyEvent(int32_t keycode) : m_keycode(keycode) {}		//!< 
+		int32_t m_keycode;		//!< int32_t to take keycode int.
+	};
+
+	/**
+	\class KeyPressedEvent - class for key pressed event.
+	*/
+	class KeyPressedEvent : public KeyEvent
+	{
+	public:
+		KeyPressedEvent(const int32_t keycode, const int32_t keycount) : KeyEvent(keycode), m_repeatCount(keycount) {}	//!< initialiser, listed params straight to m_keycode & m_repeatCount.
 		static EventType getStaticType() { return EventType::KeyPress; }	//!< get the static event type, can use to compare.
-		virtual inline EventType getEventType() const override { return EventType::KeyPress; }			//!< get the event type.
-		virtual int32_t getCategoryFlag() const override { return EventCategory::EventCategoryKey; }	//!< get the category flag for the event.
-		KeyPressedEvent(const int32_t keycode, const int32_t keycount) : m_keycode(keycode), m_repeatCount(keycount) {}	//!< initialiser, listed params straight to m_keycode & m_repeatCount.
-		inline int32_t GetKeycode() const { return m_keycode; }				//!< get the keycode that has been pressed.
+		virtual inline EventType getEventType() const override { return  getStaticType(); }			//!< get the event type.
 		inline int32_t GetRepeatCount() const { return m_repeatCount; }		//!< get the count if key press repeated.
 	private:
-		int32_t m_keycode;			//!< int32_t to take keycode int.
 		int32_t m_repeatCount;		//!< int32_t to take the count of repeated input.
 	};
 
 	/**
 	\class KeyReleasedEvent - class for key released event.
 	*/
-	class KeyReleasedEvent : public Event
+	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
+		KeyReleasedEvent(const int32_t keycode) : KeyEvent(keycode) {}		//!< initialiser, listed params straight to m_keycode.
 		static EventType getStaticType() { return EventType::KeyRelease; }	//!< get the static event type, can use to compare.
-		virtual inline EventType getEventType() const override { return EventType::KeyRelease; }		//!< get the event type.
-		virtual int32_t getCategoryFlag() const override { return EventCategory::EventCategoryKey; }	//!< get the category flag for the event.
-		KeyReleasedEvent(const int32_t keycode) : m_keycode(keycode) {}		//!< initialiser, listed params straight to m_keycode.
-		inline int32_t GetKeycode() const { return m_keycode; }				//!< get the keycode that has been pressed.
-	private:
-		int32_t m_keycode;			//!< int32_t to take keycode int.
+		virtual inline EventType getEventType() const override { return getStaticType(); }		//!< get the event type.
 	};
 
 	/**
 	\class KeyTypedEvent - class for key typing event.
 	*/
-	class KeyTypedEvent : public Event
+	class KeyTypedEvent : public KeyEvent
 	{
 	public:
+		KeyTypedEvent(const int32_t keycode) : KeyEvent(keycode) {}	//!< initialiser, listed param straight to m_keycode.
 		static EventType getStaticType() { return EventType::KeyType; }		//!< get the static event type, can use to compare.
-		virtual inline EventType getEventType() const override { return EventType::KeyType; }			//!< get the event type.
-		virtual int32_t getCategoryFlag() const override { return EventCategory::EventCategoryKey; }	//!< get the category flag for the event.
-		KeyTypedEvent(const int32_t keycode, const int32_t keycount) : m_keycode(keycode), m_repeatCount(keycount) {}	//!< initialiser, listed params straight to m_keycode & m_repeatCount.
-		inline int32_t GetKeycode() const { return m_keycode; }				//!< get the keycode that has been pressed.
-		inline int32_t GetRepeatCount() const { return m_repeatCount; }		//!< get the count if key press repeated.
-	private:
-		int32_t m_keycode;			//!< int32_t to take keycode int.
-		int32_t m_repeatCount;		//!< int32_t to take the count of repeated input.
+		virtual inline EventType getEventType() const override { return getStaticType(); }			//!< get the event type.
 	};
 }
