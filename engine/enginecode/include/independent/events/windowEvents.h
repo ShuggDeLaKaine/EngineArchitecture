@@ -71,7 +71,6 @@ namespace Engine
 	class WindowMoveEvent : public Event
 	{
 	public:
-
 		static EventType getStaticType() { return EventType::WindowMove; }		//!< returns static type; reason for static type is that is gives me something to compare with when implementing a handler.
 		virtual inline EventType getEventType() const override { return EventType::WindowMove; }	//!< get the event type.
 		virtual int32_t getCategoryFlag() const override { return EventCategoryWindow; }			//!< get the category flag for the event.
