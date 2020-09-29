@@ -76,7 +76,7 @@ namespace Engine
 		virtual inline EventType getEventType() const override { return EventType::WindowMove; }	//!< get the event type.
 		virtual int32_t getCategoryFlag() const override { return EventCategoryWindow; }			//!< get the category flag for the event.
 	private:
-		//position moved too.
+		//position moved to...
 
 	};
 }

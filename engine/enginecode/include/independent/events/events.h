@@ -13,7 +13,7 @@ namespace Engine
 		None = 0,
 		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMove,
 		KeyPress, KeyRelease, KeyType,
-		MouseMouse, MouseScroll, MouseButtonPress, MouseButtonRelease
+		MouseMovement, MouseScroll, MouseButtonPress, MouseButtonRelease
 	};
 
 	/** \enum EventCategory
