@@ -45,6 +45,4 @@ namespace Engine
 	protected:
 		bool m_eventHandled = false;	//!< has the event been handled.
 	};
-
-
 }

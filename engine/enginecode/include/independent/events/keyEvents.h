@@ -50,8 +50,8 @@ namespace Engine
 	class KeyTypedEvent : public KeyEvent
 	{
 	public:
-		KeyTypedEvent(const int32_t keycode) : KeyEvent(keycode) {}	//!< initialiser, listed param straight to m_keycode.
+		KeyTypedEvent(const int32_t keycode) : KeyEvent(keycode) {}			//!< initialiser, listed param straight to m_keycode.
 		static EventType getStaticType() { return EventType::KeyType; }		//!< get the static event type, can use to compare.
-		virtual inline EventType getEventType() const override { return getStaticType(); }			//!< get the event type.
+		virtual inline EventType getEventType() const override { return getStaticType(); }		//!< get the event type.
 	};
 }

@@ -50,9 +50,9 @@ namespace Engine
 	public:
 		MouseMovementEvent(const float x, const float y) : m_mouseMoveX(x), m_mouseMoveY(y) {}		//!< using initaliser list to set x/y straight to m_mouseMoveX/Y.
 		static EventType getStaticType() { return EventType::MouseMovement; }	//!< get the static event type, can use to compare.
-		virtual inline EventType getEventType() const override { return getStaticType(); }		//!< get the event type.
-		inline float getXMovement() const { return m_mouseMoveX; }		//!< get the mouse movement coords on the X axis.
-		inline float getYMovement() const { return m_mouseMoveY; }		//!< get the mouse movement coords on the Y axis.
+		virtual inline EventType getEventType() const override { return getStaticType(); }			//!< get the event type.
+		inline float getXMovement() const { return m_mouseMoveX; }				//!< get the mouse movement coords on the X axis.
+		inline float getYMovement() const { return m_mouseMoveY; }				//!< get the mouse movement coords on the Y axis.
 		inline glm::vec2 getMousePosition() const { return glm::vec2(m_mouseMoveX, m_mouseMoveY); }		//!< get the position of the mouse.
 	private:
 		float m_mouseMoveX;		//!< mouse movement X coords.
@@ -66,7 +66,7 @@ namespace Engine
 	{
 	public:
 		MouseScrollEvent(const float x, const float y) : m_scrollX(x), m_scrollY(y) {}	//!< using initaliser list to set x/y straight to m_scrollX/Y.
-		static EventType getStaticType() { return EventType::MouseScroll; }		//!< get the static event type, can use to compare.
+		static EventType getStaticType() { return EventType::MouseScroll; }				//!< get the static event type, can use to compare.
 		virtual inline EventType getEventType() const override { return getStaticType(); }		//!< get the event type.
 		inline float getXMouseScroll() const { return m_scrollX; }		//!< get the scroll X float.
 		inline float getYMouseScroll() const { return m_scrollY; }		//!< get the scroll Y float.

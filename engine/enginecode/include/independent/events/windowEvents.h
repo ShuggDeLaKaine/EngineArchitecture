@@ -35,6 +35,7 @@ namespace Engine
 		virtual inline EventType getEventType() const override { return getStaticType(); }		//!< get the event type.
 		inline int32_t getWidth() const { return m_width; }		//!< get the width of window.
 		inline int32_t getHeight() const { return m_height; }	//!< get the height of window.
+		inline glm::ivec2 getWindowSize() const { return glm::ivec2(m_width, m_height); }		//!< get the size of the window.
 	private:
 		int32_t m_width;		//!< window width after resize.
 		int32_t m_height;		//!< window height after resize.
@@ -73,10 +74,9 @@ namespace Engine
 		virtual inline EventType getEventType() const override { return getStaticType(); }		//!< get the event type.
 		inline int32_t getWindowXMove() { return m_winMoveX; }		//!< get the float for window movement on the X axis.
 		inline int32_t getWindowYMove() { return m_winMoveY; }		//!< get the float for window movement on the Y axis.
-		inline glm::ivec2 getWindowPosition() const { return glm::ivec2(m_winMoveX, m_winMoveY); }	//!< get the position of the mouse.
+		inline glm::ivec2 getWindowPosition() const { return glm::ivec2(m_winMoveX, m_winMoveY); }	//!< get the position of the window.
 	private:
 		int32_t m_winMoveX;		//!< int32_t for X position of window movement.
 		int32_t m_winMoveY;		//!< int32_t for Y position of window movement.
 	};
 }
-
