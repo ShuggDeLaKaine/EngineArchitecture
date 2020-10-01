@@ -86,7 +86,7 @@ namespace Engine {
 			if (accumulatedTime > 1.0f)
 			{
 				WindowCloseEvent close;
-				auto& callback = m_eventHandler.getOnWindowCloseFunction();
+				auto& callback = m_eventHandler.getOnWindowCloseCallback();
 				callback(close);
 			}
 

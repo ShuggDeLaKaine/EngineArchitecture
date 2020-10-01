@@ -16,27 +16,27 @@ namespace Engine
 		void setOnWindowFocusCallback(const std::function<bool(WindowFocusEvent&)>& fn) { m_onWindowFocusCallback = fn; }		//!< window focus accessor func - pass it bound function and it sets it.
 		void setOnWindowLostFocusCallback(const std::function<bool(WindowLostFocusEvent&)>& fn) { m_onWindowLostFocusCallback = fn; }	//!< window lost focus accessor func - pass it bound function and it sets it.
 		void setOnWindowMoveCallback(const std::function<bool(WindowMoveEvent&)>& fn) { m_onWindowMoveCallback = fn; }			//!< window move accessor func - pass it bound function and it sets it.
-		std::function<bool(WindowCloseEvent&)>& getOnWindowCloseFunction() { return m_onWindowCloseCallback; }					//!< window close accessor func - passes a reference to bound function.
-		std::function<bool(WindowResizeEvent&)>& getOnWindowResizeFunction() { return m_onWindowResizeCallback; }				//!< window resize accessor func - passes a reference to bound function.
-		std::function<bool(WindowFocusEvent&)>& getOnWindowFocusFunction() { return m_onWindowFocusCallback; }					//!< window focus accessor func - passes a reference to bound function.
-		std::function<bool(WindowLostFocusEvent&)>& getOnWindowLostFocusFunction() { return m_onWindowLostFocusCallback; }		//!< window lost focus accessor func - passes a reference to bound function.
-		std::function<bool(WindowMoveEvent&)>& getOnWindowMoveFunction() { return m_onWindowMoveCallback; }						//!< window move accessor func - passes a reference to bound function.
+		std::function<bool(WindowCloseEvent&)>& getOnWindowCloseCallback() { return m_onWindowCloseCallback; }					//!< window close accessor func - passes a reference to bound function.
+		std::function<bool(WindowResizeEvent&)>& getOnWindowResizeCallback() { return m_onWindowResizeCallback; }				//!< window resize accessor func - passes a reference to bound function.
+		std::function<bool(WindowFocusEvent&)>& getOnWindowFocusCallback() { return m_onWindowFocusCallback; }					//!< window focus accessor func - passes a reference to bound function.
+		std::function<bool(WindowLostFocusEvent&)>& getOnWindowLostFocusCallback() { return m_onWindowLostFocusCallback; }		//!< window lost focus accessor func - passes a reference to bound function.
+		std::function<bool(WindowMoveEvent&)>& getOnWindowMoveCallback() { return m_onWindowMoveCallback; }						//!< window move accessor func - passes a reference to bound function.
 
 		void setOnKeyPressCallback(const std::function<bool(KeyPressedEvent&)>& fn) { m_onKeyPressCallback = fn; }		//!< key press accessor func - pass it bound function and it sets it.
 		void setOnKeyReleaseCallback(const std::function<bool(KeyReleasedEvent&)>& fn) { m_onKeyReleaseCallback = fn; }	//!< key release accessor func - pass it bound function and it sets it.
 		void setOnKeyTypeCallback(const std::function<bool(KeyTypedEvent&)>& fn) { m_onKeyTypeCallback = fn; }			//!< key type accessor func - pass it bound function and it sets it.
-		std::function<bool(KeyPressedEvent&)>& getOnKeyPressFunction() { return m_onKeyPressCallback; }					//!< key press accessor func - passes a reference to bound function.
-		std::function<bool(KeyReleasedEvent&)>& getOnKeyReleaseFunction() { return m_onKeyReleaseCallback; }			//!< key release accessor func - passes a reference to bound function.
-		std::function<bool(KeyTypedEvent&)>& getOnKeyTypeFunction() { return m_onKeyTypeCallback; }						//!< key type accessor func - passes a reference to bound function.
+		std::function<bool(KeyPressedEvent&)>& getOnKeyPressCallback() { return m_onKeyPressCallback; }					//!< key press accessor func - passes a reference to bound function.
+		std::function<bool(KeyReleasedEvent&)>& getOnKeyReleaseCallback() { return m_onKeyReleaseCallback; }			//!< key release accessor func - passes a reference to bound function.
+		std::function<bool(KeyTypedEvent&)>& getOnKeyTypeCallback() { return m_onKeyTypeCallback; }						//!< key type accessor func - passes a reference to bound function.
 
 		void setOnMouseMoveCallback(const std::function<bool(MouseMovementEvent&)>& fn) { m_onMouseMoveCallback = fn; }				//!< mouse move accessor func - pass it bound function and it sets it.
 		void setOnMouseScrollCallback(const std::function<bool(MouseScrollEvent&)>& fn) { m_onMouseScrollCallback = fn; }			//!< mouse scrolled accessor func - pass it bound function and it sets it.
 		void setOnMouseButtonPressCallback(const std::function<bool(MouseButtonPressEvent&)>& fn) { m_onMouseButtonPressCallback = fn; }		//!< mouse button press accessor func - pass it bound function and it sets it.
 		void setOnMouseButtonReleaseCallback(const std::function<bool(MouseButtonReleaseEvent&)>& fn) { m_onMouseButtonReleaseCallback = fn; }	//!< mouse button release accessor func - pass it bound function and it sets it.
-		std::function<bool(MouseMovementEvent&)>& getOnMouseMoveFunction() { return m_onMouseMoveCallback; }						//!< mouse move accessor func - passes a reference to bound function.
-		std::function<bool(MouseScrollEvent&)>& getOnMouseScrollFunction() { return m_onMouseScrollCallback; }						//!< mouse scrolled accessor func - passes a reference to bound function.
-		std::function<bool(MouseButtonPressEvent&)>& getOnMouseButtonPressFunction() { return m_onMouseButtonPressCallback; }		//!< mouse button press accessor func - passes a reference to bound function.
-		std::function<bool(MouseButtonReleaseEvent&)>& getOnMouseButtonReleaseFunction() { return m_onMouseButtonReleaseCallback; }	//!< mouse button release accessor func - passes a reference to bound function.
+		std::function<bool(MouseMovementEvent&)>& getOnMouseMoveCallback() { return m_onMouseMoveCallback; }						//!< mouse move accessor func - passes a reference to bound function.
+		std::function<bool(MouseScrollEvent&)>& getOnMouseScrollCallback() { return m_onMouseScrollCallback; }						//!< mouse scrolled accessor func - passes a reference to bound function.
+		std::function<bool(MouseButtonPressEvent&)>& getOnMouseButtonPressCallback() { return m_onMouseButtonPressCallback; }		//!< mouse button press accessor func - passes a reference to bound function.
+		std::function<bool(MouseButtonReleaseEvent&)>& getOnMouseButtonReleaseCallback() { return m_onMouseButtonReleaseCallback; }	//!< mouse button release accessor func - passes a reference to bound function.
 
 	private:
 		bool defaultOnWindowClose(WindowCloseEvent& event) { return false; }			//!< default for Window Close, returns false as default and says hasn't handled it.
