@@ -26,7 +26,7 @@ namespace Engine {
 		std::shared_ptr<RandomNumberGenerator> m_ranNumSytem;	//!< the random number generator system.
 
 		EventHandler m_eventHandler;	//!< the event handler.
-		bool onClose(WindowCloseEvent& event);	//!< run when the window closes.
+		bool onWindowClose(WindowCloseEvent& event);	//!< run when the window closes.
 
 	private:
 		static Application* s_instance; //!< Singleton instance of the application

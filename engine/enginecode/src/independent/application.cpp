@@ -42,13 +42,13 @@ namespace Engine {
 #endif //  NG_PLATFORM_WINDOWS
 		m_timer->start();
 
-		m_eventHandler.setOnCloseCallback(std::bind(&Application::onClose, this, std::placeholders::_1));
-
+		m_eventHandler.setOnWindowCloseCallback(std::bind(&Application::onWindowClose, this, std::placeholders::_1));
+		
 
 		m_timer->reset();
 	}
 
-	bool Application::onClose(WindowCloseEvent & event)
+	bool Application::onWindowClose(WindowCloseEvent & event)
 	{
 		event.handleEvent(true);
 		m_running = false;
@@ -86,7 +86,7 @@ namespace Engine {
 			if (accumulatedTime > 1.0f)
 			{
 				WindowCloseEvent close;
-				auto& callback = m_eventHandler.getOnCloseFunction();
+				auto& callback = m_eventHandler.getOnWindowCloseFunction();
 				callback(close);
 			}
 

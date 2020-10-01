@@ -14,7 +14,7 @@ TEST(EventTests, ResizeConstructor)
 	int32_t category = event.getCategoryFlag();
 	Engine::EventType type = event.getEventType();
 	Engine::EventType staticType = event.getStaticType();
-
+	
 
 	EXPECT_EQ(width_1, 800);
 	EXPECT_EQ(width_2, 800);
