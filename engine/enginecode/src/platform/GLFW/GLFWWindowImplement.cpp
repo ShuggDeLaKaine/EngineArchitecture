@@ -40,6 +40,7 @@ namespace Engine
 		glfwSetWindowUserPointer(m_nativeWindow, static_cast<void*>(&m_eventHandler));
 
 		//using annousmous Lambda functions to set event callbacks.
+		//the window close callback.
 		glfwSetWindowCloseCallback(m_nativeWindow, 
 			[](GLFWwindow * window)
 		{
@@ -48,7 +49,17 @@ namespace Engine
 			WindowCloseEvent event;
 			onWindowClose(event);
 		}
-			);
+		);
+
+		glfwSetWindowSizeCallback(m_nativeWindow, 
+			[](GLFWwindow * window, int newWidth, int newHeight)
+		{
+			EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
+			auto& onWindowResize = handler->getOnWindowResizeCallback();
+			WindowResizeEvent event(newWidth, newHeight);
+			onWindowResize(event);
+		}
+		);
 	}
 
 	void GLFWWindowImplement::closeWindow()

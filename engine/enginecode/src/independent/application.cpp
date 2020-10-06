@@ -43,7 +43,7 @@ namespace Engine {
 		m_timer->start();
 
 		//modify the window a little.
-		WindowProperties properties("MY FIRST WINDOW", 1200, 800, false);
+		WindowProperties properties("MY FIRST WINDOW", 800, 600, false);
 		//create a default window.
 		m_window.reset(Window::createWindow(properties));
 
@@ -53,6 +53,7 @@ namespace Engine {
 
 
 		m_window->getEventHandler().setOnWindowCloseCallback(std::bind(&Application::onWindowClose, this, std::placeholders::_1));
+		m_window->getEventHandler().setOnWindowResizeCallback(std::bind(&Application::onWindowResize, this, std::placeholders::_1));
 		
 		m_timer->reset();
 	}
@@ -61,6 +62,14 @@ namespace Engine {
 	{
 		event.handleEvent(true);
 		m_running = false;
+		return event.isEventHandled();
+	}
+
+	bool Application::onWindowResize(WindowResizeEvent & event)
+	{
+		event.handleEvent(true);
+		auto&  newSize = event.getWindowSize();
+		Log::info("Window Resized Event: ({0}, {1})", newSize.x, newSize.y);
 		return event.isEventHandled();
 	}
 
@@ -106,7 +115,7 @@ namespace Engine {
 			//***logging system tests***
 			//Log::trace("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
 			//Log::file("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
-			Log::trace("FPS {0}", 1.0f / timeStep);
+			//Log::trace("FPS {0}", 1.0f / timeStep);
 
 			//***random number generator system tests***
 			//Log::trace("{0}", RandomNumberGenerator::uniformIntBetween(-10, 10));

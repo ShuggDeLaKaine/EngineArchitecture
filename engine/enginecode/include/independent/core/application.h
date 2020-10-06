@@ -28,7 +28,7 @@ namespace Engine {
 		std::shared_ptr<Window> m_window;				//!< the windows.
 		std::shared_ptr<ITimer> m_timer;				//!< the timer.
 		bool onWindowClose(WindowCloseEvent& event);	//!< run when the window closes.
-
+		bool onWindowResize(WindowResizeEvent& event);	//!< run when the window resized.
 	private:
 		static Application* s_instance;					//!< Singleton instance of the application
 		bool m_running = true;							//!< Is the application running?
