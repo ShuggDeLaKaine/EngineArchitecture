@@ -1,15 +1,12 @@
-/** \file application.cpp
-*/
+/** \file application.cpp */
 
 #include "engine_pch.h"
 #include "core/application.h"
 
-
 #ifdef  NG_PLATFORM_WINDOWS
 	#include "platform/windows/winTimer.h"
+	#include "platform/GLFW/GLFWSystem.h"
 #endif //  NG_PLATFORM_WINDOWS
-
-
 
 
 namespace Engine {
@@ -24,17 +21,13 @@ namespace Engine {
 		}
 
 		//start the system.
-
 		//start the log system.
 		m_logSystem.reset(new Log);
 		m_logSystem->start();
 
-		//start the random number syste,
-		m_ranNumSytem.reset(new RandomNumberGenerator);
-		m_ranNumSytem->start();
-
 		//reset & start the timer.
 		//if on a windows platform then make a windows timer, otherwise make a chrono timer.
+		//NOTE - not a system! Don't need to stop it.
 #ifdef  NG_PLATFORM_WINDOWS
 		m_timer.reset(new WinTimer);
 #else
@@ -42,9 +35,20 @@ namespace Engine {
 #endif //  NG_PLATFORM_WINDOWS
 		m_timer->start();
 
+		//start the random number syste,
+		m_ranNumSytem.reset(new RandomNumberGenerator);
+		m_ranNumSytem->start();
+
+		//start the windows system.
+#ifdef NG_PLATFORM_WINDOWS
+		m_windowsSystem.reset(new GLFWSystem);
+//#else
+#endif
+		m_windowsSystem->start();
+
+
 		m_eventHandler.setOnWindowCloseCallback(std::bind(&Application::onWindowClose, this, std::placeholders::_1));
 		
-
 		m_timer->reset();
 	}
 
@@ -58,13 +62,14 @@ namespace Engine {
 	Application::~Application()
 	{
 		//stop the systems in the REVERSE ORDER to how they start.
+		//stop the windows system.
+		m_windowsSystem->stop();
 
 		//stop the random number system.
 		m_ranNumSytem->stop();
 
 		//stop the log system.
 		m_logSystem->stop();
-
 	}
 
 

@@ -19,24 +19,25 @@ namespace Engine {
 	class Application
 	{
 	protected:
-		Application(); //!< Constructor
+		Application();	//!< Constructor
 
 		std::shared_ptr<Log> m_logSystem;	//!< the log system.
 		std::shared_ptr<ITimer> m_timer;	//!< the timer system.
 		std::shared_ptr<RandomNumberGenerator> m_ranNumSytem;	//!< the random number generator system.
+		std::shared_ptr<System> m_windowsSystem;	//!< the windows system.
 
-		EventHandler m_eventHandler;	//!< the event handler.
-		bool onWindowClose(WindowCloseEvent& event);	//!< run when the window closes.
+		EventHandler m_eventHandler;		//!< the event handler.
+		bool onWindowClose(WindowCloseEvent& event);			//!< run when the window closes.
 
 	private:
-		static Application* s_instance; //!< Singleton instance of the application
-		bool m_running = true; //!< Is the application running?
+		static Application* s_instance;		//!< Singleton instance of the application
+		bool m_running = true;				//!< Is the application running?
 	public:
 		virtual ~Application(); //!< Deconstructor
 		inline static Application& getInstance() { return *s_instance; } //!< Instance getter from singleton pattern
-		void run(); //!< Main loop
+		void run();		//!< Main loop
 	};
 
 	// To be defined in users code
-	Application* startApplication(); //!< Function definition which provides an entry hook
+	Application* startApplication();		//!< Function definition which provides an entry hook
 }
