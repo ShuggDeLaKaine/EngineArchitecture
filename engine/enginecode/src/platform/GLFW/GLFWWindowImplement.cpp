@@ -35,6 +35,20 @@ namespace Engine
 		{
 			m_nativeWindow = glfwCreateWindow(m_windowProperties.width, m_windowProperties.height, m_windowProperties.windowTitle, nullptr, nullptr);
 		}
+
+		//set the void pointer for the native window to contain the event handler, stored as void pointer.
+		glfwSetWindowUserPointer(m_nativeWindow, static_cast<void*>(&m_eventHandler));
+
+		//using annousmous Lambda functions to set event callbacks.
+		glfwSetWindowCloseCallback(m_nativeWindow, 
+			[](GLFWwindow * window)
+		{
+			EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
+			auto& onWindowClose = handler->getOnWindowCloseCallback();
+			WindowCloseEvent event;
+			onWindowClose(event);
+		}
+			);
 	}
 
 	void GLFWWindowImplement::closeWindow()

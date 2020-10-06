@@ -52,7 +52,7 @@ namespace Engine {
 		m_ranNumSytem->start();
 
 
-		m_eventHandler.setOnWindowCloseCallback(std::bind(&Application::onWindowClose, this, std::placeholders::_1));
+		m_window->getEventHandler().setOnWindowCloseCallback(std::bind(&Application::onWindowClose, this, std::placeholders::_1));
 		
 		m_timer->reset();
 	}
@@ -82,14 +82,15 @@ namespace Engine {
 	{
 		//create a float for the time step and initialise at 0.
 		float timeStep = 0.0f;
-		float accumulatedTime = 0.0f;
+		//float accumulatedTime = 0.0f;
 
 		while (m_running)
 		{
 			//update the time step with the timer function getElapsedTime()
 			timeStep = m_timer->getElapsedTime();
 			m_timer->reset();
-			accumulatedTime += timeStep;
+			
+			//accumulatedTime += timeStep;
 
 			/*
 			//***event testing***
@@ -105,7 +106,7 @@ namespace Engine {
 			//***logging system tests***
 			//Log::trace("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
 			//Log::file("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
-			//Log::trace("FPS {0}", 1.0f / timeStep);
+			Log::trace("FPS {0}", 1.0f / timeStep);
 
 			//***random number generator system tests***
 			//Log::trace("{0}", RandomNumberGenerator::uniformIntBetween(-10, 10));
@@ -113,6 +114,8 @@ namespace Engine {
 			//Log::trace("{0}", RandomNumberGenerator::normalIntBetween(10.0f, 2.5f));
 			//Log::trace("{0}", RandomNumberGenerator::normalFloatBetween(5.0f, 1.25f));
 
+			//
+			m_window->onUpdate(timeStep);
 
 			//things to do in the frame...
 

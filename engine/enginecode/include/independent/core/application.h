@@ -5,7 +5,6 @@
 #include "systems/log.h"
 #include "systems/randomNumberGenerator.h"
 #include "events/eventHeaders.h"
-#include "events/eventHandler.h"
 #include "core/window.h"
 #include "core/timer.h"
 
@@ -28,7 +27,6 @@ namespace Engine {
 
 		std::shared_ptr<Window> m_window;				//!< the windows.
 		std::shared_ptr<ITimer> m_timer;				//!< the timer.
-		EventHandler m_eventHandler;					//!< the event handler.
 		bool onWindowClose(WindowCloseEvent& event);	//!< run when the window closes.
 
 	private:
