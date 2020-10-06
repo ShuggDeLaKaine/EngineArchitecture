@@ -51,9 +51,11 @@ namespace Engine {
 		m_ranNumSytem.reset(new RandomNumberGenerator);
 		m_ranNumSytem->start();
 
-
+		//***TO DO*** CARRY ON WITH THIS FOR THE REST OF THE EVENT HANDLING POSSIBLE EVENTS
 		m_window->getEventHandler().setOnWindowCloseCallback(std::bind(&Application::onWindowClose, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnWindowResizeCallback(std::bind(&Application::onWindowResize, this, std::placeholders::_1));
+		m_window->getEventHandler().setOnKeyPressCallback(std::bind(&Application::onKeyPressed, this, std::placeholders::_1));
+		m_window->getEventHandler().setOnKeyReleaseCallback(std::bind(&Application::onKeyReleased, this, std::placeholders::_1));
 		
 		m_timer->reset();
 	}
@@ -70,6 +72,20 @@ namespace Engine {
 		event.handleEvent(true);
 		auto&  newSize = event.getWindowSize();
 		Log::info("Window Resized Event: ({0}, {1})", newSize.x, newSize.y);
+		return event.isEventHandled();
+	}
+
+	bool Application::onKeyPressed(KeyPressedEvent & event)
+	{
+		event.handleEvent(true);
+		Log::info("Key Pressed Event: key: {0}, repeat: {1}", event.getKeycode(), event.getRepeatCount());
+		return event.isEventHandled();
+	}
+
+	bool Application::onKeyReleased(KeyReleasedEvent & event)
+	{
+		event.handleEvent(true);
+		Log::info("Key Released Event: key: {0}", event.getKeycode());
 		return event.isEventHandled();
 	}
 

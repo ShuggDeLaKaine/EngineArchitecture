@@ -60,6 +60,43 @@ namespace Engine
 			onWindowResize(event);
 		}
 		);
+
+		glfwSetKeyCallback(m_nativeWindow,
+			[](GLFWwindow * window, int keycode, int scancode, int action, int mods)
+		{
+			//std::function<void(Event&)>& callback = *(std::function<void(Event&)>*)glfwGetWindowUserPointer(window);
+			EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
+
+			if (action == GLFW_PRESS)
+			{
+				//KeyPressedEvent event(keycode, 0);
+				//callback(event);
+
+				auto& onKeyPress = handler->getOnKeyPressCallback();
+				KeyPressedEvent event(keycode, 0);
+				onKeyPress(event);
+			}
+			else if (action == GLFW_RELEASE)
+			{
+				//KeyReleasedEvent event(keycode);
+				//callback(event);
+
+				auto& onKeyRelease = handler->getOnKeyReleaseCallback();
+				KeyReleasedEvent event(keycode);
+				onKeyRelease(event);
+			}
+			else if (action == GLFW_REPEAT)
+			{
+				//KeyPressedEvent event(keycode, 1);
+				//callback(event);
+
+				auto& onKeyPress = handler->getOnKeyPressCallback();
+				KeyPressedEvent event(keycode, 1);
+				onKeyPress(event);
+			}
+		}
+		);
+
 	}
 
 	void GLFWWindowImplement::closeWindow()

@@ -28,7 +28,7 @@ namespace Engine
 		KeyPressedEvent(const int32_t keycode, const int32_t keycount) : KeyEvent(keycode), m_repeatCount(keycount) {}	//!< initialiser, listed params straight to m_keycode & m_repeatCount.
 		static EventType getStaticType() { return EventType::KeyPress; }	//!< get the static event type, can use to compare.
 		virtual inline EventType getEventType() const override { return  getStaticType(); }			//!< get the event type.
-		inline int32_t GetRepeatCount() const { return m_repeatCount; }		//!< get the count if key press repeated.
+		inline int32_t getRepeatCount() const { return m_repeatCount; }		//!< get the count if key press repeated.
 	private:
 		int32_t m_repeatCount;		//!< int32_t to take the count of repeated input.
 	};
