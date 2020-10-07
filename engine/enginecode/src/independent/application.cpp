@@ -57,6 +57,8 @@ namespace Engine {
 		m_window->getEventHandler().setOnKeyPressCallback(std::bind(&Application::onKeyPressed, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnKeyReleaseCallback(std::bind(&Application::onKeyReleased, this, std::placeholders::_1));
 		
+
+
 		m_timer->reset();
 	}
 
