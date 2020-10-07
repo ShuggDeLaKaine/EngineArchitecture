@@ -1,4 +1,4 @@
-/** \file GLFWInputPoller.cpp */
+/* \file GLFWInputPoller.cpp */
 
 #include "engine_pch.h"
 #include "platform/GLFW/GLFWInputPoller.h"

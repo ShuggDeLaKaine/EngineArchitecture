@@ -1,4 +1,4 @@
-/** \file GLFWInputPoller.h */
+/* \file GLFWInputPoller.h */
 #pragma once
 
 #include <glm/glm.hpp>

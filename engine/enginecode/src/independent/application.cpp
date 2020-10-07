@@ -1,6 +1,9 @@
-/** \file application.cpp */
+/* \file application.cpp */
 
 #include "engine_pch.h"
+
+#include <glad/glad.h>
+
 #include "core/application.h"
 
 #ifdef  NG_PLATFORM_WINDOWS
@@ -179,12 +182,23 @@ namespace Engine {
 		float timeStep = 0.0f;
 		//float accumulatedTime = 0.0f;
 
+
+		glEnable(GL_DEPTH);
+		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+
+
+
 		while (m_running)
 		{
 			//update the time step with the timer function getElapsedTime()
 			timeStep = m_timer->getElapsedTime();
 			m_timer->reset();
 			
+
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+
 			/*
 			if (InputPoller::isKeyPressed(NG_KEY_W))
 			{
@@ -199,6 +213,9 @@ namespace Engine {
 
 			//Log::trace("Current Mouse Position: ({0}, {1})", InputPoller::getMouseXPos(), InputPoller::getMouseYPos());
 			
+
+
+
 
 			//
 			m_window->onUpdate(timeStep);

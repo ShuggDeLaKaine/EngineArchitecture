@@ -1,6 +1,7 @@
 /** \file window.h */
 #pragma once
 #include "events/eventHandler.h"
+#include "core/graphicsContext.h"
 
 namespace Engine
 {
@@ -39,8 +40,7 @@ namespace Engine
 		static Window* createWindow(const WindowProperties& properties = WindowProperties());		//!< constructor, create a window using the properties definied in WindowProperties.
 	
 	protected:
-		EventHandler m_eventHandler;	//!< event handler. 
-		//std::shared_ptr<GraphicsContext> m_graphicsContext;		//!< 
+		EventHandler m_eventHandler;			//!< event handler. 
+		std::shared_ptr<GraphicsContext> m_graphicsContext;		//!< shared pointer to the graphics context.
 	};
-
 }

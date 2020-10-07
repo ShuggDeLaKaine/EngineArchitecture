@@ -1,4 +1,4 @@
-/** \file inputPoller.h */
+/* \file inputPoller.h */
 #pragma once
 
 #include <glm/glm.hpp>

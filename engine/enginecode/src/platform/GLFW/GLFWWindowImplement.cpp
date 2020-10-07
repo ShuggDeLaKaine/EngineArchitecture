@@ -2,6 +2,7 @@
 
 #include "engine_pch.h"
 #include "platform/GLFW/GLFWWindowImplement.h"
+#include "platform/GLFW/GLFW_OpenGL_GC.h"
 #include "systems/log.h"
 
 namespace Engine
@@ -35,6 +36,12 @@ namespace Engine
 		{
 			m_nativeWindow = glfwCreateWindow(m_windowProperties.width, m_windowProperties.height, m_windowProperties.windowTitle, nullptr, nullptr);
 		}
+
+		//
+		m_graphicsContext.reset(new GLFW_OpenGL_GC(m_nativeWindow));
+		m_graphicsContext->init();
+
+
 
 		//set the void pointer for the native window to contain the event handler, stored as void pointer.
 		glfwSetWindowUserPointer(m_nativeWindow, static_cast<void*>(&m_eventHandler));
@@ -175,6 +182,7 @@ namespace Engine
 	{
 		//any registered events in the last loop, if so process them.
 		glfwPollEvents();
+		m_graphicsContext->swapBuffers();
 	}
 
 	void GLFWWindowImplement::setVSync(bool VSync)
