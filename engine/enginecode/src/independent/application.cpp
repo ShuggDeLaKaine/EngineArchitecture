@@ -62,9 +62,13 @@ namespace Engine {
 		//key events.
 		m_window->getEventHandler().setOnKeyPressCallback(std::bind(&Application::onKeyPressed, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnKeyReleaseCallback(std::bind(&Application::onKeyReleased, this, std::placeholders::_1));
+		//m_window->getEventHandler().setOnKeyTypeCallback(std::bind(&Application::onKeyType, this, std::placeholders::_1));
 		
 		//mouse events.
-
+		m_window->getEventHandler().setOnMouseMoveCallback(std::bind(&Application::onMouseMove, this, std::placeholders::_1));
+		m_window->getEventHandler().setOnMouseButtonPressCallback(std::bind(&Application::onMouseButtonPress, this, std::placeholders::_1));
+		m_window->getEventHandler().setOnMouseButtonReleaseCallback(std::bind(&Application::onMouseButtonRelease, this, std::placeholders::_1));
+		m_window->getEventHandler().setOnMouseScrollCallback(std::bind(&Application::onMouseScroll, this, std::placeholders::_1));
 
 
 		m_timer->reset();
@@ -129,22 +133,33 @@ namespace Engine {
 
 	bool Application::onMouseMove(MouseMovementEvent & event)
 	{
-		return false;
+		event.handleEvent(true);
+		auto& newPos = event.getMousePosition();
+		Log::info("Mouse Move Event: ({0}, {1})", newPos.x, newPos.y);
+		return event.isEventHandled();
 	}
 
 	bool Application::onMouseButtonPress(MouseButtonPressEvent & event)
 	{
-		return false;
+		event.handleEvent(true);
+		Log::info("Mouse Button Pressed Event: {0}", event.getButtonPressed());
+		return event.isEventHandled();
 	}
 
 	bool Application::onMouseButtonRelease(MouseButtonReleaseEvent & event)
 	{
-		return false;
+		event.handleEvent(true);
+		Log::info("Mouse Button Released Event: {0}", event.getButtonReleased());
+		return event.isEventHandled();
 	}
 
 	bool Application::onMouseScroll(MouseScrollEvent & event)
 	{
-		return false;
+		event.handleEvent(true);
+		float xOffset = event.getXMouseScroll();
+		float yOffset = event.getYMouseScroll();
+		Log::info("Mouse Scroll Event: ({0}, {1})", xOffset, yOffset);
+		return event.isEventHandled();
 	}
 
 	Application::~Application()

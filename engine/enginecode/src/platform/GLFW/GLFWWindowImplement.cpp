@@ -97,32 +97,22 @@ namespace Engine
 		glfwSetKeyCallback(m_nativeWindow,
 			[](GLFWwindow * window, int keycode, int scancode, int action, int mods)
 		{
-			//std::function<void(Event&)>& callback = *(std::function<void(Event&)>*)glfwGetWindowUserPointer(window);
 			EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
 
 			if (action == GLFW_PRESS)
 			{
-				//KeyPressedEvent event(keycode, 0);
-				//callback(event);
-
 				auto& onKeyPress = handler->getOnKeyPressCallback();
 				KeyPressedEvent event(keycode, 0);
 				onKeyPress(event);
 			}
 			else if (action == GLFW_RELEASE)
 			{
-				//KeyReleasedEvent event(keycode);
-				//callback(event);
-
 				auto& onKeyRelease = handler->getOnKeyReleaseCallback();
 				KeyReleasedEvent event(keycode);
 				onKeyRelease(event);
 			}
 			else if (action == GLFW_REPEAT)
 			{
-				//KeyPressedEvent event(keycode, 1);
-				//callback(event);
-
 				auto& onKeyPress = handler->getOnKeyPressCallback();
 				KeyPressedEvent event(keycode, 1);
 				onKeyPress(event);
@@ -130,7 +120,51 @@ namespace Engine
 		}
 		);
 
+		//set the mouse movement callback.
+		glfwSetCursorPosCallback(m_nativeWindow,
+			[](GLFWwindow * window, double xPos, double yPos)
+		{
+			EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
+			auto& onMouseMove = handler->getOnMouseMoveCallback();
+			MouseMovementEvent event(xPos, yPos);
+			onMouseMove(event);
+		}
+		);
+
+		//set the mouse button press / release callback.
+		glfwSetMouseButtonCallback(m_nativeWindow,
+			[](GLFWwindow * window, int button, int action, int mods)
+		{
+			EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
+			
+			if (action == GLFW_PRESS)
+			{
+				auto& onMousePress = handler->getOnMouseButtonPressCallback();
+				MouseButtonPressEvent event(button);
+				onMousePress(event);
+			}
+			else if (action == GLFW_RELEASE)
+			{
+				auto& onMouseRelease = handler->getOnMouseButtonReleaseCallback();
+				MouseButtonReleaseEvent event(button);
+				onMouseRelease(event);
+			}
+		}
+		);
+
+		//set the mouse scroll callback.
+		glfwSetScrollCallback(m_nativeWindow,
+			[](GLFWwindow * window, double xOffset, double yOffset)
+		{
+			EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
+			auto& onMouseScroll = handler->getOnMouseScrollCallback();
+			MouseScrollEvent event(xOffset, yOffset);
+			onMouseScroll(event);
+		}
+		);
+
 	}
+
 
 	void GLFWWindowImplement::closeWindow()
 	{
