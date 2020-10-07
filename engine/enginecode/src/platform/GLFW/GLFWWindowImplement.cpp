@@ -50,6 +50,7 @@ namespace Engine
 			onWindowClose(event);
 		}
 		);
+
 		//set the window resize callback.
 		glfwSetWindowSizeCallback(m_nativeWindow, 
 			[](GLFWwindow * window, int newWidth, int newHeight)
@@ -78,7 +79,7 @@ namespace Engine
 
 			focused = glfwGetWindowAttrib(window, GLFW_FOCUSED);
 
-			if (!focused)
+			if (focused)
 			{
 				auto& onWindowFocus = handler->getOnWindowFocusCallback();
 				WindowFocusEvent event;
@@ -162,7 +163,6 @@ namespace Engine
 			onMouseScroll(event);
 		}
 		);
-
 	}
 
 

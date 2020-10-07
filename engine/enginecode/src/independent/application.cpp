@@ -51,6 +51,7 @@ namespace Engine {
 		m_ranNumSytem.reset(new RandomNumberGenerator);
 		m_ranNumSytem->start();
 
+		//calling function that binds all the callbacks for the event types.
 		bindAllEventsTypes();
 
 		m_timer->reset();
@@ -58,7 +59,6 @@ namespace Engine {
 
 	void Application::bindAllEventsTypes()
 	{
-		//***TO DO*** CARRY ON WITH THIS FOR THE REST OF THE EVENT HANDLING POSSIBLE EVENTS
 		//window events.
 		m_window->getEventHandler().setOnWindowCloseCallback(std::bind(&Application::onWindowClose, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnWindowResizeCallback(std::bind(&Application::onWindowResize, this, std::placeholders::_1));
@@ -69,7 +69,6 @@ namespace Engine {
 		//key events.
 		m_window->getEventHandler().setOnKeyPressCallback(std::bind(&Application::onKeyPressed, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnKeyReleaseCallback(std::bind(&Application::onKeyReleased, this, std::placeholders::_1));
-		//m_window->getEventHandler().setOnKeyTypeCallback(std::bind(&Application::onKeyType, this, std::placeholders::_1));
 
 		//mouse events.
 		m_window->getEventHandler().setOnMouseMoveCallback(std::bind(&Application::onMouseMove, this, std::placeholders::_1));
@@ -128,11 +127,6 @@ namespace Engine {
 		return event.isEventHandled();
 	}
 
-	bool Application::onKeyType(KeyTypedEvent & event)
-	{
-		return false;
-	}
-
 	bool Application::onMouseMove(MouseMovementEvent & event)
 	{
 		event.handleEvent(true);
@@ -160,6 +154,7 @@ namespace Engine {
 		Log::info("Mouse Scroll Event: ({0}, {1})", event.getXMouseScroll(), event.getYMouseScroll());
 		return event.isEventHandled();
 	}
+
 
 	Application::~Application()
 	{

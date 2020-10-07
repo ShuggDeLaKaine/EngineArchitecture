@@ -28,22 +28,24 @@ namespace Engine {
 		std::shared_ptr<Window> m_window;				//!< the windows.
 		std::shared_ptr<ITimer> m_timer;				//!< the timer.
 
-		void bindAllEventsTypes();
+		void bindAllEventsTypes();						//!< func to keep all the bindings of event types together.
 
 		bool onWindowClose(WindowCloseEvent& event);	//!< run when the window closes.
 		bool onWindowResize(WindowResizeEvent& event);	//!< run when the window resized.
-		bool onWindowMove(WindowMoveEvent& event);		//!< 
-		bool onWindowFocus(WindowFocusEvent& event);	//!<
-		bool onWindowLostFocus(WindowLostFocusEvent& event);	//!<
+		bool onWindowMove(WindowMoveEvent& event);		//!< on window move.
+		bool onWindowFocus(WindowFocusEvent& event);	//!< on window focus.
+		bool onWindowLostFocus(WindowLostFocusEvent& event);	//!< on window lost focus.
 
-		bool onKeyPressed(KeyPressedEvent& event);		//!< 
-		bool onKeyReleased(KeyReleasedEvent& event);	//!< 
-		bool onKeyType(KeyTypedEvent& event);			//!< 
+		bool onKeyPressed(KeyPressedEvent& event);		//!< on key press.
+		bool onKeyReleased(KeyReleasedEvent& event);	//!< on key release.
+		//bool onKeyType(KeyTypedEvent& event);			//!< on key type.
 
-		bool onMouseMove(MouseMovementEvent& event);			//!< 
-		bool onMouseButtonPress(MouseButtonPressEvent& event);	//!< 
-		bool onMouseButtonRelease(MouseButtonReleaseEvent& event);	//!<
-		bool onMouseScroll(MouseScrollEvent& event);			//!< 
+		bool onMouseMove(MouseMovementEvent& event);			//!< on mouse movement.
+		bool onMouseButtonPress(MouseButtonPressEvent& event);	//!< on mouse button press.
+		bool onMouseButtonRelease(MouseButtonReleaseEvent& event);	//!< on mouse button release.
+		bool onMouseScroll(MouseScrollEvent& event);			//!< on mouse scrolling.
+
+		//bool fullscreenCheck();						//!< to check whether in fullscreen mode of current display monitor.
 
 	private:
 		static Application* s_instance;					//!< Singleton instance of the application
