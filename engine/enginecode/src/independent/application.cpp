@@ -51,6 +51,13 @@ namespace Engine {
 		m_ranNumSytem.reset(new RandomNumberGenerator);
 		m_ranNumSytem->start();
 
+		bindAllEventsTypes();
+
+		m_timer->reset();
+	}
+
+	void Application::bindAllEventsTypes()
+	{
 		//***TO DO*** CARRY ON WITH THIS FOR THE REST OF THE EVENT HANDLING POSSIBLE EVENTS
 		//window events.
 		m_window->getEventHandler().setOnWindowCloseCallback(std::bind(&Application::onWindowClose, this, std::placeholders::_1));
@@ -63,15 +70,12 @@ namespace Engine {
 		m_window->getEventHandler().setOnKeyPressCallback(std::bind(&Application::onKeyPressed, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnKeyReleaseCallback(std::bind(&Application::onKeyReleased, this, std::placeholders::_1));
 		//m_window->getEventHandler().setOnKeyTypeCallback(std::bind(&Application::onKeyType, this, std::placeholders::_1));
-		
+
 		//mouse events.
 		m_window->getEventHandler().setOnMouseMoveCallback(std::bind(&Application::onMouseMove, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnMouseButtonPressCallback(std::bind(&Application::onMouseButtonPress, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnMouseButtonReleaseCallback(std::bind(&Application::onMouseButtonRelease, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnMouseScrollCallback(std::bind(&Application::onMouseScroll, this, std::placeholders::_1));
-
-
-		m_timer->reset();
 	}
 
 	bool Application::onWindowClose(WindowCloseEvent & event)
@@ -85,16 +89,14 @@ namespace Engine {
 	bool Application::onWindowResize(WindowResizeEvent & event)
 	{
 		event.handleEvent(true);
-		auto&  newSize = event.getWindowSize();
-		Log::info("Window Resized Event: ({0}, {1})", newSize.x, newSize.y);
+		Log::info("Window Resized Event: ({0}, {1})", event.getWindowSize().x, event.getWindowSize().y);
 		return event.isEventHandled();
 	}
 
 	bool Application::onWindowMove(WindowMoveEvent & event)
 	{
 		event.handleEvent(true);
-		auto& newPos = event.getWindowPosition();
-		Log::info("Window Move Event: ({0}, {1})", newPos.x, newPos.y);
+		Log::info("Window Move Event: ({0}, {1})", event.getWindowPosition().x, event.getWindowPosition().y);
 		return event.isEventHandled();
 	}
 
@@ -134,8 +136,7 @@ namespace Engine {
 	bool Application::onMouseMove(MouseMovementEvent & event)
 	{
 		event.handleEvent(true);
-		auto& newPos = event.getMousePosition();
-		Log::info("Mouse Move Event: ({0}, {1})", newPos.x, newPos.y);
+		Log::info("Mouse Move Event: ({0}, {1})", event.getMousePosition().x, event.getMousePosition().y);
 		return event.isEventHandled();
 	}
 
@@ -156,9 +157,7 @@ namespace Engine {
 	bool Application::onMouseScroll(MouseScrollEvent & event)
 	{
 		event.handleEvent(true);
-		float xOffset = event.getXMouseScroll();
-		float yOffset = event.getYMouseScroll();
-		Log::info("Mouse Scroll Event: ({0}, {1})", xOffset, yOffset);
+		Log::info("Mouse Scroll Event: ({0}, {1})", event.getXMouseScroll(), event.getYMouseScroll());
 		return event.isEventHandled();
 	}
 

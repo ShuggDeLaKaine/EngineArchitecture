@@ -28,6 +28,8 @@ namespace Engine {
 		std::shared_ptr<Window> m_window;				//!< the windows.
 		std::shared_ptr<ITimer> m_timer;				//!< the timer.
 
+		void bindAllEventsTypes();
+
 		bool onWindowClose(WindowCloseEvent& event);	//!< run when the window closes.
 		bool onWindowResize(WindowResizeEvent& event);	//!< run when the window resized.
 		bool onWindowMove(WindowMoveEvent& event);		//!< 
