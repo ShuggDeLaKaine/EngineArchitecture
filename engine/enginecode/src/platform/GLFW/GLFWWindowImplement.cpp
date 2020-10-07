@@ -50,7 +50,7 @@ namespace Engine
 			onWindowClose(event);
 		}
 		);
-
+		//set the window resize callback.
 		glfwSetWindowSizeCallback(m_nativeWindow, 
 			[](GLFWwindow * window, int newWidth, int newHeight)
 		{
@@ -60,7 +60,7 @@ namespace Engine
 			onWindowResize(event);
 		}
 		);
-
+		//set the window movement callback.
 		glfwSetWindowPosCallback(m_nativeWindow,
 			[](GLFWwindow * window, int32_t xPos, int32_t yPos)
 		{
@@ -69,9 +69,31 @@ namespace Engine
 			WindowMoveEvent event(xPos, yPos);
 			onWindowMove(event);
 		}
+		);
+		//set the window in focus / lost focus callback.
+		glfwSetWindowFocusCallback(m_nativeWindow,
+			[](GLFWwindow * window, int focused)
+		{
+			EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
 
+			focused = glfwGetWindowAttrib(window, GLFW_FOCUSED);
+
+			if (!focused)
+			{
+				auto& onWindowFocus = handler->getOnWindowFocusCallback();
+				WindowFocusEvent event;
+				onWindowFocus(event);
+			}
+			else
+			{
+				auto& onWindowLostFocus = handler->getOnWindowLostFocusCallback();
+				WindowLostFocusEvent event;
+				onWindowLostFocus(event);
+			}
+		}
 		);
 
+		//set the key callback; press, release & repeat.
 		glfwSetKeyCallback(m_nativeWindow,
 			[](GLFWwindow * window, int keycode, int scancode, int action, int mods)
 		{

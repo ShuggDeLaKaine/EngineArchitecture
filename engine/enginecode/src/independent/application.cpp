@@ -56,6 +56,8 @@ namespace Engine {
 		m_window->getEventHandler().setOnWindowCloseCallback(std::bind(&Application::onWindowClose, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnWindowResizeCallback(std::bind(&Application::onWindowResize, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnWindowMoveCallback(std::bind(&Application::onWindowMove, this, std::placeholders::_1));
+		m_window->getEventHandler().setOnWindowFocusCallback(std::bind(&Application::onWindowFocus, this, std::placeholders::_1));
+		m_window->getEventHandler().setOnWindowLostFocusCallback(std::bind(&Application::onWindowLostFocus, this, std::placeholders::_1));
 
 		//key events.
 		m_window->getEventHandler().setOnKeyPressCallback(std::bind(&Application::onKeyPressed, this, std::placeholders::_1));
@@ -94,12 +96,16 @@ namespace Engine {
 
 	bool Application::onWindowFocus(WindowFocusEvent & event)
 	{
-		return false;
+		event.handleEvent(true);
+		Log::info("Window Focus Event: {0}");
+		return event.isEventHandled();
 	}
 
 	bool Application::onWindowLostFocus(WindowLostFocusEvent & event)
 	{
-		return false;
+		event.handleEvent(true);
+		Log::info("Window Lost Focus Event: {0}");
+		return event.isEventHandled();
 	}
 
 	bool Application::onKeyPressed(KeyPressedEvent & event)
