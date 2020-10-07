@@ -52,11 +52,17 @@ namespace Engine {
 		m_ranNumSytem->start();
 
 		//***TO DO*** CARRY ON WITH THIS FOR THE REST OF THE EVENT HANDLING POSSIBLE EVENTS
+		//window events.
 		m_window->getEventHandler().setOnWindowCloseCallback(std::bind(&Application::onWindowClose, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnWindowResizeCallback(std::bind(&Application::onWindowResize, this, std::placeholders::_1));
+		m_window->getEventHandler().setOnWindowMoveCallback(std::bind(&Application::onWindowMove, this, std::placeholders::_1));
+
+		//key events.
 		m_window->getEventHandler().setOnKeyPressCallback(std::bind(&Application::onKeyPressed, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnKeyReleaseCallback(std::bind(&Application::onKeyReleased, this, std::placeholders::_1));
 		
+		//mouse events.
+
 
 
 		m_timer->reset();
@@ -65,6 +71,7 @@ namespace Engine {
 	bool Application::onWindowClose(WindowCloseEvent & event)
 	{
 		event.handleEvent(true);
+		Log::info("Window Closed Event: {0}");
 		m_running = false;
 		return event.isEventHandled();
 	}
@@ -75,6 +82,24 @@ namespace Engine {
 		auto&  newSize = event.getWindowSize();
 		Log::info("Window Resized Event: ({0}, {1})", newSize.x, newSize.y);
 		return event.isEventHandled();
+	}
+
+	bool Application::onWindowMove(WindowMoveEvent & event)
+	{
+		event.handleEvent(true);
+		auto& newPos = event.getWindowPosition();
+		Log::info("Window Move Event: ({0}, {1})", newPos.x, newPos.y);
+		return event.isEventHandled();
+	}
+
+	bool Application::onWindowFocus(WindowFocusEvent & event)
+	{
+		return false;
+	}
+
+	bool Application::onWindowLostFocus(WindowLostFocusEvent & event)
+	{
+		return false;
 	}
 
 	bool Application::onKeyPressed(KeyPressedEvent & event)
@@ -89,6 +114,31 @@ namespace Engine {
 		event.handleEvent(true);
 		Log::info("Key Released Event: key: {0}", event.getKeycode());
 		return event.isEventHandled();
+	}
+
+	bool Application::onKeyType(KeyTypedEvent & event)
+	{
+		return false;
+	}
+
+	bool Application::onMouseMove(MouseMovementEvent & event)
+	{
+		return false;
+	}
+
+	bool Application::onMouseButtonPress(MouseButtonPressEvent & event)
+	{
+		return false;
+	}
+
+	bool Application::onMouseButtonRelease(MouseButtonReleaseEvent & event)
+	{
+		return false;
+	}
+
+	bool Application::onMouseScroll(MouseScrollEvent & event)
+	{
+		return false;
 	}
 
 	Application::~Application()

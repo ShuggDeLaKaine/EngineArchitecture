@@ -61,6 +61,17 @@ namespace Engine
 		}
 		);
 
+		glfwSetWindowPosCallback(m_nativeWindow,
+			[](GLFWwindow * window, int32_t xPos, int32_t yPos)
+		{
+			EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
+			auto& onWindowMove = handler->getOnWindowMoveCallback();
+			WindowMoveEvent event(xPos, yPos);
+			onWindowMove(event);
+		}
+
+		);
+
 		glfwSetKeyCallback(m_nativeWindow,
 			[](GLFWwindow * window, int keycode, int scancode, int action, int mods)
 		{

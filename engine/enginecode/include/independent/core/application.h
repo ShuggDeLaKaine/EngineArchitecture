@@ -30,8 +30,18 @@ namespace Engine {
 
 		bool onWindowClose(WindowCloseEvent& event);	//!< run when the window closes.
 		bool onWindowResize(WindowResizeEvent& event);	//!< run when the window resized.
-		bool onKeyPressed(KeyPressedEvent& event);
-		bool onKeyReleased(KeyReleasedEvent& event);
+		bool onWindowMove(WindowMoveEvent& event);		//!< 
+		bool onWindowFocus(WindowFocusEvent& event);	//!<
+		bool onWindowLostFocus(WindowLostFocusEvent& event);	//!<
+
+		bool onKeyPressed(KeyPressedEvent& event);		//!< 
+		bool onKeyReleased(KeyReleasedEvent& event);	//!< 
+		bool onKeyType(KeyTypedEvent& event);			//!< 
+
+		bool onMouseMove(MouseMovementEvent& event);			//!< 
+		bool onMouseButtonPress(MouseButtonPressEvent& event);	//!< 
+		bool onMouseButtonRelease(MouseButtonReleaseEvent& event);	//!<
+		bool onMouseScroll(MouseScrollEvent& event);			//!< 
 
 	private:
 		static Application* s_instance;					//!< Singleton instance of the application
