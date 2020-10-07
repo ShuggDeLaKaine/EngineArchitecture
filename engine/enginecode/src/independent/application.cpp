@@ -54,6 +54,8 @@ namespace Engine {
 		//calling function that binds all the callbacks for the event types.
 		bindAllEventsTypes();
 
+		InputPoller::setNativeWindow(m_window->getNativeWindow());
+
 		m_timer->reset();
 	}
 
@@ -151,7 +153,8 @@ namespace Engine {
 	bool Application::onMouseScroll(MouseScrollEvent & event)
 	{
 		event.handleEvent(true);
-		Log::info("Mouse Scroll Event: ({0}, {1})", event.getXMouseScroll(), event.getYMouseScroll());
+		//Log::info("Mouse Scroll Event: ({0}, {1})", event.getXMouseScroll(), event.getYMouseScroll());
+		Log::info("Mouse Scroll Event: ({0}, {1})", static_cast<float>(event.getXMouseScroll()), static_cast<float>(event.getYMouseScroll()));
 		return event.isEventHandled();
 	}
 
@@ -182,29 +185,20 @@ namespace Engine {
 			timeStep = m_timer->getElapsedTime();
 			m_timer->reset();
 			
-			//accumulatedTime += timeStep;
-
 			/*
-			//***event testing***
-			//testing that the window closes after a second.
-			if (accumulatedTime > 1.0f)
+			if (InputPoller::isKeyPressed(NG_KEY_W))
 			{
-				WindowCloseEvent close;
-				auto& callback = m_eventHandler.getOnWindowCloseCallback();
-				callback(close);
+				Log::error("W Pressed");
+			}
+
+			if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_1))
+			{
+				Log::error("Left Mouse Button Pressed");
 			}
 			*/
 
-			//***logging system tests***
-			//Log::trace("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
-			//Log::file("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
-			//Log::trace("FPS {0}", 1.0f / timeStep);
-
-			//***random number generator system tests***
-			//Log::trace("{0}", RandomNumberGenerator::uniformIntBetween(-10, 10));
-			//Log::trace("{0}", RandomNumberGenerator::uniformFloatBetween(-10, 10));
-			//Log::trace("{0}", RandomNumberGenerator::normalIntBetween(10.0f, 2.5f));
-			//Log::trace("{0}", RandomNumberGenerator::normalFloatBetween(5.0f, 1.25f));
+			//Log::trace("Current Mouse Position: ({0}, {1})", InputPoller::getMouseXPos(), InputPoller::getMouseYPos());
+			
 
 			//
 			m_window->onUpdate(timeStep);
@@ -217,3 +211,31 @@ namespace Engine {
 	}
 
 }
+
+
+//THIS WAS ALL IN THE APPLICATION::RUN()
+//USED FOR TESTING STUFF.
+/*
+			//accumulatedTime += timeStep;
+
+
+			//***event testing***
+			//testing that the window closes after a second.
+			if (accumulatedTime > 1.0f)
+			{
+				WindowCloseEvent close;
+				auto& callback = m_eventHandler.getOnWindowCloseCallback();
+				callback(close);
+			}
+			
+			//***logging system tests***
+			//Log::trace("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
+			//Log::file("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
+			//Log::trace("FPS {0}", 1.0f / timeStep);
+
+			//***random number generator system tests***
+			//Log::trace("{0}", RandomNumberGenerator::uniformIntBetween(-10, 10));
+			//Log::trace("{0}", RandomNumberGenerator::uniformFloatBetween(-10, 10));
+			//Log::trace("{0}", RandomNumberGenerator::normalIntBetween(10.0f, 2.5f));
+			//Log::trace("{0}", RandomNumberGenerator::normalFloatBetween(5.0f, 1.25f));
+*/
