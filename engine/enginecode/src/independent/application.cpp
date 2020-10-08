@@ -1,4 +1,4 @@
-/* \file application.cpp */
+/** \file application.cpp */
 
 #include "engine_pch.h"
 
@@ -23,7 +23,8 @@ namespace Engine {
 			s_instance = this;
 		}
 
-		//start the system.
+		//start the systems.
+
 		//start the log system.
 		m_logSystem.reset(new Log);
 		m_logSystem->start();
@@ -122,6 +123,10 @@ namespace Engine {
 	{
 		event.handleEvent(true);
 		Log::info("Key Pressed Event: key: {0}, repeat: {1}", event.getKeycode(), event.getRepeatCount());
+		if (event.getKeycode() == NG_KEY_SPACE)
+		{
+			Log::error("SPACEBAR PRESSED");
+		}
 		return event.isEventHandled();
 	}
 
@@ -129,6 +134,10 @@ namespace Engine {
 	{
 		event.handleEvent(true);
 		Log::info("Key Released Event: key: {0}", event.getKeycode());
+		if (event.getKeycode() == NG_KEY_UP)
+		{
+			Log::error("UP RELEASED");
+		}
 		return event.isEventHandled();
 	}
 
@@ -182,11 +191,8 @@ namespace Engine {
 		float timeStep = 0.0f;
 		//float accumulatedTime = 0.0f;
 
-
 		glEnable(GL_DEPTH);
 		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
-
-
 
 		while (m_running)
 		{
@@ -194,36 +200,26 @@ namespace Engine {
 			timeStep = m_timer->getElapsedTime();
 			m_timer->reset();
 			
-
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-
-			/*
+			//testing key and mouse button press.
 			if (InputPoller::isKeyPressed(NG_KEY_W))
 			{
 				Log::error("W Pressed");
 			}
-
 			if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_1))
 			{
 				Log::error("Left Mouse Button Pressed");
 			}
-			*/
-
 			//Log::trace("Current Mouse Position: ({0}, {1})", InputPoller::getMouseXPos(), InputPoller::getMouseYPos());
 			
-
-
-
 
 			//
 			m_window->onUpdate(timeStep);
 
 			//things to do in the frame...
 
-			
-			
+
 		};
 	}
 

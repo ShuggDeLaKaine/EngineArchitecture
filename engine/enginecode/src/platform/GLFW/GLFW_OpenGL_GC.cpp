@@ -1,4 +1,4 @@
-/* \file GLFW_OpenGL_GC.cpp */
+/** \file GLFW_OpenGL_GC.cpp */
 
 #include "engine_pch.h"
 #include <glad/glad.h>

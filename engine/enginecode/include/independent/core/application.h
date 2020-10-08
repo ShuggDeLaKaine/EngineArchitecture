@@ -1,4 +1,4 @@
-/* \file application.h */
+/** \file application.h */
 #pragma once
 
 #include "systems/log.h"
