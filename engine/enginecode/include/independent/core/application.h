@@ -24,7 +24,13 @@ namespace Engine {
 		std::shared_ptr<Log> m_logSystem;				//!< the log system.
 		std::shared_ptr<RandomNumberGenerator> m_ranNumSytem;	//!< the random number generator system.
 		std::shared_ptr<System> m_windowsSystem;		//!< the windows system.
-
+													
+		/*
+		* ***NOTE*** - IF MORE THAN ONE WINDOW. Should have a list or vector containing all windows.
+		* THEN - the below m_window would become m_CURRENTwindow
+		* THEN - lost or gain focus events would be set to whatever current window is.
+		* MORE BELOW on the getWindow() function.
+		*/
 		std::shared_ptr<Window> m_window;				//!< the windows.
 		std::shared_ptr<ITimer> m_timer;				//!< the timer.
 
@@ -52,8 +58,15 @@ namespace Engine {
 		bool m_running = true;							//!< Is the application running?
 	public:
 		virtual ~Application(); //!< Deconstructor
-		inline static Application& getInstance() { return *s_instance; } //!< Instance getter from singleton pattern
-		void run();		//!< Main loop
+		inline static Application& getInstance() { return *s_instance; }	//!< Instance getter from singleton pattern
+		/*
+		* ***NOTE*** TODO : if more than one window at a time possible. Must change below function to getCURRENTWindow()
+		* THAT then returns to new var m_CURRENTwindow.
+		*/
+		inline std::shared_ptr<Window> getWindow() { return m_window; }		//!< gets and returns our window from instance.
+
+		void run();				//!< Main loop
+
 	};
 
 	// To be defined in users code

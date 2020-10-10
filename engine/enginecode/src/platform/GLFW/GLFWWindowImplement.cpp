@@ -8,7 +8,7 @@
 namespace Engine
 {
 	//if compiled whilst in Windows, then
-#ifdef NG_PLATFORM_WINDOWS
+#ifndef NG_PLATFORM_WINDOWS
 	Window* Window::createWindow(const WindowProperties& properties)
 	{
 		//everytime we create a window, create a new GLFW Window.

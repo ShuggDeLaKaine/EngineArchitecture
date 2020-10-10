@@ -1,0 +1,22 @@
+/** \file win32System.h */
+#pragma once
+
+#include "systems/system.h"
+
+namespace Engine
+{
+	/* \class 
+	*
+	*/
+	class Win32System : public System
+	{
+	public:
+		virtual void start(SystemSignal init = SystemSignal::None, ...) override; //!< Start the system
+		virtual void stop(SystemSignal close = SystemSignal::None, ...) override; //!< Stop the system
+	private:
+
+	};
+
+
+
+}

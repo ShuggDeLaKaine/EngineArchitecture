@@ -7,7 +7,9 @@
 #include "core/application.h"
 
 #ifdef  NG_PLATFORM_WINDOWS
+	#include "platform/windows/win32System.h"
 	#include "platform/windows/winTimer.h"
+#else
 	#include "platform/GLFW/GLFWSystem.h"
 #endif //  NG_PLATFORM_WINDOWS
 
@@ -31,8 +33,9 @@ namespace Engine {
 
 		//start the windows system.
 #ifdef NG_PLATFORM_WINDOWS
+		m_windowsSystem.reset(new Win32System);
+#else
 		m_windowsSystem.reset(new GLFWSystem);
-//#else
 #endif
 		m_windowsSystem->start();
 
@@ -191,8 +194,8 @@ namespace Engine {
 		float timeStep = 0.0f;
 		//float accumulatedTime = 0.0f;
 
-		glEnable(GL_DEPTH);
-		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+		//glEnable(GL_DEPTH);
+		//glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 
 		while (m_running)
 		{
@@ -200,7 +203,7 @@ namespace Engine {
 			timeStep = m_timer->getElapsedTime();
 			m_timer->reset();
 			
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			//testing key and mouse button press.
 			if (InputPoller::isKeyPressed(NG_KEY_W))
