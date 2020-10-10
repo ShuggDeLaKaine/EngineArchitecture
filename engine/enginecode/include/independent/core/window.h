@@ -8,7 +8,7 @@ namespace Engine
 
 	struct WindowProperties
 	{
-		char * windowTitle;
+		const char * windowTitle;
 		uint32_t width;
 		uint32_t height;
 		bool isFullScreen;

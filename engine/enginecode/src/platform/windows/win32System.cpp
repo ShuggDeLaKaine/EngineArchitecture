@@ -33,7 +33,8 @@ namespace Engine
 		//using lambda function to do this inline here; normally usings global functions but no no no globals.
 		wndClass.lpfnWndProc = [](HWND hWin, UINT msg, WPARAM wParam, LPARAM lParam) -> LRESULT CALLBACK
 		{
-			//***NOTE*** - if more than one window, will need to alter this to take that into account; notes in application.h
+			//***NOTE*** - if MULTIPLE windows will need to alter this to take that into account; notes in application.h
+			//get the instance ptr.
 			auto& winPtr = Application::getInstance().getWindow();
 			if (winPtr)
 			{
