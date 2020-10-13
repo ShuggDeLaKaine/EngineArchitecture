@@ -8,7 +8,6 @@ namespace Engine
 	//static, so initialising outside of the class.
 	GLFWwindow* GLFWInputPoller::s_window = nullptr;
 
-	//
 	bool GLFWInputPoller::isKeyPressed(int32_t keycode)
 	{
 		if (s_window)

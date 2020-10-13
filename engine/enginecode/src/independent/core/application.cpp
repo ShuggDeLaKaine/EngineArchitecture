@@ -210,10 +210,15 @@ namespace Engine {
 			{
 				Log::error("W Pressed");
 			}
-			if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_1))
+			if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_LEFT))
 			{
-				Log::error("Left Mouse Button Pressed");
+				Log::error("LEFT Mouse Button Pressed");
 			}
+			if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_RIGHT))
+			{
+				Log::error("RIGHT Mouse Button Pressed");
+			}
+
 			//Log::trace("Current Mouse Position: ({0}, {1})", InputPoller::getMouseXPos(), InputPoller::getMouseYPos());
 			
 
