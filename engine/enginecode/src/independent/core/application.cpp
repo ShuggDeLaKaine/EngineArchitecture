@@ -7,9 +7,10 @@
 #include "core/application.h"
 
 #ifdef  NG_PLATFORM_WINDOWS
-	#include "platform/windows/win32System.h"
+	//#include "platform/windows/win32System.h"
 	#include "platform/windows/winTimer.h"
-#else
+//#else
+
 	#include "platform/GLFW/GLFWSystem.h"
 #endif //  NG_PLATFORM_WINDOWS
 
@@ -33,8 +34,10 @@ namespace Engine {
 
 		//start the windows system.
 #ifdef NG_PLATFORM_WINDOWS
+		/*
 		m_windowsSystem.reset(new Win32System);
 #else
+*/
 		m_windowsSystem.reset(new GLFWSystem);
 #endif
 		m_windowsSystem->start();
@@ -210,13 +213,17 @@ namespace Engine {
 			{
 				Log::error("W Pressed");
 			}
-			if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_LEFT))
+			if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_1))
 			{
 				Log::error("LEFT Mouse Button Pressed");
 			}
-			if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_RIGHT))
+			if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_2))
 			{
 				Log::error("RIGHT Mouse Button Pressed");
+			}
+			if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_3))
+			{
+				Log::error("MIDDLE Mouse Button Pressed");
 			}
 
 			//Log::trace("Current Mouse Position: ({0}, {1})", InputPoller::getMouseXPos(), InputPoller::getMouseYPos());

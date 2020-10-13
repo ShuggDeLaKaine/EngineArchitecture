@@ -147,9 +147,9 @@
 #define NG_MOD_CAPS_LOCK       0x0010
 #define NG_MOD_NUM_LOCK        0x0020
 
-#define NG_MOUSE_BUTTON_1         1
-#define NG_MOUSE_BUTTON_2         2
-#define NG_MOUSE_BUTTON_3         3
+#define NG_MOUSE_BUTTON_1         0
+#define NG_MOUSE_BUTTON_2         1
+#define NG_MOUSE_BUTTON_3         2
 #define NG_MOUSE_BUTTON_4         0
 #define NG_MOUSE_BUTTON_5         0
 #define NG_MOUSE_BUTTON_6         0

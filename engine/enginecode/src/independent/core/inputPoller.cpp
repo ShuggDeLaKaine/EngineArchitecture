@@ -4,14 +4,15 @@
 #include <GLFW/glfw3.h>
 
 #ifdef NG_PLATFORM_WINDOWS
-	#include "platform/windows/win32InputPoller.h"
-#else
+//	#include "platform/windows/win32InputPoller.h"
+//#else
 	#include "platform/GLFW/GLFWInputPoller.h"
 #endif
 
 namespace Engine
 {
 #ifdef NG_PLATFORM_WINDOWS
+	/*
 	bool InputPoller::isKeyPressed(int32_t keycode)
 	{
 		return Win32InputPoller::isKeyPressed(keycode);
@@ -32,6 +33,7 @@ namespace Engine
 		
 	}
 #else
+*/
 	bool InputPoller::isKeyPressed(int32_t keycode)
 	{
 		return GLFWInputPoller::isKeyPressed(keycode);
