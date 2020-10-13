@@ -62,6 +62,11 @@ namespace Engine
 			Log::error("Could NOT set the wGL context to current");
 		}
 
+		if (!wglGetCurrentContext())
+		{
+			Log::error("No valid OpenGL context");
+		}
+
 		//load glad and check it has been successfully set up.
 		if (!gladLoadGL())
 		{

@@ -79,7 +79,7 @@ namespace Engine
 		}
 
 		//swap the buffers.
-		//m_graphicsContext->swapBuffers();
+		m_graphicsContext->swapBuffers();
 	}
 
 	LRESULT Win32Window::onWin32Message(HWND hWin, UINT msg, WPARAM wParam, LPARAM lParam)
