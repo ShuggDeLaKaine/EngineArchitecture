@@ -194,8 +194,8 @@ namespace Engine {
 		float timeStep = 0.0f;
 		//float accumulatedTime = 0.0f;
 
-		//glEnable(GL_DEPTH);
-		//glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+		glEnable(GL_DEPTH);
+		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 
 		while (m_running)
 		{
@@ -203,7 +203,7 @@ namespace Engine {
 			timeStep = m_timer->getElapsedTime();
 			m_timer->reset();
 			
-			//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			//testing key and mouse button press.
 			if (InputPoller::isKeyPressed(NG_KEY_W))

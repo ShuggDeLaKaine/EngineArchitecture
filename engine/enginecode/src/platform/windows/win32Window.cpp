@@ -2,6 +2,7 @@
 
 #include "engine_pch.h"
 #include "platform/windows/win32Window.h"
+#include "platform/windows/win32_OpenGL_GraphicsContext.h"
 #include "systems/log.h"
 
 namespace Engine 
@@ -50,6 +51,9 @@ namespace Engine
 		{
 			Log::error("ERROR : Win32 window NOT created.");
 		}
+
+		//create the graphics context.
+		m_graphicsContext.reset(new Win32_OpenGL_GraphicsContxt(m_native));
 
 		ShowWindow(m_native, SW_SHOW);
 	}
