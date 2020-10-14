@@ -7,10 +7,11 @@
 #include "core/application.h"
 
 #ifdef  NG_PLATFORM_WINDOWS
-	//#include "platform/windows/win32System.h"
+/*
+	#include "platform/windows/win32System.h"
 	#include "platform/windows/winTimer.h"
-//#else
-
+#else
+*/
 	#include "platform/GLFW/GLFWSystem.h"
 #endif //  NG_PLATFORM_WINDOWS
 
@@ -46,8 +47,10 @@ namespace Engine {
 		//if on a windows platform then make a windows timer, otherwise make a chrono timer.
 		//NOTE - not a system! Don't need to stop it.
 #ifdef  NG_PLATFORM_WINDOWS
+		/*
 		m_timer.reset(new WinTimer);
 #else
+*/
 		m_timer.reset(new ChronoTimer);
 #endif //  NG_PLATFORM_WINDOWS
 		m_timer->start();
@@ -92,7 +95,7 @@ namespace Engine {
 	bool Application::onWindowClose(WindowCloseEvent & event)
 	{
 		event.handleEvent(true);
-		Log::info("Window Closed Event: {0}");
+		//Log::info("Window Closed Event: {0}");
 		m_running = false;
 		return event.isEventHandled();
 	}
@@ -100,35 +103,35 @@ namespace Engine {
 	bool Application::onWindowResize(WindowResizeEvent & event)
 	{
 		event.handleEvent(true);
-		Log::info("Window Resized Event: ({0}, {1})", event.getWindowSize().x, event.getWindowSize().y);
+		//Log::info("Window Resized Event: ({0}, {1})", event.getWindowSize().x, event.getWindowSize().y);
 		return event.isEventHandled();
 	}
 
 	bool Application::onWindowMove(WindowMoveEvent & event)
 	{
 		event.handleEvent(true);
-		Log::info("Window Move Event: ({0}, {1})", event.getWindowPosition().x, event.getWindowPosition().y);
+		//Log::info("Window Move Event: ({0}, {1})", event.getWindowPosition().x, event.getWindowPosition().y);
 		return event.isEventHandled();
 	}
 
 	bool Application::onWindowFocus(WindowFocusEvent & event)
 	{
 		event.handleEvent(true);
-		Log::info("Window Focus Event: {0}");
+		//Log::info("Window Focus Event: {0}");
 		return event.isEventHandled();
 	}
 
 	bool Application::onWindowLostFocus(WindowLostFocusEvent & event)
 	{
 		event.handleEvent(true);
-		Log::info("Window Lost Focus Event: {0}");
+		//Log::info("Window Lost Focus Event: {0}");
 		return event.isEventHandled();
 	}
 
 	bool Application::onKeyPressed(KeyPressedEvent & event)
 	{
 		event.handleEvent(true);
-		Log::info("Key Pressed Event: key: {0}, repeat: {1}", event.getKeycode(), event.getRepeatCount());
+		//Log::info("Key Pressed Event: key: {0}, repeat: {1}", event.getKeycode(), event.getRepeatCount());
 		if (event.getKeycode() == NG_KEY_SPACE)
 		{
 			Log::error("SPACEBAR PRESSED");
@@ -139,7 +142,7 @@ namespace Engine {
 	bool Application::onKeyReleased(KeyReleasedEvent & event)
 	{
 		event.handleEvent(true);
-		Log::info("Key Released Event: key: {0}", event.getKeycode());
+		//Log::info("Key Released Event: key: {0}", event.getKeycode());
 		if (event.getKeycode() == NG_KEY_UP)
 		{
 			Log::error("UP RELEASED");
@@ -150,29 +153,28 @@ namespace Engine {
 	bool Application::onMouseMove(MouseMovementEvent & event)
 	{
 		event.handleEvent(true);
-		Log::info("Mouse Move Event: ({0}, {1})", event.getMousePosition().x, event.getMousePosition().y);
+		//Log::info("Mouse Move Event: ({0}, {1})", event.getMousePosition().x, event.getMousePosition().y);
 		return event.isEventHandled();
 	}
 
 	bool Application::onMouseButtonPress(MouseButtonPressEvent & event)
 	{
 		event.handleEvent(true);
-		Log::info("Mouse Button Pressed Event: {0}", event.getButtonPressed());
+		//Log::info("Mouse Button Pressed Event: {0}", event.getButtonPressed());
 		return event.isEventHandled();
 	}
 
 	bool Application::onMouseButtonRelease(MouseButtonReleaseEvent & event)
 	{
 		event.handleEvent(true);
-		Log::info("Mouse Button Released Event: {0}", event.getButtonReleased());
+		//Log::info("Mouse Button Released Event: {0}", event.getButtonReleased());
 		return event.isEventHandled();
 	}
 
 	bool Application::onMouseScroll(MouseScrollEvent & event)
 	{
 		event.handleEvent(true);
-		//Log::info("Mouse Scroll Event: ({0}, {1})", event.getXMouseScroll(), event.getYMouseScroll());
-		Log::info("Mouse Scroll Event: ({0}, {1})", static_cast<float>(event.getXMouseScroll()), static_cast<float>(event.getYMouseScroll()));
+		//Log::info("Mouse Scroll Event: ({0}, {1})", static_cast<float>(event.getXMouseScroll()), static_cast<float>(event.getYMouseScroll()));
 		return event.isEventHandled();
 	}
 
@@ -197,7 +199,7 @@ namespace Engine {
 		float timeStep = 0.0f;
 		//float accumulatedTime = 0.0f;
 
-		glEnable(GL_DEPTH);
+		glEnable(GL_DEPTH_TEST);
 		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 
 		while (m_running)
@@ -205,9 +207,9 @@ namespace Engine {
 			//update the time step with the timer function getElapsedTime()
 			timeStep = m_timer->getElapsedTime();
 			m_timer->reset();
-			
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+			/*
 			//testing key and mouse button press.
 			if (InputPoller::isKeyPressed(NG_KEY_W))
 			{
@@ -225,6 +227,7 @@ namespace Engine {
 			{
 				Log::error("MIDDLE Mouse Button Pressed");
 			}
+			*/
 
 			//Log::trace("Current Mouse Position: ({0}, {1})", InputPoller::getMouseXPos(), InputPoller::getMouseYPos());
 			
@@ -233,6 +236,8 @@ namespace Engine {
 			m_window->onUpdate(timeStep);
 
 			//things to do in the frame...
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
 
 		};
