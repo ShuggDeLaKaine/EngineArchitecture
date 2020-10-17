@@ -572,7 +572,7 @@ namespace Engine {
 		glDetachShader(TPprogram, TPFragShader);
 #pragma endregion 
 
-/*
+
 #pragma region TEXTURES
 
 		//IDs of the textures in OpenGL, these give you handles on them.
@@ -593,7 +593,7 @@ namespace Engine {
 
 		int width, height, channels;
 
-		unsigned char *data = stbi_load("assets/textures/letterCube.png", &width, &height, &channels, 0);
+		unsigned char *data = stbi_load("../assets/textures/letterCube.png", &width, &height, &channels, 0);
 		if (data)
 		{
 			if (channels == 3) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -603,9 +603,10 @@ namespace Engine {
 		}
 		else
 		{
-			
+			Log::error("Cannot load texture data!");
 			return;
 		}
+
 		//data passed on so can take off the CPU.
 		stbi_image_free(data);
 
@@ -618,7 +619,7 @@ namespace Engine {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		data = stbi_load("assets/textures/numberCube.png", &width, &height, &channels, 0);
+		data = stbi_load("../assets/textures/numberCube.png", &width, &height, &channels, 0);
 		if (data)
 		{
 			if (channels == 3) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -634,9 +635,9 @@ namespace Engine {
 		stbi_image_free(data);
 
 #pragma endregion
-*/
 
-		//NEED: a view, a projection (for camera) and a model matrix.
+
+		//need a view, a projection (for camera) and a model matrix.
 		//two mat4s for the camera.
 		glm::mat4 view = glm::lookAt(
 			glm::vec3(0.0f, 0.0f, 0.0f),	//eye: aka the position; 0.0f, 0.0f, 0.0f, is origin.
@@ -645,8 +646,10 @@ namespace Engine {
 		);			//matrix for position and orientation.
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);	//matrix for how the camera views the world orthographic or perspective. first param field of view, so the camera ratio.
 
-		//for the model.
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f));
+		//for the transofrm of the models, array as can have a pyramid and a cube.
+		glm::mat4 models[2];
+		models[0] = glm::translate(glm::mat4(1.0f), glm::vec3(-1.5f, 0.0f, -5.0f));
+		models[1] = glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, 0.0f, -5.0f));
 
 
 		//create a float for the time step and initialise at 0.
@@ -670,14 +673,13 @@ namespace Engine {
 
 
 			//get the model to rotate (easier to see whether it is a 3d shape)
-			model = glm::rotate(model, timeStep, glm::vec3(0.0f, 1.0f, 0.5f));
-
+			for (auto& model: models) model = glm::rotate(model, timeStep, glm::vec3(0.0f, 1.0f, 0.5f));
 
 			//things to do in the frame...
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			//draw the pyramid, aka FCProgram
-			//bind the shader.
+			//draw a PYRAMID.
+			//bind the shader FCproram (flat colours on each side)
 			glUseProgram(FCprogram);
 			//bind the correct buffers, vertex array and index buffer.
 			glBindVertexArray(pyramidVAO);
@@ -689,17 +691,43 @@ namespace Engine {
 			//upload all relevant uniforms for projectionm, view and model.
 			location = glGetUniformLocation(FCprogram, "u_projection");
 			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(projection));
-
 			location = glGetUniformLocation(FCprogram, "u_view");
 			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(view));
-
 			location = glGetUniformLocation(FCprogram, "u_model");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(model));
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[0]));
 
-			//draw it!
+			//draw the PYRAMID!
 			glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, nullptr);
 
+			/*
+			//draw a CUBE.
+			//bind the shader (textured phong shader)
+			glUseProgram(TPprogram);
+			//binc the buffers, vertex array and index buffer.
+			glBindVertexArray(cubeVAO);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO);
 
+			//upload all relevant uniforms for projectionm, view and model.
+			location = glGetUniformLocation(TPprogram, "u_projection");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(projection));
+			location = glGetUniformLocation(TPprogram, "u_view");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(view));
+			location = glGetUniformLocation(TPprogram, "u_model");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[1]));
+
+			//now the uniforms for lightColour, lightPos and viewPos; all needed for the Textured Phong shader (otherwise no light, just a black unlit cube). 
+			location = glGetUniformLocation(TPprogram, "u_lightColour");
+			glUniform3f(location, 1.0f, 1.0f, 1.0f);
+			location = glGetUniformLocation(TPprogram, "u_lightPos");
+			glUniform3f(location, 1.0f, 4.0f, 6.0f);		//back, up and off to the right.
+			location = glGetUniformLocation(TPprogram, "u_viewPos");
+			glUniform3f(location, 0.0f, 0.0f, 0.0f);		//just at origin here (0,0,0).
+			location = glGetUniformLocation(TPprogram, "u_texData");
+			glUniform1i(location, 0);
+
+			//draw the CUBE!
+			glDrawElements(GL_TRIANGLES, 32, GL_UNSIGNED_INT, nullptr);
+			*/
 
 			m_window->onUpdate(timeStep);
 		}
@@ -717,8 +745,8 @@ namespace Engine {
 		glDeleteShader(FCprogram);
 		glDeleteShader(TPprogram);
 
-		//glDeleteTextures(1, &letterTexture);
-		//glDeleteTextures(1, &numberTexture);
+		glDeleteTextures(1, &letterTexture);
+		glDeleteTextures(1, &numberTexture);
 		
 	}
 
