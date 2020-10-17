@@ -569,6 +569,7 @@ namespace Engine {
 		glDetachShader(TPprogram, TPFragShader);
 #pragma endregion 
 
+/*
 #pragma region TEXTURES
 
 		//IDs of the textures in OpenGL, these give you handles on them.
@@ -589,10 +590,6 @@ namespace Engine {
 
 		int width, height, channels;
 
-		/* Need to add
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-*/
 		unsigned char *data = stbi_load("assets/textures/letterCube.png", &width, &height, &channels, 0);
 		if (data)
 		{
@@ -603,6 +600,7 @@ namespace Engine {
 		}
 		else
 		{
+			
 			return;
 		}
 		//data passed on so can take off the CPU.
@@ -627,11 +625,13 @@ namespace Engine {
 		}
 		else
 		{
+			Log::error("Texture data NOT loaded: {0}");
 			return;
 		}
 		stbi_image_free(data);
 
 #pragma endregion
+*/
 
 
 		//create a float for the time step and initialise at 0.
@@ -676,8 +676,8 @@ namespace Engine {
 		glDeleteShader(FCprogram);
 		glDeleteShader(TPprogram);
 
-		glDeleteTextures(1, &letterTexture);
-		glDeleteTextures(1, &numberTexture);
+		//glDeleteTextures(1, &letterTexture);
+		//glDeleteTextures(1, &numberTexture);
 		
 	}
 
