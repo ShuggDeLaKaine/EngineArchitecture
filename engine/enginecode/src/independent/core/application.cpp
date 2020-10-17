@@ -18,6 +18,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 namespace Engine {
 	// Set static vars
 	Application* Application::s_instance = nullptr;
@@ -633,10 +636,21 @@ namespace Engine {
 #pragma endregion
 */
 
+		//NEED: a view, a projection (for camera) and a model matrix.
+		//two mat4s for the camera.
+		glm::mat4 view = glm::lookAt(
+			glm::vec3(0.0f, 0.0f, 0.0f),	//eye: aka the position; 0.0f, 0.0f, 0.0f, is origin.
+			glm::vec3(0.0f, 0.0f, -1.0f),	//centre: aka which way we're looking, convention is to look down the Z axis
+			glm::vec3(0.0f, 1.0f, 0.0f)		//up: make up, up (if that makes sense...)
+		);			//matrix for position and orientation.
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);	//matrix for how the camera views the world orthographic or perspective. first param field of view, so the camera ratio.
+
+		//for the model.
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f));
+
 
 		//create a float for the time step and initialise at 0.
 		float timeStep = 0.0f;
-		//float accumulatedTime = 0.0f;
 
 		glEnable(GL_DEPTH_TEST);
 		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
@@ -655,9 +669,36 @@ namespace Engine {
 			//Log::trace("Current Mouse Position: ({0}, {1})", InputPoller::getMouseXPos(), InputPoller::getMouseYPos());
 
 
+			//get the model to rotate (easier to see whether it is a 3d shape)
+			model = glm::rotate(model, timeStep, glm::vec3(0.0f, 1.0f, 0.5f));
+
 
 			//things to do in the frame...
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			//draw the pyramid, aka FCProgram
+			//bind the shader.
+			glUseProgram(FCprogram);
+			//bind the correct buffers, vertex array and index buffer.
+			glBindVertexArray(pyramidVAO);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO);
+
+			//need a location to upload it, represents a place in the shader we are going to use.
+			GLuint location;
+			
+			//upload all relevant uniforms for projectionm, view and model.
+			location = glGetUniformLocation(FCprogram, "u_projection");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(projection));
+
+			location = glGetUniformLocation(FCprogram, "u_view");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(view));
+
+			location = glGetUniformLocation(FCprogram, "u_model");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(model));
+
+			//draw it!
+			glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, nullptr);
+
 
 
 			m_window->onUpdate(timeStep);
@@ -687,6 +728,8 @@ namespace Engine {
 //THIS WAS ALL IN THE APPLICATION::RUN()
 //USED FOR TESTING STUFF.
 /*
+
+			//float accumulatedTime = 0.0f;
 			//accumulatedTime += timeStep;
 
 
