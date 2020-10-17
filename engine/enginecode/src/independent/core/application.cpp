@@ -572,7 +572,6 @@ namespace Engine {
 		glDetachShader(TPprogram, TPFragShader);
 #pragma endregion 
 
-
 #pragma region TEXTURES
 
 		//IDs of the textures in OpenGL, these give you handles on them.
@@ -647,9 +646,10 @@ namespace Engine {
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);	//matrix for how the camera views the world orthographic or perspective. first param field of view, so the camera ratio.
 
 		//for the transofrm of the models, array as can have a pyramid and a cube.
-		glm::mat4 models[2];
-		models[0] = glm::translate(glm::mat4(1.0f), glm::vec3(-1.5f, 0.0f, -5.0f));
-		models[1] = glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, 0.0f, -5.0f));
+		glm::mat4 models[3];
+		models[0] = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.5f, -5.0f));
+		models[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-1.5f, -0.5f, -5.0f));
+		models[2] = glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, -0.5f, -5.0f));
 
 
 		//create a float for the time step and initialise at 0.
@@ -679,7 +679,7 @@ namespace Engine {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			//draw a PYRAMID.
-			//bind the shader FCproram (flat colours on each side)
+			//bind the shader FCproram (Flat Coloured shader)
 			glUseProgram(FCprogram);
 			//bind the correct buffers, vertex array and index buffer.
 			glBindVertexArray(pyramidVAO);
@@ -699,7 +699,7 @@ namespace Engine {
 			//draw the PYRAMID!
 			glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, nullptr);
 
-			/*
+			
 			//draw a CUBE.
 			//bind the shader (textured phong shader)
 			glUseProgram(TPprogram);
@@ -725,9 +725,17 @@ namespace Engine {
 			location = glGetUniformLocation(TPprogram, "u_texData");
 			glUniform1i(location, 0);
 
+			//bind the texture that is wanted.
+			glBindTexture(GL_TEXTURE_2D, letterTexture);
+
 			//draw the CUBE!
-			glDrawElements(GL_TRIANGLES, 32, GL_UNSIGNED_INT, nullptr);
-			*/
+			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+			
+			//draw ANOTHER CUBE!
+			location = glGetUniformLocation(TPprogram, "u_model");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[2]));
+			glBindTexture(GL_TEXTURE_2D, numberTexture);
+			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
 
 			m_window->onUpdate(timeStep);
 		}
