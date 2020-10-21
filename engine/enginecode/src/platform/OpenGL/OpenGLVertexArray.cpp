@@ -71,7 +71,7 @@ namespace Engine
 		m_indexBuffer = indexBuffer;
 	}
 
-	inline uint32_t OpenGLVertexArray::getDrawCount()
+	uint32_t OpenGLVertexArray::getDrawCount()
 	{
 		if (m_indexBuffer)
 		{

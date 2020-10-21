@@ -18,8 +18,8 @@ namespace Engine
 		OpenGLVertexArray();				//!< constructor.
 		~OpenGLVertexArray();				//!< deconstructor.
 		void addVertexBuffer(const std::shared_ptr<OpenGLVertexBuffer>& vertexBuffer);		//!< add a vertex buffer.
-		inline void setIndexBuffer(const std::shared_ptr<OpenGLIndexBuffer>& indexBuffer);			//!< set the index buffer.
-		inline uint32_t getDrawCount();		//!< get the draw count of index buffer.
+		void setIndexBuffer(const std::shared_ptr<OpenGLIndexBuffer>& indexBuffer);			//!< set the index buffer.
+		uint32_t getDrawCount();			//!< get the draw count of index buffer.
 		inline uint32_t getRenderID() const { return m_OpenGL_ID; }	//!< gets and returns the renderer ID.
 	private:
 		std::vector<std::shared_ptr<OpenGLVertexArray>> m_vertexBuffer;		//!< 

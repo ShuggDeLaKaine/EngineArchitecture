@@ -288,67 +288,41 @@ namespace Engine {
 #pragma endregion
 
 #pragma region GL_BUFFERS
-		
+		//SETTING UP THE CUBE.
 		std::shared_ptr<OpenGLVertexArray> cubeVAO;
 		std::shared_ptr<OpenGLVertexBuffer> cubeVBO;
 		std::shared_ptr<OpenGLIndexBuffer> cubeIBO;
-
-		//create/reset the VAO, VBO & IBO
-		cubeVAO.reset(new OpenGLVertexArray());
-
 		//creating a buffer layout with its initialiser list (check out bufferLayout.h)
-		BufferLayout cubeBL = { 
-			{ ShaderDataType::Float3, false }, 
-			{ ShaderDataType::Float3, false }, 
-			{ ShaderDataType::Float2, false } 
+		BufferLayout cubeBL = {
+			{ ShaderDataType::Float3, false },
+			{ ShaderDataType::Float3, false },
+			{ ShaderDataType::Float2, false }
 		};
+		//create/reset the VAO, VBO & IBO.
+		cubeVAO.reset(new OpenGLVertexArray());
 		cubeVBO.reset(new OpenGLVertexBuffer(cubeVertices, sizeof(cubeVertices), cubeBL));
-
-		cubeIBO.reset(new OpenGLIndexBuffer(cubeIndices, 18));
-
+		cubeIBO.reset(new OpenGLIndexBuffer(cubeIndices, 36));
 		//set the vertex and index buffers.
 		cubeVAO->addVertexBuffer(cubeVBO);
 		cubeVAO->setIndexBuffer(cubeIBO);
 
-		/*
-		uint32_t cubeVAO, cubeVBO, cubeIBO;
 
-		glCreateVertexArrays(1, &cubeVAO);
-		glBindVertexArray(cubeVAO);
-
-		glCreateBuffers(1, &cubeVBO);
-		glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
-
-		glCreateBuffers(1, &cubeIBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cubeIndices), cubeIndices, GL_STATIC_DRAW);
-
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0); // position
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))); // Normal
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))); // UV co-ords
-		*/
-
-		uint32_t pyramidVAO, pyramidVBO, pyramidIBO;
-
-		glCreateVertexArrays(1, &pyramidVAO);
-		glBindVertexArray(pyramidVAO);
-
-		glCreateBuffers(1, &pyramidVBO);
-		glBindBuffer(GL_ARRAY_BUFFER, pyramidVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(pyramidVertices), pyramidVertices, GL_STATIC_DRAW);
-
-		glCreateBuffers(1, &pyramidIBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(pyramidIndices), pyramidIndices, GL_STATIC_DRAW);
-
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0); // Position
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float))); // Colour
+		//SETTING UP THE PYRAMID.
+		std::shared_ptr<OpenGLVertexArray> pyramidVAO;
+		std::shared_ptr<OpenGLVertexBuffer> pyramidVBO;
+		std::shared_ptr<OpenGLIndexBuffer> pyramidIBO;
+		//creating a buffer layout with its initialiser list for a pyramid.
+		BufferLayout pyramidBL = {
+			{ ShaderDataType::Float3, false },
+			{ ShaderDataType::Float3, false }
+		};
+		//create/reset the VAO, VBO & IBO.
+		pyramidVAO.reset(new OpenGLVertexArray());
+		pyramidVBO.reset(new OpenGLVertexBuffer(pyramidVertices, sizeof(pyramidVertices), pyramidBL));
+		pyramidIBO.reset(new OpenGLIndexBuffer(pyramidIndices, 18));
+		//set the vertex and index buffers. 
+		pyramidVAO->addVertexBuffer(pyramidVBO);
+		pyramidVAO->setIndexBuffer(pyramidIBO);
 #pragma endregion
 
 #pragma region SHADERS
@@ -707,8 +681,8 @@ namespace Engine {
 			//bind the shader FCproram (Flat Coloured shader)
 			glUseProgram(FCprogram);
 			//bind the correct buffers, vertex array and index buffer.
-			glBindVertexArray(pyramidVAO);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO);
+			glBindVertexArray(pyramidVAO->getRenderID());
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO->getRenderID());
 
 			//need a location to upload it, represents a place in the shader we are going to use.
 			GLuint location;
@@ -722,7 +696,7 @@ namespace Engine {
 			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[0]));
 
 			//draw the PYRAMID!
-			glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 
 			
 			//draw a CUBE.
@@ -765,22 +739,58 @@ namespace Engine {
 			m_window->onUpdate(timeStep);
 		}
 
-		
-		//clean up all the shader stuff.
-		glDeleteVertexArrays(1, &pyramidVAO);
-		glDeleteBuffers(1, &pyramidVBO);
-		glDeleteBuffers(1, &pyramidIBO);
-
+		//clean up all the shader & texture stuff.
 		glDeleteShader(FCprogram);
 		glDeleteShader(TPprogram);
 
 		glDeleteTextures(1, &letterTexture);
 		glDeleteTextures(1, &numberTexture);
-		
 	}
 
 }
 
+
+//BUFFER STUFF
+		/*
+		uint32_t cubeVAO, cubeVBO, cubeIBO;
+
+		glCreateVertexArrays(1, &cubeVAO);
+		glBindVertexArray(cubeVAO);
+
+		glCreateBuffers(1, &cubeVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
+
+		glCreateBuffers(1, &cubeIBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cubeIndices), cubeIndices, GL_STATIC_DRAW);
+
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0); // position
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))); // Normal
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))); // UV co-ords
+
+
+				uint32_t pyramidVAO, pyramidVBO, pyramidIBO;
+
+		glCreateVertexArrays(1, &pyramidVAO);
+		glBindVertexArray(pyramidVAO);
+
+		glCreateBuffers(1, &pyramidVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, pyramidVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(pyramidVertices), pyramidVertices, GL_STATIC_DRAW);
+
+		glCreateBuffers(1, &pyramidIBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(pyramidIndices), pyramidIndices, GL_STATIC_DRAW);
+
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0); // Position
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float))); // Colour
+		*/
 
 //THIS WAS ALL IN THE APPLICATION::RUN()
 //USED FOR TESTING STUFF.
