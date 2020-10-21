@@ -41,7 +41,7 @@ namespace Engine
 		{
 			calculateStrideAndOffset();
 		}							//!< constructor with params, returns the calculation of stride and offset.
-		inline uint32_t getStride() { return m_stride; }		//!< get the length of the stride.
+		inline uint32_t getStride() const { return m_stride; }		//!< get the length of the stride.
 		void addBufferElement(BufferElement element);			//!< add a buffer element.
 		inline std::vector<BufferElement>::iterator begin() { return m_elements.begin(); }				//!< 
 		inline std::vector<BufferElement>::iterator end() { return m_elements.end(); }					//!< 

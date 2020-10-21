@@ -20,6 +20,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "platform/OpenGL/OpenGLVertexArray.h"
 
 namespace Engine {
 	// Set static vars
@@ -287,6 +288,29 @@ namespace Engine {
 #pragma endregion
 
 #pragma region GL_BUFFERS
+		
+		std::shared_ptr<OpenGLVertexArray> cubeVAO;
+		std::shared_ptr<OpenGLVertexBuffer> cubeVBO;
+		std::shared_ptr<OpenGLIndexBuffer> cubeIBO;
+
+		//create/reset the VAO, VBO & IBO
+		cubeVAO.reset(new OpenGLVertexArray());
+
+		//creating a buffer layout with its initialiser list (check out bufferLayout.h)
+		BufferLayout cubeBL = { 
+			{ ShaderDataType::Float3, false }, 
+			{ ShaderDataType::Float3, false }, 
+			{ ShaderDataType::Float2, false } 
+		};
+		cubeVBO.reset(new OpenGLVertexBuffer(cubeVertices, sizeof(cubeVertices), cubeBL));
+
+		cubeIBO.reset(new OpenGLIndexBuffer(cubeIndices, 18));
+
+		//set the vertex and index buffers.
+		cubeVAO->addVertexBuffer(cubeVBO);
+		cubeVAO->setIndexBuffer(cubeIBO);
+
+		/*
 		uint32_t cubeVAO, cubeVBO, cubeIBO;
 
 		glCreateVertexArrays(1, &cubeVAO);
@@ -306,6 +330,7 @@ namespace Engine {
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))); // Normal
 		glEnableVertexAttribArray(2);
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))); // UV co-ords
+		*/
 
 		uint32_t pyramidVAO, pyramidVBO, pyramidIBO;
 
@@ -704,8 +729,8 @@ namespace Engine {
 			//bind the shader (textured phong shader)
 			glUseProgram(TPprogram);
 			//binc the buffers, vertex array and index buffer.
-			glBindVertexArray(cubeVAO);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO);
+			glBindVertexArray(cubeVAO->getRenderID());
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO->getRenderID());
 
 			//upload all relevant uniforms for projectionm, view and model.
 			location = glGetUniformLocation(TPprogram, "u_projection");
@@ -729,23 +754,19 @@ namespace Engine {
 			glBindTexture(GL_TEXTURE_2D, letterTexture);
 
 			//draw the CUBE!
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 			
 			//draw ANOTHER CUBE!
 			location = glGetUniformLocation(TPprogram, "u_model");
 			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[2]));
 			glBindTexture(GL_TEXTURE_2D, numberTexture);
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
-
+			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+			
 			m_window->onUpdate(timeStep);
 		}
 
 		
 		//clean up all the shader stuff.
-		glDeleteVertexArrays(1, &cubeVAO);
-		glDeleteBuffers(1, &cubeVBO);
-		glDeleteBuffers(1, &cubeIBO);
-
 		glDeleteVertexArrays(1, &pyramidVAO);
 		glDeleteBuffers(1, &pyramidVBO);
 		glDeleteBuffers(1, &pyramidIBO);
