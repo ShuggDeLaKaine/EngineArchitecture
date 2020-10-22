@@ -591,7 +591,7 @@ namespace Engine {
 
 		int width, height, channels;
 
-		unsigned char *data = stbi_load("../assets/textures/letterCube.png", &width, &height, &channels, 0);
+		unsigned char *data = stbi_load("../sandbox/assets/textures/letterCube.png", &width, &height, &channels, 0);
 		if (data)
 		{
 			if (channels == 3) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -617,7 +617,7 @@ namespace Engine {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		data = stbi_load("../assets/textures/numberCube.png", &width, &height, &channels, 0);
+		data = stbi_load("../sandbox/assets/textures/numberCube.png", &width, &height, &channels, 0);
 		if (data)
 		{
 			if (channels == 3) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
