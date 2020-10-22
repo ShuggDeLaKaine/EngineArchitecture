@@ -1,9 +1,10 @@
 /** \file OpenGLShader.cpp */
 
 #include "engine_pch.h"
-#include "platform/OpenGL/OpenGLShader.h"
 #include <fstream>
 #include <string>
+#include <array>
+#include "platform/OpenGL/OpenGLShader.h"
 #include "systems/log.h"
 
 namespace Engine
@@ -53,20 +54,22 @@ namespace Engine
 			return;
 		}
 
-		//got source for each, so compile and link them, converting them to c_strings
+		//got source for each, so compile and link them, converting them to c_strings.
 		compileAndLink(vertexSource.c_str(), fragmentSource.c_str());
 
 	}
 
 	OpenGLShader::OpenGLShader(const char * filePath)
 	{
-		//enum for different types of shaders.
-		//NOTE - not the best to only declare locally, will need to move elsewhere soon.
-		enum{None = -1, Vertex = 0, Fragment, Geometry, TessellationControl, TessellationEvalution, Compute };
+		//enum Region for different types of shaders.
+		//NOTE - not the best to only declare locally.
+		//TO DO - will need to move elsewhere soon.
+		enum Region { None = -1, Vertex = 0, Fragment, Geometry, TessellationControl, TessellationEvalution, Compute };
 
 		//declarations.
 		std::string line;
-		std::string source;
+		std::array<std::string, Region::Compute + 1> source;		//adding one to Compute (which 5 in the enum) will make an array of 6 elements.
+		uint32_t region = Region::None;		// index for which region we are in, initialised to None(-1).
 
 		//the single file path.
 		std::fstream handle(filePath, std::ios::in);
@@ -74,10 +77,18 @@ namespace Engine
 		if (handle.is_open())
 		{
 			//opens fine, so need to read it...
+			//which region are we in?
+			if (line.find("#region Vertex") != std::string::npos) region = Region::Vertex;
+			else if (line.find("#region Fragment") != std::string::npos) region = Region::Fragment;
+			else if (line.find("#region Geometry") != std::string::npos) region = Region::Geometry;
+			else if (line.find("#region TessellationControl") != std::string::npos) region = Region::TessellationControl;
+			else if (line.find("#region TessellationEvalution") != std::string::npos) region = Region::TessellationEvalution;
+			else if (line.find("#region Compute") != std::string::npos) region = Region::Compute;
+
 			//whilst open, read it in line by line, adding it to source.
 			while (getline(handle, line))
 			{
-				source += line;
+				source[region] += line;
 			}
 		}
 		else
@@ -86,6 +97,10 @@ namespace Engine
 			Log::error("NOT able to open SINGLE FILE source: {0}", source);
 			return;
 		}
+		//got source, so compile and link, converting them to c_strings.
+		//TODO: this below will only compile Vertex and Fragment shaders, need expansion to include other shaders.
+		//HOW: pass it an array maybe, integar of flags to say which is present, flag system could work.
+		compileAndLink(source[Region::Vertex].c_str(), source[Region::Fragment].c_str());
 	}
 
 	OpenGLShader::~OpenGLShader()
