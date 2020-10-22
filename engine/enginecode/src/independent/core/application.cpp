@@ -21,6 +21,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "platform/OpenGL/OpenGLVertexArray.h"
+#include "platform/OpenGL/OpenGLShader.h"
 
 namespace Engine {
 	// Set static vars
@@ -326,8 +327,13 @@ namespace Engine {
 #pragma endregion
 
 #pragma region SHADERS
-			//shaders MUST match your raw data and buffers.
 
+		std::shared_ptr<OpenGLShader> FCShader;
+		//FCShader.reset(new OpenGLShader("../sandbox/assets/shaders/flatColour.glsl"));
+		FCShader.reset(new OpenGLShader("../sandbox/assets/shaders/flatColour.vert", "../sandbox/assets/shaders/flatColour.frag"));
+
+
+			//shaders MUST match your raw data and buffers.
 			//for the pyramid, matches with 3 by 3 (the vertex position and colour)
 		std::string FCvertSrc = R"(
 				#version 440 core

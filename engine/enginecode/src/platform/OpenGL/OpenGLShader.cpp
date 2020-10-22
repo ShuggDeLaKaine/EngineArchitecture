@@ -25,7 +25,7 @@ namespace Engine
 			//whilst open, read it in line by line, adding it to source.
 			while (getline(handle, line))
 			{
-				vertexSource += line;
+				vertexSource += (line + "\n");
 			}
 		}
 		else
@@ -34,6 +34,8 @@ namespace Engine
 			Log::error("NOT able to open VERTEX SHADER source: {0}", vertexFilePath);
 			return;
 		}
+		//close the file.
+		handle.close();
 
 		//fragment shader file path.
 		std::fstream handle(fragmentFilePath, std::ios::in);
@@ -44,7 +46,7 @@ namespace Engine
 			//whilst open, read it in line by line, adding it to source.
 			while (getline(handle, line))
 			{
-				fragmentSource += line;
+				fragmentSource += (line + "\n");
 			}
 		}
 		else
@@ -53,10 +55,11 @@ namespace Engine
 			Log::error("NOT able to open FRAGMENT SHADER source: {0}", fragmentFilePath);
 			return;
 		}
+		//close the file.
+		handle.close();
 
 		//got source for each, so compile and link them, converting them to c_strings.
 		compileAndLink(vertexSource.c_str(), fragmentSource.c_str());
-
 	}
 
 	OpenGLShader::OpenGLShader(const char * filePath)
@@ -77,18 +80,35 @@ namespace Engine
 		if (handle.is_open())
 		{
 			//opens fine, so need to read it...
-			//which region are we in?
-			if (line.find("#region Vertex") != std::string::npos) region = Region::Vertex;
-			else if (line.find("#region Fragment") != std::string::npos) region = Region::Fragment;
-			else if (line.find("#region Geometry") != std::string::npos) region = Region::Geometry;
-			else if (line.find("#region TessellationControl") != std::string::npos) region = Region::TessellationControl;
-			else if (line.find("#region TessellationEvalution") != std::string::npos) region = Region::TessellationEvalution;
-			else if (line.find("#region Compute") != std::string::npos) region = Region::Compute;
-
 			//whilst open, read it in line by line, adding it to source.
 			while (getline(handle, line))
 			{
-				source[region] += line;
+				//which region are we in? 
+				//continue is to skip of the #vertex /#fragment etc part of the text document.
+				if (line.find("#region Vertex") != std::string::npos) {
+					region = Region::Vertex; continue;
+				}
+				if (line.find("#region Fragment") != std::string::npos) {
+					region = Region::Fragment; continue;
+				}
+				if (line.find("#region Geometry") != std::string::npos) {
+					region = Region::Geometry; continue;
+				}
+				if (line.find("#region TessellationControl") != std::string::npos) {
+					region = Region::TessellationControl; continue;
+				}
+				if (line.find("#region TessellationEvalution") != std::string::npos) {
+					region = Region::TessellationEvalution; continue;
+				}
+				if (line.find("#region Compute") != std::string::npos) {
+					region = Region::Compute; continue;
+				}
+
+				//if region not = none (it has a value), then stick it into region.
+				if(region != Region::None)
+				{
+					source[region] += (line + "\n");
+				}
 			}
 		}
 		else
@@ -97,6 +117,9 @@ namespace Engine
 			Log::error("NOT able to open SINGLE FILE source: {0}", source);
 			return;
 		}
+		//close the file.
+		handle.close();
+
 		//got source, so compile and link, converting them to c_strings.
 		//TODO: this below will only compile Vertex and Fragment shaders, need expansion to include other shaders.
 		//HOW: pass it an array maybe, integar of flags to say which is present, flag system could work.
