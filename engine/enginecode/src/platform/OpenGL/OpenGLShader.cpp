@@ -4,6 +4,8 @@
 #include <fstream>
 #include <string>
 #include <array>
+#include <glm/gtc/type_ptr.hpp>
+#include <glad/glad.h>
 #include "platform/OpenGL/OpenGLShader.h"
 #include "systems/log.h"
 
@@ -128,41 +130,129 @@ namespace Engine
 
 	OpenGLShader::~OpenGLShader()
 	{
-
+		glDeleteShader(m_OpenGL_ID);
 	}
 
 	void OpenGLShader::uploadInt(const char * name, int value)
 	{
-
+		uint32_t location = glGetUniformLocation(m_OpenGL_ID, name);
+		glUniform1i(location, value);
 	}
 
 	void OpenGLShader::uploadFloat(const char * name, float value)
 	{
-
+		uint32_t location = glGetUniformLocation(m_OpenGL_ID, name);
+		glUniform1f(location, value);
 	}
 
 	void OpenGLShader::uploadFloat2(const char * name, const glm::vec2 & value)
 	{
-
+		uint32_t location = glGetUniformLocation(m_OpenGL_ID, name);
+		glUniform2f(location, value.x, value.y);
 	}
 
 	void OpenGLShader::uploadFloat3(const char * name, const glm::vec3 & value)
 	{
-
+		uint32_t location = glGetUniformLocation(m_OpenGL_ID, name);
+		glUniform3f(location, value.x, value.y, value.z);
 	}
 
 	void OpenGLShader::uploadFloat4(const char * name, const glm::vec4 & value)
 	{
-
+		uint32_t location = glGetUniformLocation(m_OpenGL_ID, name);
+		glUniform4f(location, value.x, value.y, value.z, value.w);
 	}
 
 	void OpenGLShader::uploatMat4(const char * name, const glm::mat4 & value)
 	{
+		uint32_t location = glGetUniformLocation(m_OpenGL_ID, name);
+		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
 
 	}
 
-	void OpenGLShader::compileAndLink(const char * vertexShader, const char * fragmentShader)
+	void OpenGLShader::compileAndLink(const char * vertexShaderScr, const char * fragmentShaderScr)
 	{
+		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+
+		//get the source and compile it.
+		const GLchar* source = vertexShaderScr;
+		glShaderSource(vertexShader, 1, &source, 0);
+		glCompileShader(vertexShader);
+
+		GLint isCompiled = 0;
+		glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &isCompiled);
+		//check it has compiled, error message if not and delete it.
+		if (isCompiled == GL_FALSE)
+		{
+			GLint maxLength = 0;
+			glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &maxLength);
+
+			std::vector<GLchar> infoLog(maxLength);
+			glGetShaderInfoLog(vertexShader, maxLength, &maxLength, &infoLog[0]);
+			Log::error("Shader compile error: {0}", std::string(infoLog.begin(), infoLog.end()));
+
+			//deleting it here if it has failed to compile.
+			glDeleteShader(vertexShader);
+			return;
+		}
+
+		//fragment shader stuff...
+		//create the fragment shader.
+		GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+		//give it the source and compile it.
+		source = fragmentShaderScr;
+		glShaderSource(fragmentShader, 1, &source, 0);
+		glCompileShader(fragmentShader);
+
+		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &isCompiled);
+		//check that it has been compiled, delete this AND vertex shader if failed to so.
+		if (isCompiled == GL_FALSE)
+		{
+			GLint maxLength = 0;
+			glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &maxLength);
+
+			std::vector<GLchar> infoLog(maxLength);
+			glGetShaderInfoLog(fragmentShader, maxLength, &maxLength, &infoLog[0]);
+			Log::error("Shader compile error: {0}", std::string(infoLog.begin(), infoLog.end()));
+
+			//deleting the fragment AND vertex shaders if it has failed to compile.
+			glDeleteShader(fragmentShader);
+			glDeleteShader(vertexShader);
+
+			return;
+		}
+
+		//got to link them up with the program.
+		//all compile fined, so create the final shader program.
+		m_OpenGL_ID = glCreateProgram();
+		//attach the vertex and fragment shaders and link them.
+		glAttachShader(m_OpenGL_ID, vertexShader);
+		glAttachShader(m_OpenGL_ID, fragmentShader);
+		glLinkProgram(m_OpenGL_ID);
+
+		GLint isLinked = 0;
+		glGetProgramiv(m_OpenGL_ID, GL_LINK_STATUS, (int*)&isLinked);
+		//check whether they have linked, if not delete all three shaders.
+		if (isLinked == GL_FALSE)
+		{
+			GLint maxLength = 0;
+			glGetProgramiv(m_OpenGL_ID, GL_INFO_LOG_LENGTH, &maxLength);
+
+			std::vector<GLchar> infoLog(maxLength);
+			glGetProgramInfoLog(m_OpenGL_ID, maxLength, &maxLength, &infoLog[0]);
+			Log::error("Shader linking error: {0}", std::string(infoLog.begin(), infoLog.end()));
+
+			glDeleteProgram(m_OpenGL_ID);
+			glDeleteShader(vertexShader);
+			glDeleteShader(fragmentShader);
+
+			return;
+		}
+
+		//now linked, can deattach shaders as done with them, just need the final FCprogram.
+		glDetachShader(m_OpenGL_ID, vertexShader);
+		glDetachShader(m_OpenGL_ID, fragmentShader);
 
 	}
 

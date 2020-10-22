@@ -329,13 +329,195 @@ namespace Engine {
 #pragma region SHADERS
 
 		std::shared_ptr<OpenGLShader> FCShader;
-		//FCShader.reset(new OpenGLShader("../sandbox/assets/shaders/flatColour.glsl"));
-		FCShader.reset(new OpenGLShader("../sandbox/assets/shaders/flatColour.vert", "../sandbox/assets/shaders/flatColour.frag"));
+		FCShader.reset(new OpenGLShader("../sandbox/assets/shaders/flatColour.glsl"));
+		//FCShader.reset(new OpenGLShader("../sandbox/assets/shaders/flatColour.vert", "../sandbox/assets/shaders/flatColour.frag"));
+
+		std::shared_ptr<OpenGLShader> TPShader;
+		TPShader.reset(new OpenGLShader("../sandbox/assets/shaders/texturedPhong.glsl"));
+
+#pragma endregion 
+
+#pragma region TEXTURES
+
+		//IDs of the textures in OpenGL, these give you handles on them.
+		uint32_t letterTexture, numberTexture;
+
+		//generate and bind the texture.
+		glGenTextures(1, &letterTexture);
+		glBindTexture(GL_TEXTURE_2D, letterTexture);
+
+		//tell it how to wrap, here is clamp to the edge.
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		//min or magnify, just using linear filtering here.
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 
+		int width, height, channels;
+
+		unsigned char *data = stbi_load("../sandbox/assets/textures/letterCube.png", &width, &height, &channels, 0);
+		if (data)
+		{
+			if (channels == 3) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			else if (channels == 4) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+			else return;
+			glGenerateMipmap(GL_TEXTURE_2D);
+		}
+		else
+		{
+			Log::error("Cannot load texture data!");
+			return;
+		}
+
+		//data passed on so can take off the CPU.
+		stbi_image_free(data);
+
+		glGenTextures(1, &numberTexture);
+		glBindTexture(GL_TEXTURE_2D, numberTexture);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		data = stbi_load("../sandbox/assets/textures/numberCube.png", &width, &height, &channels, 0);
+		if (data)
+		{
+			if (channels == 3) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			else if (channels == 4) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+			else return;
+			glGenerateMipmap(GL_TEXTURE_2D);
+		}
+		else
+		{
+			Log::error("Texture data NOT loaded: {0}");
+			return;
+		}
+		stbi_image_free(data);
+
+#pragma endregion
+
+
+		//need a view, a projection (for camera) and a model matrix.
+		//two mat4s for the camera.
+		glm::mat4 view = glm::lookAt(
+			glm::vec3(0.0f, 0.0f, 0.0f),	//eye: aka the position; 0.0f, 0.0f, 0.0f, is origin.
+			glm::vec3(0.0f, 0.0f, -1.0f),	//centre: aka which way we're looking, convention is to look down the Z axis
+			glm::vec3(0.0f, 1.0f, 0.0f)		//up: make up, up (if that makes sense...)
+		);			//matrix for position and orientation.
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);	//matrix for how the camera views the world orthographic or perspective. first param field of view, so the camera ratio.
+
+		//for the transofrm of the models, array as can have a pyramid and a cube.
+		glm::mat4 models[3];
+		models[0] = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.5f, -5.0f));
+		models[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-1.5f, -0.5f, -5.0f));
+		models[2] = glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, -0.5f, -5.0f));
+
+
+		//create a float for the time step and initialise at 0.
+		float timeStep = 0.0f;
+
+		glEnable(GL_DEPTH_TEST);
+		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+
+		while (m_running)
+		{
+			//update the time step with the timer function getElapsedTime()
+			timeStep = m_timer->getElapsedTime();
+			m_timer->reset();
+
+			//testing...
+			//if (InputPoller::isKeyPressed(NG_KEY_W)) Log::error("W Pressed");
+			//if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_1)) Log::error("LEFT Mouse Button Pressed");
+			//if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_2)) Log::error("RIGHT Mouse Button Pressed");
+			//if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_3)) Log::error("MIDDLE Mouse Button Pressed");
+			//Log::trace("Current Mouse Position: ({0}, {1})", InputPoller::getMouseXPos(), InputPoller::getMouseYPos());
+
+
+			//get the model to rotate (easier to see whether it is a 3d shape)
+			for (auto& model: models) model = glm::rotate(model, timeStep, glm::vec3(0.0f, 1.0f, 0.5f));
+
+			//things to do in the frame...
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			//draw a PYRAMID.
+			//bind the shader FCproram (Flat Coloured shader)
+			glUseProgram(FCShader->getRenderID());
+			//bind the correct buffers, vertex array and index buffer.
+			glBindVertexArray(pyramidVAO->getRenderID());
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO->getRenderID());
+
+			//need a location to upload it, represents a place in the shader we are going to use.
+			GLuint location;
+			
+			//upload all relevant uniforms for projectionm, view and model.
+			location = glGetUniformLocation(FCShader->getRenderID(), "u_projection");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(projection));
+			location = glGetUniformLocation(FCShader->getRenderID(), "u_view");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(view));
+			location = glGetUniformLocation(FCShader->getRenderID(), "u_model");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[0]));
+
+			//draw the PYRAMID!
+			glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+
+			
+			//draw a CUBE.
+			//bind the shader (textured phong shader)
+			glUseProgram(TPShader->getRenderID());
+			//binc the buffers, vertex array and index buffer.
+			glBindVertexArray(cubeVAO->getRenderID());
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO->getRenderID());
+
+			//upload all relevant uniforms for projectionm, view and model.
+			location = glGetUniformLocation(TPShader->getRenderID(), "u_projection");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(projection));
+			location = glGetUniformLocation(TPShader->getRenderID(), "u_view");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(view));
+			location = glGetUniformLocation(TPShader->getRenderID(), "u_model");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[1]));
+
+			//now the uniforms for lightColour, lightPos and viewPos; all needed for the Textured Phong shader (otherwise no light, just a black unlit cube). 
+			location = glGetUniformLocation(TPShader->getRenderID(), "u_lightColour");
+			glUniform3f(location, 1.0f, 1.0f, 1.0f);
+			location = glGetUniformLocation(TPShader->getRenderID(), "u_lightPos");
+			glUniform3f(location, 1.0f, 4.0f, 6.0f);		//back, up and off to the right.
+			location = glGetUniformLocation(TPShader->getRenderID(), "u_viewPos");
+			glUniform3f(location, 0.0f, 0.0f, 0.0f);		//just at origin here (0,0,0).
+			location = glGetUniformLocation(TPShader->getRenderID(), "u_texData");
+			glUniform1i(location, 0);
+
+			//bind the texture that is wanted.
+			glBindTexture(GL_TEXTURE_2D, letterTexture);
+
+			//draw the CUBE!
+			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+			
+			//draw ANOTHER CUBE!
+			location = glGetUniformLocation(TPShader->getRenderID(), "u_model");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[2]));
+			glBindTexture(GL_TEXTURE_2D, numberTexture);
+			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+			
+			m_window->onUpdate(timeStep);
+		}
+
+		//clean up all the shader & texture stuff.
+
+		glDeleteTextures(1, &letterTexture);
+		glDeleteTextures(1, &numberTexture);
+	}
+
+}
+
+//RAW DATA STUFF
+/*
 			//shaders MUST match your raw data and buffers.
 			//for the pyramid, matches with 3 by 3 (the vertex position and colour)
-		std::string FCvertSrc = R"(
+std::string FCvertSrc = R"(
 				#version 440 core
 			
 				layout(location = 0) in vec3 a_vertexPosition;
@@ -351,7 +533,7 @@ namespace Engine {
 				}
 			)";
 
-		std::string FCFragSrc = R"(
+std::string FCFragSrc = R"(
 				#version 440 core
 			
 				layout(location = 0) out vec4 colour;
@@ -362,8 +544,8 @@ namespace Engine {
 				}
 		)";
 
-		//textured phong shader, matches with cube (3, 3, 2 of data... vertice positions, normals and then UV)
-		std::string TPvertSrc = R"(
+//textured phong shader, matches with cube (3, 3, 2 of data... vertice positions, normals and then UV)
+std::string TPvertSrc = R"(
 				#version 440 core
 			
 				layout(location = 0) in vec3 a_vertexPosition;
@@ -384,7 +566,7 @@ namespace Engine {
 				}
 			)";
 
-		std::string TPFragSrc = R"(
+std::string TPFragSrc = R"(
 				#version 440 core
 			
 				layout(location = 0) out vec4 colour;
@@ -413,9 +595,7 @@ namespace Engine {
 				}
 		)";
 
-
-		//compiling the shaders, 3 stages. 
-		//two shaders, vertex and fragment.
+		//compiling the shaders, 3 stages; two shaders, vertex and fragment.
 		//NEED to compile each of these then link to the shader program, 3 stages.
 
 		//OpenGL IDs for the shader program, handles into the shader.
@@ -575,185 +755,7 @@ namespace Engine {
 
 		glDetachShader(TPprogram, TPVertShader);
 		glDetachShader(TPprogram, TPFragShader);
-#pragma endregion 
-
-#pragma region TEXTURES
-
-		//IDs of the textures in OpenGL, these give you handles on them.
-		uint32_t letterTexture, numberTexture;
-
-		//generate and bind the texture.
-		glGenTextures(1, &letterTexture);
-		glBindTexture(GL_TEXTURE_2D, letterTexture);
-
-		//tell it how to wrap, here is clamp to the edge.
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-		//min or magnify, just using linear filtering here.
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-
-		int width, height, channels;
-
-		unsigned char *data = stbi_load("../sandbox/assets/textures/letterCube.png", &width, &height, &channels, 0);
-		if (data)
-		{
-			if (channels == 3) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-			else if (channels == 4) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-			else return;
-			glGenerateMipmap(GL_TEXTURE_2D);
-		}
-		else
-		{
-			Log::error("Cannot load texture data!");
-			return;
-		}
-
-		//data passed on so can take off the CPU.
-		stbi_image_free(data);
-
-		glGenTextures(1, &numberTexture);
-		glBindTexture(GL_TEXTURE_2D, numberTexture);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		data = stbi_load("../sandbox/assets/textures/numberCube.png", &width, &height, &channels, 0);
-		if (data)
-		{
-			if (channels == 3) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-			else if (channels == 4) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-			else return;
-			glGenerateMipmap(GL_TEXTURE_2D);
-		}
-		else
-		{
-			Log::error("Texture data NOT loaded: {0}");
-			return;
-		}
-		stbi_image_free(data);
-
-#pragma endregion
-
-
-		//need a view, a projection (for camera) and a model matrix.
-		//two mat4s for the camera.
-		glm::mat4 view = glm::lookAt(
-			glm::vec3(0.0f, 0.0f, 0.0f),	//eye: aka the position; 0.0f, 0.0f, 0.0f, is origin.
-			glm::vec3(0.0f, 0.0f, -1.0f),	//centre: aka which way we're looking, convention is to look down the Z axis
-			glm::vec3(0.0f, 1.0f, 0.0f)		//up: make up, up (if that makes sense...)
-		);			//matrix for position and orientation.
-		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);	//matrix for how the camera views the world orthographic or perspective. first param field of view, so the camera ratio.
-
-		//for the transofrm of the models, array as can have a pyramid and a cube.
-		glm::mat4 models[3];
-		models[0] = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.5f, -5.0f));
-		models[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-1.5f, -0.5f, -5.0f));
-		models[2] = glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, -0.5f, -5.0f));
-
-
-		//create a float for the time step and initialise at 0.
-		float timeStep = 0.0f;
-
-		glEnable(GL_DEPTH_TEST);
-		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
-
-		while (m_running)
-		{
-			//update the time step with the timer function getElapsedTime()
-			timeStep = m_timer->getElapsedTime();
-			m_timer->reset();
-
-			//testing...
-			//if (InputPoller::isKeyPressed(NG_KEY_W)) Log::error("W Pressed");
-			//if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_1)) Log::error("LEFT Mouse Button Pressed");
-			//if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_2)) Log::error("RIGHT Mouse Button Pressed");
-			//if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_3)) Log::error("MIDDLE Mouse Button Pressed");
-			//Log::trace("Current Mouse Position: ({0}, {1})", InputPoller::getMouseXPos(), InputPoller::getMouseYPos());
-
-
-			//get the model to rotate (easier to see whether it is a 3d shape)
-			for (auto& model: models) model = glm::rotate(model, timeStep, glm::vec3(0.0f, 1.0f, 0.5f));
-
-			//things to do in the frame...
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-			//draw a PYRAMID.
-			//bind the shader FCproram (Flat Coloured shader)
-			glUseProgram(FCprogram);
-			//bind the correct buffers, vertex array and index buffer.
-			glBindVertexArray(pyramidVAO->getRenderID());
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO->getRenderID());
-
-			//need a location to upload it, represents a place in the shader we are going to use.
-			GLuint location;
-			
-			//upload all relevant uniforms for projectionm, view and model.
-			location = glGetUniformLocation(FCprogram, "u_projection");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(projection));
-			location = glGetUniformLocation(FCprogram, "u_view");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(view));
-			location = glGetUniformLocation(FCprogram, "u_model");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[0]));
-
-			//draw the PYRAMID!
-			glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
-
-			
-			//draw a CUBE.
-			//bind the shader (textured phong shader)
-			glUseProgram(TPprogram);
-			//binc the buffers, vertex array and index buffer.
-			glBindVertexArray(cubeVAO->getRenderID());
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO->getRenderID());
-
-			//upload all relevant uniforms for projectionm, view and model.
-			location = glGetUniformLocation(TPprogram, "u_projection");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(projection));
-			location = glGetUniformLocation(TPprogram, "u_view");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(view));
-			location = glGetUniformLocation(TPprogram, "u_model");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[1]));
-
-			//now the uniforms for lightColour, lightPos and viewPos; all needed for the Textured Phong shader (otherwise no light, just a black unlit cube). 
-			location = glGetUniformLocation(TPprogram, "u_lightColour");
-			glUniform3f(location, 1.0f, 1.0f, 1.0f);
-			location = glGetUniformLocation(TPprogram, "u_lightPos");
-			glUniform3f(location, 1.0f, 4.0f, 6.0f);		//back, up and off to the right.
-			location = glGetUniformLocation(TPprogram, "u_viewPos");
-			glUniform3f(location, 0.0f, 0.0f, 0.0f);		//just at origin here (0,0,0).
-			location = glGetUniformLocation(TPprogram, "u_texData");
-			glUniform1i(location, 0);
-
-			//bind the texture that is wanted.
-			glBindTexture(GL_TEXTURE_2D, letterTexture);
-
-			//draw the CUBE!
-			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
-			
-			//draw ANOTHER CUBE!
-			location = glGetUniformLocation(TPprogram, "u_model");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[2]));
-			glBindTexture(GL_TEXTURE_2D, numberTexture);
-			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
-			
-			m_window->onUpdate(timeStep);
-		}
-
-		//clean up all the shader & texture stuff.
-		glDeleteShader(FCprogram);
-		glDeleteShader(TPprogram);
-
-		glDeleteTextures(1, &letterTexture);
-		glDeleteTextures(1, &numberTexture);
-	}
-
-}
+		*/
 
 
 //BUFFER STUFF
