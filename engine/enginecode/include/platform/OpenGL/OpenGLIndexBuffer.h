@@ -19,6 +19,7 @@ namespace Engine
 	private:
 		uint32_t m_OpenGL_ID;		//!< OpenGL render identifier 
 		uint32_t m_count;			//!< the draw count.
+
 	};
 
 }

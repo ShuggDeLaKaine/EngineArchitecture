@@ -2,6 +2,7 @@
 
 #include "engine_pch.h"
 #include <fstream>
+//#include <ostream>
 #include <string>
 #include <array>
 #include <glm/gtc/type_ptr.hpp>
@@ -40,7 +41,7 @@ namespace Engine
 		handle.close();
 
 		//fragment shader file path.
-		std::fstream handle(fragmentFilePath, std::ios::in);
+		handle.open(fragmentFilePath, std::ios::in);
 		//check that it has fragment filepath
 		if (handle.is_open())
 		{
