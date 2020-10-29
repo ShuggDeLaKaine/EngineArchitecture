@@ -117,7 +117,7 @@ namespace Engine
 		else
 		{
 			//otherwise throw error and return.
-			Log::error("NOT able to open SINGLE FILE source: {0}", source);
+			Log::error("NOT able to open SINGLE FILE source: {0}", source[0]);
 			return;
 		}
 		//close the file.
