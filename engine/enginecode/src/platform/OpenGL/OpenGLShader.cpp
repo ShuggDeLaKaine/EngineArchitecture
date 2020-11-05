@@ -76,7 +76,6 @@ namespace Engine
 		std::array<std::string, Region::Compute + 1> source;		//adding one to Compute (which 5 in the enum) will make an array of 6 elements.
 		uint32_t region = Region::None;		// index for which region we are in, initialised to None(-1).
 
-		//the single file path.
 		std::fstream handle(filePath, std::ios::in);
 		//check that it has the file path.
 		if (handle.is_open())

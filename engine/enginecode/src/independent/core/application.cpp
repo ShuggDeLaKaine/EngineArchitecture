@@ -329,11 +329,11 @@ namespace Engine {
 #pragma region SHADERS
 
 		std::shared_ptr<OpenGLShader> FCShader;
-		FCShader.reset(new OpenGLShader("../sandbox/assets/shaders/flatColour.glsl"));
+		FCShader.reset(new OpenGLShader("./assets/shaders/flatColour.glsl"));
 		//FCShader.reset(new OpenGLShader("../sandbox/assets/shaders/flatColour.vert", "../sandbox/assets/shaders/flatColour.frag"));
 
 		std::shared_ptr<OpenGLShader> TPShader;
-		TPShader.reset(new OpenGLShader("../sandbox/assets/shaders/texturedPhong.glsl"));
+		TPShader.reset(new OpenGLShader("./assets/shaders/texturedPhong.glsl"));
 
 #pragma endregion 
 
