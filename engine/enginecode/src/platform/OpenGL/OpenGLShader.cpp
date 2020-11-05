@@ -2,7 +2,6 @@
 
 #include "engine_pch.h"
 #include <fstream>
-//#include <ostream>
 #include <string>
 #include <array>
 #include <glm/gtc/type_ptr.hpp>
@@ -117,7 +116,7 @@ namespace Engine
 		else
 		{
 			//otherwise throw error and return.
-			Log::error("NOT able to open SINGLE FILE source: {0}", source[0]);
+			Log::error("NOT able to open SINGLE FILE source: {0}", filePath);
 			return;
 		}
 		//close the file.
