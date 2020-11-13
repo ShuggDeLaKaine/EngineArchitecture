@@ -200,46 +200,30 @@ namespace Engine {
 	void Application::run()
 	{
 
-#pragma region TEXTURES
 
-		std::shared_ptr<OpenGLTexture> letterTexture;
-		//letterTexture.reset(new OpenGLTexture("assets/textures/letterCube.png"));
-		//testing the sub texture stuff out.
-		letterTexture.reset(new OpenGLTexture("assets/textures/letterAndNumberCube.png"));
-
-		std::shared_ptr<OpenGLTexture> numberTexture;
-		numberTexture.reset(new OpenGLTexture("assets/textures/numberCube.png"));
-
-		//setting the sub textures in this texture file.
-		//letterCube = start { 0.0f, 0.0f } / end { 1.0f, 0.5f }
-		//numberCube = start { 0.0f, 0.5f } / end { 1.0f, 1.0f }
-		SubTexture letterCube(letterTexture, { 0.0f, 0.0f }, { 1.0f, 0.5f });
-		SubTexture numberCube(letterTexture, { 0.0f, 0.5f }, { 1.0f, 1.0f });
-
-#pragma endregion
 
 
 #pragma region RAW_DATA
 
 		float cubeVertices[8 * 24] = {
 			//	 <------ Pos ------>  <--- normal --->  <-- UV -->
-				 0.5f,  0.5f, -0.5f,  0.f,  0.f, -1.f,  0.f,   0.f,
-				 0.5f, -0.5f, -0.5f,  0.f,  0.f, -1.f,  0.f,   0.5f,
+				 0.5f,  0.5f, -0.5f,  0.f,  0.f, -1.f,  0.0f,  0.0f,
+				 0.5f, -0.5f, -0.5f,  0.f,  0.f, -1.f,  0.0f,  0.5f,
 				-0.5f, -0.5f, -0.5f,  0.f,  0.f, -1.f,  0.33f, 0.5f,
-				-0.5f,  0.5f, -0.5f,  0.f,  0.f, -1.f,  0.33f, 0.f,
+				-0.5f,  0.5f, -0.5f,  0.f,  0.f, -1.f,  0.33f, 0.0f,
 
 				-0.5f, -0.5f, 0.5f,   0.f,  0.f,  1.f,  0.33f, 0.5f,
 				 0.5f, -0.5f, 0.5f,   0.f,  0.f,  1.f,  0.66f, 0.5f,
-				 0.5f,  0.5f, 0.5f,   0.f,  0.f,  1.f,  0.66f, 0.f,
-				-0.5f,  0.5f, 0.5f,   0.f,  0.f,  1.f,  0.33,  0.f,
+				 0.5f,  0.5f, 0.5f,   0.f,  0.f,  1.f,  0.66f, 0.0f,
+				-0.5f,  0.5f, 0.5f,   0.f,  0.f,  1.f,  0.33f, 0.0f,
 
-				-0.5f, -0.5f, -0.5f,  0.f, -1.f,  0.f,  1.f,   0.f,
-				 0.5f, -0.5f, -0.5f,  0.f, -1.f,  0.f,  0.66f, 0.f,
+				-0.5f, -0.5f, -0.5f,  0.f, -1.f,  0.f,  1.0f,  0.0f,
+				 0.5f, -0.5f, -0.5f,  0.f, -1.f,  0.f,  0.66f, 0.0f,
 				 0.5f, -0.5f, 0.5f,   0.f, -1.f,  0.f,  0.66f, 0.5f,
 				-0.5f, -0.5f, 0.5f,   0.f, -1.f,  0.f,  1.0f,  0.5f,
 
-				 0.5f,  0.5f, 0.5f,   0.f,  1.f,  0.f,  0.f,   0.5f,
-				 0.5f,  0.5f, -0.5f,  0.f,  1.f,  0.f,  0.f,   1.0f,
+				 0.5f,  0.5f, 0.5f,   0.f,  1.f,  0.f,  0.0f,  0.5f,
+				 0.5f,  0.5f, -0.5f,  0.f,  1.f,  0.f,  0.0f,  1.0f,
 				-0.5f,  0.5f, -0.5f,  0.f,  1.f,  0.f,  0.33f, 1.0f,
 				-0.5f,  0.5f, 0.5f,   0.f,  1.f,  0.f,  0.3f,  0.5f,
 
@@ -352,6 +336,24 @@ namespace Engine {
 
 #pragma endregion 
 
+#pragma region TEXTURES
+
+		std::shared_ptr<OpenGLTexture> letterTexture;
+		letterTexture.reset(new OpenGLTexture("assets/textures/letterCube.png"));
+		//testing the sub texture stuff out.
+		//letterTexture.reset(new OpenGLTexture("assets/textures/letterAndNumberCube.png"));
+
+		std::shared_ptr<OpenGLTexture> numberTexture;
+		numberTexture.reset(new OpenGLTexture("assets/textures/numberCube.png"));
+
+		/*
+		//setting the sub textures in this texture file.
+		//letterCube = start { 0.0f, 0.0f } / end { 1.0f, 0.5f }
+		//numberCube = start { 0.0f, 0.5f } / end { 1.0f, 1.0f }
+		SubTexture letterCube(letterTexture, { 0.0f, 0.0f }, { 1.0f, 0.5f });
+		SubTexture numberCube(letterTexture, { 0.0f, 0.5f }, { 1.0f, 1.0f });
+		*/
+#pragma endregion
 
 		//need a view, a projection (for camera) and a model matrix.
 		//two mat4s for the camera.
@@ -435,6 +437,7 @@ namespace Engine {
 			glUniform1i(location, 0);
 
 			//bind the texture that is wanted.
+			//glBindTexture(GL_TEXTURE_2D, letterTexture->getID());
 			glBindTexture(GL_TEXTURE_2D, letterTexture->getID());
 
 			//draw the CUBE!
@@ -443,7 +446,7 @@ namespace Engine {
 			//draw ANOTHER CUBE!
 			location = glGetUniformLocation(TPShader->getRenderID(), "u_model");
 			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[2]));
-			glBindTexture(GL_TEXTURE_2D, numberTexture->getID());
+			glBindTexture(GL_TEXTURE_2D, numberTexture->getID());		
 			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 			
 			m_window->onUpdate(timeStep);
