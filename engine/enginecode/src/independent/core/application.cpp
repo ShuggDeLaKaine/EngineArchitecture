@@ -15,9 +15,6 @@
 	#include "platform/GLFW/GLFWSystem.h"
 #endif //  NG_PLATFORM_WINDOWS
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "platform/OpenGL/OpenGLVertexArray.h"
@@ -341,14 +338,11 @@ namespace Engine {
 
 #pragma region TEXTURES
 
-
 		std::shared_ptr<OpenGLTexture> letterTexture;
 		letterTexture.reset(new OpenGLTexture("../sandbox/assets/textures/letterCube.png"));
 
 		std::shared_ptr<OpenGLTexture> numberTexture;
 		numberTexture.reset(new OpenGLTexture("../sandbox/assets/textures/numberCube.png"));
-
-		
 
 #pragma endregion
 
@@ -442,27 +436,24 @@ namespace Engine {
 			location = glGetUniformLocation(TPShader->getRenderID(), "u_texData");
 			glUniform1i(location, 0);
 
-
 			//bind the texture that is wanted.
-			glBindTexture(GL_TEXTURE_2D, letterTexture);
+			glBindTexture(GL_TEXTURE_2D, letterTexture->getID());
 
 			//draw the CUBE!
 			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 			
-
 			//draw ANOTHER CUBE!
 			location = glGetUniformLocation(TPShader->getRenderID(), "u_model");
 			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[2]));
-			glBindTexture(GL_TEXTURE_2D, numberTexture);
+			glBindTexture(GL_TEXTURE_2D, numberTexture->getID());
 			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 			
 			m_window->onUpdate(timeStep);
 		}
 
 		//clean up all the shader & texture stuff.
-
-		glDeleteTextures(1, &letterTexture);
-		glDeleteTextures(1, &numberTexture);
+		//glDeleteTextures(1, &letterTexture);
+		//glDeleteTextures(1, &numberTexture);
 	}
 
 }

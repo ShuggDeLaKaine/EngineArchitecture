@@ -16,7 +16,7 @@ namespace Engine
 		inline uint32_t getID() { return m_OpenGL_ID; };		//!< accessor to get openGL handle.
 		inline uint32_t getWidth() { return m_width; };			//!< accessor to get the texture width.
 		inline uint32_t getHeight() { return m_height; };		//!< accessor to get the texture height.
-		inline uint32_t getHeight() { return m_channel; };		//!< accessor to get the texture channel.
+		inline uint32_t getChannel() { return m_channel; };		//!< accessor to get the texture channel.
 
 	private:
 		uint32_t m_OpenGL_ID;	//!< OpenGL handle.
