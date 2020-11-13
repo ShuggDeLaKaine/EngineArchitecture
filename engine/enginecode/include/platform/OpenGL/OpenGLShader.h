@@ -6,7 +6,6 @@
 
 namespace Engine
 {
-
 	/** \class OpenGLShader
 	* class to take in text, compile into shader program.
 	*/
