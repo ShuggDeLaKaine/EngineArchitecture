@@ -218,6 +218,7 @@ namespace Engine {
 
 #pragma endregion
 
+
 #pragma region RAW_DATA
 
 		float cubeVertices[8 * 24] = {
