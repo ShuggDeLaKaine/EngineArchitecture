@@ -18,6 +18,7 @@
 #include "platform/OpenGL/OpenGLVertexArray.h"
 #include "platform/OpenGL/OpenGLShader.h"
 #include "platform/OpenGL/OpenGLTexture.h"
+#include "rendering/subTexture.h"
 
 namespace Engine {
 	// Set static vars
@@ -199,6 +200,24 @@ namespace Engine {
 	void Application::run()
 	{
 
+#pragma region TEXTURES
+
+		std::shared_ptr<OpenGLTexture> letterTexture;
+		//letterTexture.reset(new OpenGLTexture("assets/textures/letterCube.png"));
+		//testing the sub texture stuff out.
+		letterTexture.reset(new OpenGLTexture("assets/textures/letterAndNumberCube.png"));
+
+		std::shared_ptr<OpenGLTexture> numberTexture;
+		numberTexture.reset(new OpenGLTexture("assets/textures/numberCube.png"));
+
+		//setting the sub textures in this texture file.
+		//letterCube = start { 0.0f, 0.0f } / end { 1.0f, 0.5f }
+		//numberCube = start { 0.0f, 0.5f } / end { 1.0f, 1.0f }
+		SubTexture letterCube(letterTexture, { 0.0f, 0.0f }, { 1.0f, 0.5f });
+		SubTexture numberCube(letterTexture, { 0.0f, 0.5f }, { 1.0f, 1.0f });
+
+#pragma endregion
+
 #pragma region RAW_DATA
 
 		float cubeVertices[8 * 24] = {
@@ -331,16 +350,6 @@ namespace Engine {
 		TPShader.reset(new OpenGLShader("assets/shaders/texturedPhong.glsl"));
 
 #pragma endregion 
-
-#pragma region TEXTURES
-
-		std::shared_ptr<OpenGLTexture> letterTexture;
-		letterTexture.reset(new OpenGLTexture("assets/textures/letterCube.png"));
-
-		std::shared_ptr<OpenGLTexture> numberTexture;
-		numberTexture.reset(new OpenGLTexture("assets/textures/numberCube.png"));
-
-#pragma endregion
 
 
 		//need a view, a projection (for camera) and a model matrix.

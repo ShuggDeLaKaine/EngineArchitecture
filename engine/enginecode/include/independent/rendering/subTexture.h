@@ -26,11 +26,17 @@ namespace Engine
 		inline uint32_t getWidthF() { return static_cast<float>(m_size.x); }		//!< accessor to return floating point of x var of m_size.
 		inline uint32_t getHeightF() { return static_cast<float>(m_size.y); }		//!< accessor to return floating point of y var of m_size.
 
+		float transformU(float U);			//!< transform the original to the atlas-ed coordinates, this for just U (or x axis); used for linear interpolation.
+		float transformV(float V);			//!< transform the original to the atlas-ed coordinates, this for just V (or y axis); used for linear interpolation.
+		glm::vec2 transformUV(glm::vec2 UV);	//!< transform the original to the atlas-ed coordinates, this for both U & V (x & y); used for linear interpolation.
+
 	private:
 		std::shared_ptr<OpenGLTexture> m_texture;		//!< will hold and store texture.
 		glm::vec2 m_UVStart;		//!< will hold and store UV start data.
 		glm::vec2 m_UVEnd;			//!< will hold and store UV end data.
 		glm::ivec2 m_size;			//!< store size in pixels.
+		float m_UVWidth;			//!< store the width of UV.
+		float m_UVHeight;			//!< store the height of UV.
 	};
 
 }
