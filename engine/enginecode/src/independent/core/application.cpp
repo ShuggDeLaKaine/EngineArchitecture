@@ -1,9 +1,7 @@
 /** \file application.cpp */
 
 #include "engine_pch.h"
-
 #include <glad/glad.h>
-
 #include "core/application.h"
 
 #ifdef  NG_PLATFORM_WINDOWS
@@ -441,9 +439,6 @@ namespace Engine {
 			m_window->onUpdate(timeStep);
 		}
 
-		//clean up all the shader & texture stuff.
-		//glDeleteTextures(1, &letterTexture);
-		//glDeleteTextures(1, &numberTexture);
 	}
 
 }
