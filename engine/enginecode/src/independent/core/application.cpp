@@ -22,6 +22,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "platform/OpenGL/OpenGLVertexArray.h"
 #include "platform/OpenGL/OpenGLShader.h"
+#include "platform/OpenGL/OpenGLTexture.h"
 
 namespace Engine {
 	// Set static vars
@@ -340,34 +341,14 @@ namespace Engine {
 
 #pragma region TEXTURES
 
-		//IDs of the textures in OpenGL, these give you handles on them.
-		uint32_t letterTexture, numberTexture;
 
+		std::shared_ptr<OpenGLTexture> letterTexture;
+		letterTexture.reset(new OpenGLTexture("../sandbox/assets/textures/letterCube.png"));
 
+		std::shared_ptr<OpenGLTexture> numberTexture;
+		numberTexture.reset(new OpenGLTexture("../sandbox/assets/textures/numberCube.png"));
 
-		glGenTextures(1, &numberTexture);
-		glBindTexture(GL_TEXTURE_2D, numberTexture);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		data = stbi_load("../sandbox/assets/textures/numberCube.png", &width, &height, &channels, 0);
-		if (data)
-		{
-			if (channels == 3) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-			else if (channels == 4) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-			else return;
-			glGenerateMipmap(GL_TEXTURE_2D);
-		}
-		else
-		{
-			Log::error("Texture data NOT loaded: {0}");
-			return;
-		}
-		stbi_image_free(data);
+		
 
 #pragma endregion
 
