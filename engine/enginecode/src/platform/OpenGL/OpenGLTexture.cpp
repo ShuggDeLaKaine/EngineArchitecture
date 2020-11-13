@@ -63,12 +63,10 @@ namespace Engine
 			if (channel == 3)
 			{
 				glTextureSubImage2D(GL_TEXTURE_2D, 0, offset.x, offset.y, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
-				//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 			}
 			else if (channel == 4)
 			{
 				glTextureSubImage2D(GL_TEXTURE_2D, 0, offset.x, offset.y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
-				//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 			}
 		}
 	}
@@ -77,7 +75,7 @@ namespace Engine
 	{
 		//generate and bind the texture.
 		glGenTextures(1, &m_OpenGL_ID);
-
+		glBindTexture(GL_TEXTURE_2D, m_OpenGL_ID);
 
 		//tell it how to wrap, here is clamp to the edge.
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -100,9 +98,6 @@ namespace Engine
 		}
 		else return;
 		glGenerateMipmap(GL_TEXTURE_2D);
-
-		//data passed on so can take off the CPU.
-		//stbi_image_free(data);
 
 		//set the members of the class to the function variables of the same name.
 		m_width = width;

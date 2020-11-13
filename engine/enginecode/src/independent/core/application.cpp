@@ -327,22 +327,20 @@ namespace Engine {
 #pragma region SHADERS
 
 		std::shared_ptr<OpenGLShader> FCShader;
-		FCShader.reset(new OpenGLShader("./assets/shaders/flatColour.glsl"));
-		//FCShader.reset(new OpenGLShader("../sandbox/assets/shaders/flatColour.vert", "../sandbox/assets/shaders/flatColour.frag"));
-
+		FCShader.reset(new OpenGLShader("assets/shaders/flatColour.glsl"));
 
 		std::shared_ptr<OpenGLShader> TPShader;
-		TPShader.reset(new OpenGLShader("./assets/shaders/texturedPhong.glsl"));
+		TPShader.reset(new OpenGLShader("assets/shaders/texturedPhong.glsl"));
 
 #pragma endregion 
 
 #pragma region TEXTURES
 
 		std::shared_ptr<OpenGLTexture> letterTexture;
-		letterTexture.reset(new OpenGLTexture("../sandbox/assets/textures/letterCube.png"));
+		letterTexture.reset(new OpenGLTexture("assets/textures/letterCube.png"));
 
 		std::shared_ptr<OpenGLTexture> numberTexture;
-		numberTexture.reset(new OpenGLTexture("../sandbox/assets/textures/numberCube.png"));
+		numberTexture.reset(new OpenGLTexture("assets/textures/numberCube.png"));
 
 #pragma endregion
 
@@ -374,14 +372,6 @@ namespace Engine {
 			//update the time step with the timer function getElapsedTime()
 			timeStep = m_timer->getElapsedTime();
 			m_timer->reset();
-
-			//testing...
-			//if (InputPoller::isKeyPressed(NG_KEY_W)) Log::error("W Pressed");
-			//if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_1)) Log::error("LEFT Mouse Button Pressed");
-			//if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_2)) Log::error("RIGHT Mouse Button Pressed");
-			//if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_3)) Log::error("MIDDLE Mouse Button Pressed");
-			//Log::trace("Current Mouse Position: ({0}, {1})", InputPoller::getMouseXPos(), InputPoller::getMouseYPos());
-
 
 			//get the model to rotate (easier to see whether it is a 3d shape)
 			for (auto& model: models) model = glm::rotate(model, timeStep, glm::vec3(0.0f, 1.0f, 0.5f));
