@@ -343,37 +343,7 @@ namespace Engine {
 		//IDs of the textures in OpenGL, these give you handles on them.
 		uint32_t letterTexture, numberTexture;
 
-		//generate and bind the texture.
-		glGenTextures(1, &letterTexture);
-		glBindTexture(GL_TEXTURE_2D, letterTexture);
 
-		//tell it how to wrap, here is clamp to the edge.
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-		//min or magnify, just using linear filtering here.
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-
-		int width, height, channels;
-
-		unsigned char *data = stbi_load("../sandbox/assets/textures/letterCube.png", &width, &height, &channels, 0);
-		if (data)
-		{
-			if (channels == 3) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-			else if (channels == 4) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-			else return;
-			glGenerateMipmap(GL_TEXTURE_2D);
-		}
-		else
-		{
-			Log::error("Cannot load texture data!");
-			return;
-		}
-
-		//data passed on so can take off the CPU.
-		stbi_image_free(data);
 
 		glGenTextures(1, &numberTexture);
 		glBindTexture(GL_TEXTURE_2D, numberTexture);
