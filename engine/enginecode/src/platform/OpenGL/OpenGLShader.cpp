@@ -222,6 +222,7 @@ namespace Engine
 			return;
 		}
 
+
 		//got to link them up with the program.
 		//all compile fined, so create the final shader program.
 		m_OpenGL_ID = glCreateProgram();
@@ -232,6 +233,7 @@ namespace Engine
 
 		GLint isLinked = 0;
 		glGetProgramiv(m_OpenGL_ID, GL_LINK_STATUS, (int*)&isLinked);
+
 		//check whether they have linked, if not delete all three shaders.
 		if (isLinked == GL_FALSE)
 		{

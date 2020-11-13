@@ -332,6 +332,7 @@ namespace Engine {
 		FCShader.reset(new OpenGLShader("./assets/shaders/flatColour.glsl"));
 		//FCShader.reset(new OpenGLShader("../sandbox/assets/shaders/flatColour.vert", "../sandbox/assets/shaders/flatColour.frag"));
 
+
 		std::shared_ptr<OpenGLShader> TPShader;
 		TPShader.reset(new OpenGLShader("./assets/shaders/texturedPhong.glsl"));
 
@@ -490,12 +491,14 @@ namespace Engine {
 			location = glGetUniformLocation(TPShader->getRenderID(), "u_texData");
 			glUniform1i(location, 0);
 
+
 			//bind the texture that is wanted.
 			glBindTexture(GL_TEXTURE_2D, letterTexture);
 
 			//draw the CUBE!
 			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 			
+
 			//draw ANOTHER CUBE!
 			location = glGetUniformLocation(TPShader->getRenderID(), "u_model");
 			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[2]));
