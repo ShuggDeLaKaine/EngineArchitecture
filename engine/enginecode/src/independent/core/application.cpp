@@ -1,8 +1,11 @@
 /** \file application.cpp */
 
 #include "engine_pch.h"
-#include <glad/glad.h>
 #include "core/application.h"
+
+#include <glad/glad.h>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #ifdef  NG_PLATFORM_WINDOWS
 /*
@@ -12,13 +15,14 @@
 */
 	#include "platform/GLFW/GLFWSystem.h"
 #endif //  NG_PLATFORM_WINDOWS
-
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include "platform/OpenGL/OpenGLVertexArray.h"
 #include "platform/OpenGL/OpenGLShader.h"
 #include "platform/OpenGL/OpenGLTexture.h"
+
 #include "rendering/subTexture.h"
+#include "rendering/indexBuffer.h"
+
+
 
 namespace Engine {
 	// Set static vars
@@ -292,17 +296,20 @@ namespace Engine {
 		//SETTING UP THE CUBE.
 		std::shared_ptr<OpenGLVertexArray> cubeVAO;
 		std::shared_ptr<OpenGLVertexBuffer> cubeVBO;
-		std::shared_ptr<OpenGLIndexBuffer> cubeIBO;
+		std::shared_ptr<IndexBuffer> cubeIBO;
+
 		//creating a buffer layout with its initialiser list (check out bufferLayout.h)
 		BufferLayout cubeBL = {
 			{ ShaderDataType::Float3, false },
 			{ ShaderDataType::Float3, false },
 			{ ShaderDataType::Float2, false }
 		};
+
 		//create/reset the VAO, VBO & IBO.
 		cubeVAO.reset(new OpenGLVertexArray());
 		cubeVBO.reset(new OpenGLVertexBuffer(cubeVertices, sizeof(cubeVertices), cubeBL));
-		cubeIBO.reset(new OpenGLIndexBuffer(cubeIndices, 36));
+		cubeIBO.reset(IndexBuffer::create(cubeIndices, 36));
+
 		//set the vertex and index buffers.
 		cubeVAO->addVertexBuffer(cubeVBO);
 		cubeVAO->setIndexBuffer(cubeIBO);
@@ -311,16 +318,19 @@ namespace Engine {
 		//SETTING UP THE PYRAMID.
 		std::shared_ptr<OpenGLVertexArray> pyramidVAO;
 		std::shared_ptr<OpenGLVertexBuffer> pyramidVBO;
-		std::shared_ptr<OpenGLIndexBuffer> pyramidIBO;
+		std::shared_ptr<IndexBuffer> pyramidIBO;
+
 		//creating a buffer layout with its initialiser list for a pyramid.
 		BufferLayout pyramidBL = {
 			{ ShaderDataType::Float3, false },
 			{ ShaderDataType::Float3, false }
 		};
+
 		//create/reset the VAO, VBO & IBO.
 		pyramidVAO.reset(new OpenGLVertexArray());
 		pyramidVBO.reset(new OpenGLVertexBuffer(pyramidVertices, sizeof(pyramidVertices), pyramidBL));
-		pyramidIBO.reset(new OpenGLIndexBuffer(pyramidIndices, 18));
+		pyramidIBO.reset(IndexBuffer::create(pyramidIndices, 18));
+
 		//set the vertex and index buffers. 
 		pyramidVAO->addVertexBuffer(pyramidVBO);
 		pyramidVAO->setIndexBuffer(pyramidIBO);
@@ -340,16 +350,15 @@ namespace Engine {
 
 		std::shared_ptr<OpenGLTexture> letterTexture;
 		letterTexture.reset(new OpenGLTexture("assets/textures/letterCube.png"));
-		//testing the sub texture stuff out.
-		//letterTexture.reset(new OpenGLTexture("assets/textures/letterAndNumberCube.png"));
 
 		std::shared_ptr<OpenGLTexture> numberTexture;
 		numberTexture.reset(new OpenGLTexture("assets/textures/numberCube.png"));
 
 		/*
+		//testing the sub texture stuff out.
+		letterTexture.reset(new OpenGLTexture("assets/textures/letterAndNumberCube.png"));
 		//setting the sub textures in this texture file.
-		//letterCube = start { 0.0f, 0.0f } / end { 1.0f, 0.5f }
-		//numberCube = start { 0.0f, 0.5f } / end { 1.0f, 1.0f }
+		//example - letterCube = start { 0.0f, 0.0f } / end { 1.0f, 0.5f } && numberCube = start { 0.0f, 0.5f } / end { 1.0f, 1.0f }
 		SubTexture letterCube(letterTexture, { 0.0f, 0.0f }, { 1.0f, 0.5f });
 		SubTexture numberCube(letterTexture, { 0.0f, 0.5f }, { 1.0f, 1.0f });
 		*/

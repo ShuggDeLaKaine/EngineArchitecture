@@ -66,7 +66,7 @@ namespace Engine
 
 	}
 
-	void OpenGLVertexArray::setIndexBuffer(const std::shared_ptr<OpenGLIndexBuffer>& indexBuffer)
+	void OpenGLVertexArray::setIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
 	{
 		m_indexBuffer = indexBuffer;
 	}

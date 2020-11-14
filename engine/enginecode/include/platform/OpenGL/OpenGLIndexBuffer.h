@@ -1,20 +1,19 @@
 /** \file OpenGLIndexBuffer.h */
 #pragma once
-
-#include <cstdint>
+#include "rendering/indexBuffer.h"
 
 namespace Engine
 {
 	/**
 	* \class OpenGLIndexBuffer
 	*/
-	class OpenGLIndexBuffer //to inherit for abstraction in the future
+	class OpenGLIndexBuffer : public IndexBuffer //inherit for abstraction.
 	{
 	public:
 		OpenGLIndexBuffer(uint32_t* indices, uint32_t count);		//!< constructor
-		~OpenGLIndexBuffer();										//!< destructor.
-		inline uint32_t getRenderID() const { return m_OpenGL_ID; }	//!< gets and returns the renderer ID.
-		inline uint32_t getCount() { return m_count; }				//!< gets and returns the count
+		virtual ~OpenGLIndexBuffer();								//!< destructor.
+		virtual inline uint32_t getRenderID() const override { return m_OpenGL_ID; }	//!< gets and returns the renderer ID.
+		virtual inline uint32_t getCount() const override { return m_count; }			//!< gets and returns the count
 
 	private:
 		uint32_t m_OpenGL_ID;		//!< OpenGL render identifier 
