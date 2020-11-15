@@ -129,7 +129,7 @@ namespace Engine
 
 	OpenGLShader::~OpenGLShader()
 	{
-		glDeleteShader(m_OpenGL_ID);
+		glDeleteProgram(m_OpenGL_ID);
 	}
 
 	void OpenGLShader::uploadInt(const char * name, int value)

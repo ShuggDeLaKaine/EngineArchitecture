@@ -15,9 +15,6 @@
 */
 	#include "platform/GLFW/GLFWSystem.h"
 #endif //  NG_PLATFORM_WINDOWS
-#include "platform/OpenGL/OpenGLVertexArray.h"
-#include "platform/OpenGL/OpenGLShader.h"
-#include "platform/OpenGL/OpenGLTexture.h"
 
 #include "rendering/subTexture.h"
 #include "rendering/indexBuffer.h"
