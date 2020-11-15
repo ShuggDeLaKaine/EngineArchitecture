@@ -1,28 +1,27 @@
 /** \file OpenGLShader.h */
 #pragma once
 
-#include <cstdint>
-#include <glm/glm.hpp>
+#include "rendering/shaders.h"
 
 namespace Engine
 {
 	/** \class OpenGLShader
 	* class to take in text, compile into shader program.
 	*/
-	class OpenGLShader
+	class OpenGLShader : public Shaders
 	{
 	public:
 		OpenGLShader(const char* vertexFilePath, const char* fragmentFilePath);	//!< constructor, takes the filepaths for text files.
-		OpenGLShader(const char* filePath);						//!< another constructor, just takes a single file path, can put all shaders into a single file.
-		~OpenGLShader();										//!< destructor.
-		uint32_t getRenderID() const { return m_OpenGL_ID; };	//!< gets and returns the renderer ID.
-
-		void uploadInt(const char* name, int value);			//!< uploading a texture (just an int) 
-		void uploadFloat(const char* name, float value);				//!< upload single float.
-		void uploadFloat2(const char* name, const glm::vec2& value);	//!< upload 2 float combination.
-		void uploadFloat3(const char* name, const glm::vec3& value);	//!< upload 3 float combination.
-		void uploadFloat4(const char* name, const glm::vec4& value);	//!< upload 4 float combination.
-		void uploatMat4(const char* name, const glm::mat4& value);		//!< upload model matrices.
+		OpenGLShader(const char* filePath);								//!< constructor, takes a single file path, can put all shaders into a single file.
+		virtual ~OpenGLShader();										//!< destructor.
+		virtual uint32_t getRenderID() const { return m_OpenGL_ID; };	//!< gets and returns the renderer ID.
+		 
+		virtual void uploadInt(const char* name, int value) override;			//!< uploading a texture (just an int) 
+		virtual void uploadFloat(const char* name, float value) override;				//!< upload single float.
+		virtual void uploadFloat2(const char* name, const glm::vec2& value) override;	//!< upload 2 float combination.
+		virtual void uploadFloat3(const char* name, const glm::vec3& value) override;	//!< upload 3 float combination.
+		virtual void uploadFloat4(const char* name, const glm::vec4& value) override;	//!< upload 4 float combination.
+		virtual void uploatMat4(const char* name, const glm::mat4& value) override;		//!< upload model matrices.
 
 	private:
 		uint32_t m_OpenGL_ID;		//!< OpenGL render identifier. 

@@ -7,10 +7,12 @@
 #include "rendering/indexBuffer.h"
 #include "rendering/vertexBuffer.h"
 #include "rendering/vertexArray.h"
+#include "rendering/shaders.h"
 
 #include "platform/OpenGL/OpenGLIndexBuffer.h"
 #include "platform/OpenGL/OpenGLVertexBuffer.h"
 #include "platform/OpenGL/OpenGLVertexArray.h"
+#include "platform/OpenGL/OpenGLShader.h"
 
 
 namespace Engine
@@ -85,7 +87,51 @@ namespace Engine
 
 		//otherwise return nullptr.
 		return nullptr;
-
 	}
 
+	//
+	Shaders* Shaders::create(const char* vertexFilePath, const char* fragmentFilePath)
+	{
+		switch (RenderAPI::getAPI())
+		{
+		case RenderAPI::API::None:
+			Log::error("No rendering API; not supported, SORT IT OUT!");
+			break;
+		case RenderAPI::API::OpenGL:
+			return new OpenGLShader(vertexFilePath, fragmentFilePath);
+
+		case RenderAPI::API::Direct3D:
+			Log::error("DIRECT3D rendering API is not supported at this time.");
+			break;
+		case RenderAPI::API::Vulkan:
+			Log::error("VULKAN rendering API is not supported at this time.");
+			break;
+		}
+
+		//otherwise return nullptr.
+		return nullptr;
+	}
+
+	//
+	Shaders* Shaders::create(const char* filePath)
+	{
+		switch (RenderAPI::getAPI())
+		{
+		case RenderAPI::API::None:
+			Log::error("No rendering API; not supported, SORT IT OUT!");
+			break;
+		case RenderAPI::API::OpenGL:
+			return new OpenGLShader(filePath);
+
+		case RenderAPI::API::Direct3D:
+			Log::error("DIRECT3D rendering API is not supported at this time.");
+			break;
+		case RenderAPI::API::Vulkan:
+			Log::error("VULKAN rendering API is not supported at this time.");
+			break;
+		}
+
+		//otherwise return nullptr.
+		return nullptr;
+	}
 }
