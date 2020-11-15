@@ -24,7 +24,7 @@
 #include "rendering/vertexBuffer.h"
 #include "rendering/vertexArray.h"
 #include "rendering/shaders.h"
-
+#include "rendering/textures.h"
 
 
 namespace Engine {
@@ -351,11 +351,11 @@ namespace Engine {
 
 #pragma region TEXTURES
 
-		std::shared_ptr<OpenGLTexture> letterTexture;
-		letterTexture.reset(new OpenGLTexture("assets/textures/letterCube.png"));
+		std::shared_ptr<Textures> letterTexture;
+		letterTexture.reset(Textures::create("assets/textures/letterCube.png"));
 
-		std::shared_ptr<OpenGLTexture> numberTexture;
-		numberTexture.reset(new OpenGLTexture("assets/textures/numberCube.png"));
+		std::shared_ptr<Textures> numberTexture;
+		numberTexture.reset(Textures::create("assets/textures/numberCube.png"));
 
 		/*
 		//testing the sub texture stuff out.
