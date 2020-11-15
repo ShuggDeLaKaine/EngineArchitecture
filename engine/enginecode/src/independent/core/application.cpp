@@ -22,6 +22,7 @@
 #include "rendering/subTexture.h"
 #include "rendering/indexBuffer.h"
 #include "rendering/vertexBuffer.h"
+#include "rendering/vertexArray.h"
 
 
 
@@ -295,7 +296,7 @@ namespace Engine {
 
 #pragma region GL_BUFFERS
 		//SETTING UP THE CUBE.
-		std::shared_ptr<OpenGLVertexArray> cubeVAO;
+		std::shared_ptr<VertexArray> cubeVAO;
 		std::shared_ptr<VertexBuffer> cubeVBO;
 		std::shared_ptr<IndexBuffer> cubeIBO;
 
@@ -307,7 +308,7 @@ namespace Engine {
 		};
 
 		//create/reset the VAO, VBO & IBO.
-		cubeVAO.reset(new OpenGLVertexArray());
+		cubeVAO.reset(VertexArray::create());
 		cubeVBO.reset(VertexBuffer::create(cubeVertices, sizeof(cubeVertices), cubeBL));
 		cubeIBO.reset(IndexBuffer::create(cubeIndices, 36));
 
@@ -317,7 +318,7 @@ namespace Engine {
 
 
 		//SETTING UP THE PYRAMID.
-		std::shared_ptr<OpenGLVertexArray> pyramidVAO;
+		std::shared_ptr<VertexArray> pyramidVAO;
 		std::shared_ptr<VertexBuffer> pyramidVBO;
 		std::shared_ptr<IndexBuffer> pyramidIBO;
 
@@ -328,7 +329,7 @@ namespace Engine {
 		};
 
 		//create/reset the VAO, VBO & IBO.
-		pyramidVAO.reset(new OpenGLVertexArray());
+		pyramidVAO.reset(VertexArray::create());
 		pyramidVBO.reset(VertexBuffer::create(pyramidVertices, sizeof(pyramidVertices), pyramidBL));
 		pyramidIBO.reset(IndexBuffer::create(pyramidIndices, 18));
 

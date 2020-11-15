@@ -1,12 +1,17 @@
 /** \file renderAPI.cpp */
 
 #include "engine_pch.h"
+#include "systems/log.h"
+
 #include "rendering/renderAPI.h"
 #include "rendering/indexBuffer.h"
 #include "rendering/vertexBuffer.h"
+#include "rendering/vertexArray.h"
+
 #include "platform/OpenGL/OpenGLIndexBuffer.h"
 #include "platform/OpenGL/OpenGLVertexBuffer.h"
-#include "systems/log.h"
+#include "platform/OpenGL/OpenGLVertexArray.h"
+
 
 namespace Engine
 {
@@ -57,6 +62,30 @@ namespace Engine
 
 		//otherwise return nullptr.
 		return nullptr;
+	}
+
+	//
+	VertexArray* VertexArray::create()
+	{
+		switch (RenderAPI::getAPI())
+		{
+		case RenderAPI::API::None:
+			Log::error("No rendering API; not supported, SORT IT OUT!");
+			break;
+		case RenderAPI::API::OpenGL:
+			return new OpenGLVertexArray();
+
+		case RenderAPI::API::Direct3D:
+			Log::error("DIRECT3D rendering API is not supported at this time.");
+			break;
+		case RenderAPI::API::Vulkan:
+			Log::error("VULKAN rendering API is not supported at this time.");
+			break;
+		}
+
+		//otherwise return nullptr.
+		return nullptr;
+
 	}
 
 }
