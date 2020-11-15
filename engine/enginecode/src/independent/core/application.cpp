@@ -25,11 +25,48 @@
 
 
 namespace Engine {
+
+//temporary class for vertex
+/* when done properly need three classes for final engine;
+* one for 2d rendering - 2d vertices,
+* one for static 3d vertices,
+* one for animated 3d vertices. */
+#pragma region TEMP_CLASS
+	class FCVertex
+	{
+	public:
+		FCVertex() : 
+			m_position(glm::vec3(0.0f)), 
+			m_colour(glm::vec3(0.0f)) 
+		{};		//default constructor
+		FCVertex(const glm::vec3& m_position, const glm::vec3& m_colour) : 
+			m_position(m_position), 
+			m_colour(m_colour) 
+		{};		//constructor
+		inline BufferLayout static getLayout() { return s_layout; };
+		glm::vec3 m_position;
+		glm::vec3 m_colour;
+	private:
+		static BufferLayout s_layout;
+	};
+
+#pragma endregion
+	//setting temp static vars 
+	BufferLayout FCVertex::s_layout = { ShaderDataType::Float3, ShaderDataType::Float3 };
+
 	// Set static vars
 	Application* Application::s_instance = nullptr;
 
 	Application::Application()
 	{
+		/*examples of how you can check the the byte aligned of raw data.
+		//use uint32_t's though.
+		int alignVec3 = alignof(glm::vec3);
+		int alignFCVertex = alignof(FCVertex);
+		int sizeofVec3 = sizeof(glm::vec3);
+		int sizeofFCVertex = sizeof(FCVertex);
+		*/
+
 		if (s_instance == nullptr)
 		{
 			s_instance = this;
@@ -200,11 +237,8 @@ namespace Engine {
 		m_logSystem->stop();
 	}
 
-
 	void Application::run()
 	{
-
-
 
 
 #pragma region RAW_DATA
@@ -242,29 +276,26 @@ namespace Engine {
 				 0.5f, -0.5f, 0.5f,   1.f,  0.f,  0.f,  0.66f, 1.0f
 		};
 
-		float pyramidVertices[6 * 16] = {
-			//	 <------ Pos ------>  <--- colour ---> 
-				-0.5f, -0.5f, -0.5f,  0.8f, 0.2f, 0.8f, //  square Magneta
-				 0.5f, -0.5f, -0.5f,  0.8f, 0.2f, 0.8f,
-				 0.5f, -0.5f,  0.5f,  0.8f, 0.2f, 0.8f,
-				-0.5f, -0.5f,  0.5f,  0.8f, 0.2f, 0.8f,
 
-				-0.5f, -0.5f, -0.5f,  0.2f, 0.8f, 0.2f,  //triangle Green
-				-0.5f, -0.5f,  0.5f,  0.2f, 0.8f, 0.2f,
-				 0.0f,  0.5f,  0.0f,  0.2f, 0.8f, 0.2f,
+		std::vector<FCVertex> pyramidVertices(16);
+		//	                              <------- Pos ------->  <---- colour ----> 
+		pyramidVertices.at(0)  = FCVertex({-0.5f, -0.5f, -0.5f}, {0.8f, 0.2f, 0.8f});	//square Magneta
+		pyramidVertices.at(1)  = FCVertex({ 0.5f, -0.5f, -0.5f}, {0.8f, 0.2f, 0.8f});
+		pyramidVertices.at(2)  = FCVertex({ 0.5f, -0.5f,  0.5f}, {0.8f, 0.2f, 0.8f});
+		pyramidVertices.at(3)  = FCVertex({-0.5f, -0.5f,  0.5f}, {0.8f, 0.2f, 0.8f});
+		pyramidVertices.at(4)  = FCVertex({-0.5f, -0.5f, -0.5f}, {0.2f, 0.8f, 0.2f});	//triangle Green
+		pyramidVertices.at(5)  = FCVertex({-0.5f, -0.5f,  0.5f}, {0.2f, 0.8f, 0.2f});
+		pyramidVertices.at(6)  = FCVertex({ 0.0f,  0.5f,  0.0f}, {0.2f, 0.8f, 0.2f});
+		pyramidVertices.at(7)  = FCVertex({-0.5f, -0.5f,  0.5f}, {1.0f, 0.0f, 0.0f});	//triangle Red
+		pyramidVertices.at(8)  = FCVertex({ 0.5f, -0.5f,  0.5f}, {1.0f, 0.0f, 0.0f});
+		pyramidVertices.at(9)  = FCVertex({ 0.0f,  0.5f,  0.0f}, {1.0f, 0.0f, 0.0f});
+		pyramidVertices.at(10) = FCVertex({ 0.5f, -0.5f,  0.5f}, {0.8f, 0.8f, 0.2f});	//triangle Yellow
+		pyramidVertices.at(11) = FCVertex({ 0.5f, -0.5f, -0.5f}, {0.8f, 0.8f, 0.2f});
+		pyramidVertices.at(12) = FCVertex({ 0.0f,  0.5f,  0.0f}, {0.8f, 0.8f, 0.2f});
+		pyramidVertices.at(13) = FCVertex({ 0.5f, -0.5f, -0.5f}, {0.0f, 0.2f, 1.0f});	//triangle Blue
+		pyramidVertices.at(14) = FCVertex({-0.5f, -0.5f, -0.5f}, {0.0f, 0.2f, 1.0f});
+		pyramidVertices.at(15) = FCVertex({ 0.0f,  0.5f,  0.0f}, {0.0f, 0.2f, 1.0f});														  
 
-				-0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.f, //triangle Red
-				 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.f,
-				 0.0f,  0.5f,  0.0f,  1.0f, 0.0f, 0.f,
-
-				 0.5f, -0.5f,  0.5f,  0.8f, 0.8f, 0.2f, //  triangle Yellow
-				 0.5f, -0.5f, -0.5f,  0.8f, 0.8f, 0.2f,
-				 0.0f,  0.5f,  0.0f,  0.8f, 0.8f, 0.2f,
-
-				 0.5f, -0.5f, -0.5f,  0.f, 0.2f, 1.0f,//  triangle Blue
-				-0.5f, -0.5f, -0.5f,  0.f, 0.2f, 1.0f,
-				 0.0f,  0.5f,  0.0f,  0.f, 0.2f, 1.0f
-		};
 
 		uint32_t pyramidIndices[3 * 6] =
 		{
@@ -320,15 +351,17 @@ namespace Engine {
 		std::shared_ptr<VertexBuffer> pyramidVBO;
 		std::shared_ptr<IndexBuffer> pyramidIBO;
 
+		/*
 		//creating a buffer layout with its initialiser list for a pyramid.
 		BufferLayout pyramidBL = {
 			{ ShaderDataType::Float3, false },
 			{ ShaderDataType::Float3, false }
 		};
+		*/
 
 		//create/reset the VAO, VBO & IBO.
 		pyramidVAO.reset(VertexArray::create());
-		pyramidVBO.reset(VertexBuffer::create(pyramidVertices, sizeof(pyramidVertices), pyramidBL));
+		pyramidVBO.reset(VertexBuffer::create(pyramidVertices.data(), sizeof(FCVertex) * pyramidVertices.size(), FCVertex::getLayout()));
 		pyramidIBO.reset(IndexBuffer::create(pyramidIndices, 18));
 
 		//set the vertex and index buffers. 
