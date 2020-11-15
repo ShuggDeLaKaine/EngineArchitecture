@@ -33,7 +33,7 @@ namespace Engine
 		glDeleteVertexArrays(1, &m_OpenGL_ID);
 	}
 
-	void OpenGLVertexArray::addVertexBuffer(const std::shared_ptr<OpenGLVertexBuffer>& vertexBuffer)
+	void OpenGLVertexArray::addVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
 	{
 		//need to bind first.
 		glBindVertexArray(m_OpenGL_ID);
