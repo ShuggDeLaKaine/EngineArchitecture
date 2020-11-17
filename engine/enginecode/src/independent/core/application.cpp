@@ -264,6 +264,64 @@ namespace Engine {
 		m_logSystem->stop();
 	}
 
+	//TO DO!!! PUT THESE FUNCTIONS SOMEWHERE BETTER!
+	//utility functions, so maybe static functions in some class... maybe the BUFFERLAYOUT CLASS.
+	std::array<int16_t, 3> normalise(const glm::vec3& norm) 
+	{
+		std::array<int16_t, 3> result;
+
+		//do x first.
+		if (norm.x == 1.0)
+			result.at(0) = INT16_MAX;
+		else if (norm.x == -1.0)
+			result.at(0) = INT16_MIN;
+		else
+			result.at(0) = static_cast<int16_t>(norm.x * static_cast<float>(INT16_MAX));
+
+		//now y
+		if (norm.y == 1.0)
+			result.at(1) = INT16_MAX;
+		else if (norm.y == -1.0)
+			result.at(1) = INT16_MIN;
+		else
+			result.at(1) = static_cast<int16_t>(norm.y * static_cast<float>(INT16_MAX));
+
+		//and now z
+		if (norm.z == 1.0)
+			result.at(2) = INT16_MAX;
+		else if (norm.z == -1.0)
+			result.at(2) = INT16_MIN;
+		else
+			result.at(2) = static_cast<int16_t>(norm.z * static_cast<float>(INT16_MAX));
+
+		//finally, result the result.
+		return result;
+	};
+
+	std::array<int16_t, 2> normalise(const glm::vec2& uv)
+	{
+		std::array<int16_t, 2> result;
+
+		//do x first.
+		if (uv.x == 1.0)
+			result.at(0) = INT16_MAX;
+		else if (uv.x == -1.0)
+			result.at(0) = INT16_MIN;
+		else
+			result.at(0) = static_cast<int16_t>(uv.x * static_cast<float>(INT16_MAX));
+
+		//now y
+		if (uv.y == 1.0)
+			result.at(1) = INT16_MAX;
+		else if (uv.y == -1.0)
+			result.at(1) = INT16_MIN;
+		else
+			result.at(1) = static_cast<int16_t>(uv.y * static_cast<float>(INT16_MAX));
+
+		//finally, result the result.
+		return result;
+	};
+
 	void Application::run()
 	{
 
@@ -271,31 +329,31 @@ namespace Engine {
 #pragma region RAW_DATA
 		
 		std::vector<TPVertexNormalised> cubeVertices(24);
-		//										 <------- Pos ------->   <----- normal ----->  <---- UV ---->
-		cubeVertices.at(0)	= TPVertexNormalised({ 0.5f,  0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f}, {0.0f,  0.0f});
-		cubeVertices.at(1)	= TPVertexNormalised({ 0.5f, -0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f}, {0.0f,  0.5f});
-		cubeVertices.at(2)	= TPVertexNormalised({-0.5f, -0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f}, {0.33f, 0.5f});
-		cubeVertices.at(3)	= TPVertexNormalised({-0.5f,  0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f}, {0.33f, 0.0f});
-		cubeVertices.at(4)	= TPVertexNormalised({-0.5f, -0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f}, {0.33f, 0.5f});
-		cubeVertices.at(5)	= TPVertexNormalised({ 0.5f, -0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f}, {0.66f, 0.5f});
-		cubeVertices.at(6)	= TPVertexNormalised({ 0.5f,  0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f}, {0.66f, 0.0f});
-		cubeVertices.at(7)	= TPVertexNormalised({-0.5f,  0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f}, {0.33f, 0.0f});
-		cubeVertices.at(8)	= TPVertexNormalised({-0.5f, -0.5f, -0.5f}, { 0.0f, -1.0f,  0.0f}, {1.0f,  0.0f});
-		cubeVertices.at(9)	= TPVertexNormalised({ 0.5f, -0.5f, -0.5f}, { 0.0f, -1.0f,  0.0f}, {0.66f, 0.0f});
-		cubeVertices.at(10)	= TPVertexNormalised({ 0.5f, -0.5f,  0.5f}, { 0.0f, -1.0f,  0.0f}, {0.66f, 0.5f});
-		cubeVertices.at(11)	= TPVertexNormalised({-0.5f, -0.5f,  0.5f}, { 0.0f, -1.0f,  0.0f}, {1.0f,  0.5f});
-		cubeVertices.at(12)	= TPVertexNormalised({ 0.5f,  0.5f,  0.5f}, { 0.0f,  1.0f,  0.0f}, {0.0f,  0.5f});
-		cubeVertices.at(13)	= TPVertexNormalised({ 0.5f,  0.5f, -0.5f}, { 0.0f,  1.0f,  0.0f}, {0.0f,  1.0f});
-		cubeVertices.at(14)	= TPVertexNormalised({-0.5f,  0.5f, -0.5f}, { 0.0f,  1.0f,  0.0f}, {0.33f, 1.0f});
-		cubeVertices.at(15)	= TPVertexNormalised({-0.5f,  0.5f,  0.5f}, { 0.0f,  1.0f,  0.0f}, {0.3f,  0.5f});
-		cubeVertices.at(16)	= TPVertexNormalised({-0.5f,  0.5f,  0.5f}, {-1.0f,  0.0f,  0.0f}, {0.66f, 0.5f});
-		cubeVertices.at(17)	= TPVertexNormalised({-0.5f,  0.5f, -0.5f}, {-1.0f,  0.0f,  0.0f}, {0.33f, 0.5f});
-		cubeVertices.at(18)	= TPVertexNormalised({-0.5f, -0.5f, -0.5f}, {-1.0f,  0.0f,  0.0f}, {0.33f, 1.0f});
-		cubeVertices.at(19)	= TPVertexNormalised({-0.5f, -0.5f,  0.5f}, {-1.0f,  0.0f,  0.0f}, {0.66f, 1.0f});
-		cubeVertices.at(20)	= TPVertexNormalised({ 0.5f, -0.5f, -0.5f}, { 1.0f,  0.0f,  0.0f}, {1.0f,  1.0f});
-		cubeVertices.at(21)	= TPVertexNormalised({ 0.5f,  0.5f, -0.5f}, { 1.0f,  0.0f,  0.0f}, {1.0f,  0.5f});
-		cubeVertices.at(22)	= TPVertexNormalised({ 0.5f,  0.5f,  0.5f}, { 1.0f,  0.0f,  0.0f}, {0.66f, 0.5f});
-		cubeVertices.at(23)	= TPVertexNormalised({ 0.5f, -0.5f,  0.5f}, { 1.0f,  0.0f,  0.0f}, {0.66f, 1.0f});
+		//										 <------- Pos ------->             <----- normal ----->             <---- UV ---->
+		cubeVertices.at(0)	= TPVertexNormalised({ 0.5f,  0.5f, -0.5f}, normalise({ 0.0f,  0.0f, -1.0f}), normalise({0.0f,  0.0f}));
+		cubeVertices.at(1)	= TPVertexNormalised({ 0.5f, -0.5f, -0.5f}, normalise({ 0.0f,  0.0f, -1.0f}), normalise({0.0f,  0.5f}));
+		cubeVertices.at(2)	= TPVertexNormalised({-0.5f, -0.5f, -0.5f}, normalise({ 0.0f,  0.0f, -1.0f}), normalise({0.33f, 0.5f}));
+		cubeVertices.at(3)	= TPVertexNormalised({-0.5f,  0.5f, -0.5f}, normalise({ 0.0f,  0.0f, -1.0f}), normalise({0.33f, 0.0f}));
+		cubeVertices.at(4)	= TPVertexNormalised({-0.5f, -0.5f,  0.5f}, normalise({ 0.0f,  0.0f,  1.0f}), normalise({0.33f, 0.5f}));
+		cubeVertices.at(5)	= TPVertexNormalised({ 0.5f, -0.5f,  0.5f}, normalise({ 0.0f,  0.0f,  1.0f}), normalise({0.66f, 0.5f}));
+		cubeVertices.at(6)	= TPVertexNormalised({ 0.5f,  0.5f,  0.5f}, normalise({ 0.0f,  0.0f,  1.0f}), normalise({0.66f, 0.0f}));
+		cubeVertices.at(7)	= TPVertexNormalised({-0.5f,  0.5f,  0.5f}, normalise({ 0.0f,  0.0f,  1.0f}), normalise({0.33f, 0.0f}));
+		cubeVertices.at(8)	= TPVertexNormalised({-0.5f, -0.5f, -0.5f}, normalise({ 0.0f, -1.0f,  0.0f}), normalise({1.0f,  0.0f}));
+		cubeVertices.at(9)	= TPVertexNormalised({ 0.5f, -0.5f, -0.5f}, normalise({ 0.0f, -1.0f,  0.0f}), normalise({0.66f, 0.0f}));
+		cubeVertices.at(10)	= TPVertexNormalised({ 0.5f, -0.5f,  0.5f}, normalise({ 0.0f, -1.0f,  0.0f}), normalise({0.66f, 0.5f}));
+		cubeVertices.at(11)	= TPVertexNormalised({-0.5f, -0.5f,  0.5f}, normalise({ 0.0f, -1.0f,  0.0f}), normalise({1.0f,  0.5f}));
+		cubeVertices.at(12)	= TPVertexNormalised({ 0.5f,  0.5f,  0.5f}, normalise({ 0.0f,  1.0f,  0.0f}), normalise({0.0f,  0.5f}));
+		cubeVertices.at(13)	= TPVertexNormalised({ 0.5f,  0.5f, -0.5f}, normalise({ 0.0f,  1.0f,  0.0f}), normalise({0.0f,  1.0f}));
+		cubeVertices.at(14)	= TPVertexNormalised({-0.5f,  0.5f, -0.5f}, normalise({ 0.0f,  1.0f,  0.0f}), normalise({0.33f, 1.0f}));
+		cubeVertices.at(15)	= TPVertexNormalised({-0.5f,  0.5f,  0.5f}, normalise({ 0.0f,  1.0f,  0.0f}), normalise({0.3f,  0.5f}));
+		cubeVertices.at(16)	= TPVertexNormalised({-0.5f,  0.5f,  0.5f}, normalise({-1.0f,  0.0f,  0.0f}), normalise({0.66f, 0.5f}));
+		cubeVertices.at(17)	= TPVertexNormalised({-0.5f,  0.5f, -0.5f}, normalise({-1.0f,  0.0f,  0.0f}), normalise({0.33f, 0.5f}));
+		cubeVertices.at(18)	= TPVertexNormalised({-0.5f, -0.5f, -0.5f}, normalise({-1.0f,  0.0f,  0.0f}), normalise({0.33f, 1.0f}));
+		cubeVertices.at(19)	= TPVertexNormalised({-0.5f, -0.5f,  0.5f}, normalise({-1.0f,  0.0f,  0.0f}), normalise({0.66f, 1.0f}));
+		cubeVertices.at(20)	= TPVertexNormalised({ 0.5f, -0.5f, -0.5f}, normalise({ 1.0f,  0.0f,  0.0f}), normalise({1.0f,  1.0f}));
+		cubeVertices.at(21)	= TPVertexNormalised({ 0.5f,  0.5f, -0.5f}, normalise({ 1.0f,  0.0f,  0.0f}), normalise({1.0f,  0.5f}));
+		cubeVertices.at(22)	= TPVertexNormalised({ 0.5f,  0.5f,  0.5f}, normalise({ 1.0f,  0.0f,  0.0f}), normalise({0.66f, 0.5f}));
+		cubeVertices.at(23)	= TPVertexNormalised({ 0.5f, -0.5f,  0.5f}, normalise({ 1.0f,  0.0f,  0.0f}), normalise({0.66f, 1.0f}));
 
 
 		std::vector<FCVertex> pyramidVertices(16);
