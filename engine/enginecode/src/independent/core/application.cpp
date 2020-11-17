@@ -294,7 +294,7 @@ namespace Engine {
 		else
 			result.at(2) = static_cast<int16_t>(norm.z * static_cast<float>(INT16_MAX));
 
-		//finally, result the result.
+		//finally, return the result.
 		return result;
 	};
 
@@ -318,7 +318,7 @@ namespace Engine {
 		else
 			result.at(1) = static_cast<int16_t>(uv.y * static_cast<float>(INT16_MAX));
 
-		//finally, result the result.
+		//finally, return the result.
 		return result;
 	};
 

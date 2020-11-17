@@ -45,5 +45,9 @@ void main()
 	vec3 specular = specularStrength * spec * u_lightColour;  
 	
 	colour = vec4((ambient + diffuse + specular), 1.0) * texture(u_texData, texCoord);
+	
+	//BELOW FOR DEBUGGING TO VISUAL NORMAL AND UV DATA
+	//colour = vec4(normal, 1.0);
+	//colour = vec4(texCoord, 0.0, 1.0);
 }
 
