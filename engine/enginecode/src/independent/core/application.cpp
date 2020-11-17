@@ -32,27 +32,53 @@ namespace Engine {
 * one for static 3d vertices,
 * one for animated 3d vertices. */
 #pragma region TEMP_CLASS
+	//flat colour vertex class
 	class FCVertex
 	{
 	public:
 		FCVertex() : 
 			m_position(glm::vec3(0.0f)), 
 			m_colour(glm::vec3(0.0f)) 
-		{};		//default constructor
-		FCVertex(const glm::vec3& m_position, const glm::vec3& m_colour) : 
-			m_position(m_position), 
-			m_colour(m_colour) 
-		{};		//constructor
-		inline BufferLayout static getLayout() { return s_layout; };
-		glm::vec3 m_position;
-		glm::vec3 m_colour;
+		{};		//default constructor, initalising values to 0.
+		FCVertex(const glm::vec3& position, const glm::vec3& colour) : 
+			m_position(position), 
+			m_colour(colour) 
+		{};		//constructor with params for position and colour.
+		inline BufferLayout static getBufferLayout() { return s_BufferLayout; };	//!< accessor function to get the static buffer layout.
+		glm::vec3 m_position;		//!< vec3 to take position of vertex.
+		glm::vec3 m_colour;			//!< vec3 to take RGB colour of vertex.
 	private:
-		static BufferLayout s_layout;
+		static BufferLayout s_BufferLayout;
+	};
+
+	//textured phong normalised vertex class
+	class TPVertexNormalised
+	{
+	public:
+		TPVertexNormalised() :
+			m_position(glm::vec3(0.0f)),
+			m_normalise({ 0, 0, 0 }),
+			m_UVcoords({ 0, 0 })
+		{};		//!< default constructor, initalising values to 0.
+		TPVertexNormalised(const glm::vec3& position, const std::array<int16_t, 3> normal, const std::array<int16_t, 2> uv) :
+			m_position(position),
+			m_normalise(normal),
+			m_UVcoords(uv)
+		{};		//!< constructor with params for a textured phong, position, normal values and UV coordinates.
+
+		glm::vec3 m_position;						//!< vec3 to take position of vertex.
+		std::array<int16_t, 3> m_normalise; 		//!< short var to take normalised values. Array used as very easy to pass back arrays from functions.
+		std::array<int16_t, 2> m_UVcoords;			//!< short var to take UV coordinate values. Array used as very easy to pass back arrays from functions.
+
+		inline BufferLayout static getBufferLayout() { return s_BufferLayout; }		//!< accessor function to get the static buffer layout.
+	private:
+		static BufferLayout s_BufferLayout;
 	};
 
 #pragma endregion
 	//setting temp static vars 
-	BufferLayout FCVertex::s_layout = { ShaderDataType::Float3, ShaderDataType::Float3 };
+	BufferLayout FCVertex::s_BufferLayout = { ShaderDataType::Float3, ShaderDataType::Float3 };
+	BufferLayout TPVertexNormalised::s_BufferLayout = { ShaderDataType::Float3, ShaderDataType::Short3, ShaderDataType::Float2 };
 
 	// Set static vars
 	Application* Application::s_instance = nullptr;
@@ -361,7 +387,7 @@ namespace Engine {
 
 		//create/reset the VAO, VBO & IBO.
 		pyramidVAO.reset(VertexArray::create());
-		pyramidVBO.reset(VertexBuffer::create(pyramidVertices.data(), sizeof(FCVertex) * pyramidVertices.size(), FCVertex::getLayout()));
+		pyramidVBO.reset(VertexBuffer::create(pyramidVertices.data(), sizeof(FCVertex) * pyramidVertices.size(), FCVertex::getBufferLayout()));
 		pyramidIBO.reset(IndexBuffer::create(pyramidIndices, 18));
 
 		//set the vertex and index buffers. 
