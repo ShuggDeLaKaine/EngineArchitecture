@@ -79,7 +79,7 @@ namespace Engine {
 
 	//setting temp static vars 
 	BufferLayout FCVertex::s_BufferLayout = { ShaderDataType::Float3, ShaderDataType::Float3 };
-	BufferLayout TPVertexNormalised::s_BufferLayout = { ShaderDataType::Float3, { ShaderDataType::Short3, true }, { ShaderDataType::Short2, true } };
+	BufferLayout TPVertexNormalised::s_BufferLayout = {{ShaderDataType::Float3, { ShaderDataType::Short3, true }, { ShaderDataType::Short2, true }}, 24 };
 
 	// Set static vars
 	Application* Application::s_instance = nullptr;
@@ -269,39 +269,33 @@ namespace Engine {
 
 
 #pragma region RAW_DATA
-
-		float cubeVertices[8 * 24] = {
-			//	 <------ Pos ------>  <--- normal --->  <-- UV -->
-				 0.5f,  0.5f, -0.5f,  0.f,  0.f, -1.f,  0.0f,  0.0f,
-				 0.5f, -0.5f, -0.5f,  0.f,  0.f, -1.f,  0.0f,  0.5f,
-				-0.5f, -0.5f, -0.5f,  0.f,  0.f, -1.f,  0.33f, 0.5f,
-				-0.5f,  0.5f, -0.5f,  0.f,  0.f, -1.f,  0.33f, 0.0f,
-
-				-0.5f, -0.5f, 0.5f,   0.f,  0.f,  1.f,  0.33f, 0.5f,
-				 0.5f, -0.5f, 0.5f,   0.f,  0.f,  1.f,  0.66f, 0.5f,
-				 0.5f,  0.5f, 0.5f,   0.f,  0.f,  1.f,  0.66f, 0.0f,
-				-0.5f,  0.5f, 0.5f,   0.f,  0.f,  1.f,  0.33f, 0.0f,
-
-				-0.5f, -0.5f, -0.5f,  0.f, -1.f,  0.f,  1.0f,  0.0f,
-				 0.5f, -0.5f, -0.5f,  0.f, -1.f,  0.f,  0.66f, 0.0f,
-				 0.5f, -0.5f, 0.5f,   0.f, -1.f,  0.f,  0.66f, 0.5f,
-				-0.5f, -0.5f, 0.5f,   0.f, -1.f,  0.f,  1.0f,  0.5f,
-
-				 0.5f,  0.5f, 0.5f,   0.f,  1.f,  0.f,  0.0f,  0.5f,
-				 0.5f,  0.5f, -0.5f,  0.f,  1.f,  0.f,  0.0f,  1.0f,
-				-0.5f,  0.5f, -0.5f,  0.f,  1.f,  0.f,  0.33f, 1.0f,
-				-0.5f,  0.5f, 0.5f,   0.f,  1.f,  0.f,  0.3f,  0.5f,
-
-				-0.5f,  0.5f, 0.5f,  -1.f,  0.f,  0.f,  0.66f, 0.5f,
-				-0.5f,  0.5f, -0.5f, -1.f,  0.f,  0.f,  0.33f, 0.5f,
-				-0.5f, -0.5f, -0.5f, -1.f,  0.f,  0.f,  0.33f, 1.0f,
-				-0.5f, -0.5f, 0.5f,  -1.f,  0.f,  0.f,  0.66f, 1.0f,
-
-				 0.5f, -0.5f, -0.5f,  1.f,  0.f,  0.f,  1.0f,  1.0f,
-				 0.5f,  0.5f, -0.5f,  1.f,  0.f,  0.f,  1.0f,  0.5f,
-				 0.5f,  0.5f, 0.5f,   1.f,  0.f,  0.f,  0.66f, 0.5f,
-				 0.5f, -0.5f, 0.5f,   1.f,  0.f,  0.f,  0.66f, 1.0f
-		};
+		
+		std::vector<TPVertexNormalised> cubeVertices(24);
+		//										 <------- Pos ------->   <----- normal ----->  <---- UV ---->
+		cubeVertices.at(0)	= TPVertexNormalised({ 0.5f,  0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f}, {0.0f,  0.0f});
+		cubeVertices.at(1)	= TPVertexNormalised({ 0.5f, -0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f}, {0.0f,  0.5f});
+		cubeVertices.at(2)	= TPVertexNormalised({-0.5f, -0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f}, {0.33f, 0.5f});
+		cubeVertices.at(3)	= TPVertexNormalised({-0.5f,  0.5f, -0.5f}, { 0.0f,  0.0f, -1.0f}, {0.33f, 0.0f});
+		cubeVertices.at(4)	= TPVertexNormalised({-0.5f, -0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f}, {0.33f, 0.5f});
+		cubeVertices.at(5)	= TPVertexNormalised({ 0.5f, -0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f}, {0.66f, 0.5f});
+		cubeVertices.at(6)	= TPVertexNormalised({ 0.5f,  0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f}, {0.66f, 0.0f});
+		cubeVertices.at(7)	= TPVertexNormalised({-0.5f,  0.5f,  0.5f}, { 0.0f,  0.0f,  1.0f}, {0.33f, 0.0f});
+		cubeVertices.at(8)	= TPVertexNormalised({-0.5f, -0.5f, -0.5f}, { 0.0f, -1.0f,  0.0f}, {1.0f,  0.0f});
+		cubeVertices.at(9)	= TPVertexNormalised({ 0.5f, -0.5f, -0.5f}, { 0.0f, -1.0f,  0.0f}, {0.66f, 0.0f});
+		cubeVertices.at(10)	= TPVertexNormalised({ 0.5f, -0.5f,  0.5f}, { 0.0f, -1.0f,  0.0f}, {0.66f, 0.5f});
+		cubeVertices.at(11)	= TPVertexNormalised({-0.5f, -0.5f,  0.5f}, { 0.0f, -1.0f,  0.0f}, {1.0f,  0.5f});
+		cubeVertices.at(12)	= TPVertexNormalised({ 0.5f,  0.5f,  0.5f}, { 0.0f,  1.0f,  0.0f}, {0.0f,  0.5f});
+		cubeVertices.at(13)	= TPVertexNormalised({ 0.5f,  0.5f, -0.5f}, { 0.0f,  1.0f,  0.0f}, {0.0f,  1.0f});
+		cubeVertices.at(14)	= TPVertexNormalised({-0.5f,  0.5f, -0.5f}, { 0.0f,  1.0f,  0.0f}, {0.33f, 1.0f});
+		cubeVertices.at(15)	= TPVertexNormalised({-0.5f,  0.5f,  0.5f}, { 0.0f,  1.0f,  0.0f}, {0.3f,  0.5f});
+		cubeVertices.at(16)	= TPVertexNormalised({-0.5f,  0.5f,  0.5f}, {-1.0f,  0.0f,  0.0f}, {0.66f, 0.5f});
+		cubeVertices.at(17)	= TPVertexNormalised({-0.5f,  0.5f, -0.5f}, {-1.0f,  0.0f,  0.0f}, {0.33f, 0.5f});
+		cubeVertices.at(18)	= TPVertexNormalised({-0.5f, -0.5f, -0.5f}, {-1.0f,  0.0f,  0.0f}, {0.33f, 1.0f});
+		cubeVertices.at(19)	= TPVertexNormalised({-0.5f, -0.5f,  0.5f}, {-1.0f,  0.0f,  0.0f}, {0.66f, 1.0f});
+		cubeVertices.at(20)	= TPVertexNormalised({ 0.5f, -0.5f, -0.5f}, { 1.0f,  0.0f,  0.0f}, {1.0f,  1.0f});
+		cubeVertices.at(21)	= TPVertexNormalised({ 0.5f,  0.5f, -0.5f}, { 1.0f,  0.0f,  0.0f}, {1.0f,  0.5f});
+		cubeVertices.at(22)	= TPVertexNormalised({ 0.5f,  0.5f,  0.5f}, { 1.0f,  0.0f,  0.0f}, {0.66f, 0.5f});
+		cubeVertices.at(23)	= TPVertexNormalised({ 0.5f, -0.5f,  0.5f}, { 1.0f,  0.0f,  0.0f}, {0.66f, 1.0f});
 
 
 		std::vector<FCVertex> pyramidVertices(16);
@@ -356,16 +350,18 @@ namespace Engine {
 		std::shared_ptr<VertexBuffer> cubeVBO;
 		std::shared_ptr<IndexBuffer> cubeIBO;
 
+		/* THIS IS UP IN THE TEMP VERTEX CLASSES
 		//creating a buffer layout with its initialiser list (check out bufferLayout.h)
 		BufferLayout cubeBL = {
 			{ ShaderDataType::Float3, false },
 			{ ShaderDataType::Float3, false },
 			{ ShaderDataType::Float2, false }
 		};
+		*/
 
 		//create/reset the VAO, VBO & IBO.
 		cubeVAO.reset(VertexArray::create());
-		cubeVBO.reset(VertexBuffer::create(cubeVertices, sizeof(cubeVertices), cubeBL));
+		cubeVBO.reset(VertexBuffer::create(cubeVertices.data(), sizeof(TPVertexNormalised) * cubeVertices.size(), TPVertexNormalised::getBufferLayout()));
 		cubeIBO.reset(IndexBuffer::create(cubeIndices, 36));
 
 		//set the vertex and index buffers.
@@ -378,7 +374,7 @@ namespace Engine {
 		std::shared_ptr<VertexBuffer> pyramidVBO;
 		std::shared_ptr<IndexBuffer> pyramidIBO;
 
-		/*
+		/* THIS IS UP IN THE TEMP VERTEX CLASSES
 		//creating a buffer layout with its initialiser list for a pyramid.
 		BufferLayout pyramidBL = {
 			{ ShaderDataType::Float3, false },

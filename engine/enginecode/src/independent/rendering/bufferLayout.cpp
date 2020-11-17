@@ -19,7 +19,13 @@ namespace Engine
 		* next offset will be the accumulation of whatever the sizes were.
 		* following one will be the size of all the previous elements added up.
 		* stride is the size of all the previous elements added up, plus the last one.
+		* EXTRA
+		* for new shorter packing of stride using shorts and floats rather than just floats.
+		* now initialised stride to 0, if stride has a none 0 value, need to leave it.
 		*/
+
+		//if(m_stride == 0)
+		//{
 
 		//create local offset variable and set to 0
 		uint32_t l_offset = 0;	
@@ -32,7 +38,13 @@ namespace Engine
 			//calculate the offset, add the size of this element to the offset.
 			l_offset += element.m_size;
 		}
-		//set the stride as the local offset.
-		m_stride = l_offset;
+
+		//if stride is equal to 0, then set the stride to the calculated value of local offset.
+		if(m_stride == 0)
+		{
+			m_stride = l_offset;
+		}
+
+		//}
 	}
 }

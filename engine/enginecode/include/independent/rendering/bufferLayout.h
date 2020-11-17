@@ -36,13 +36,14 @@ namespace Engine
 	{
 	public:
 		BufferLayout() {};			//!< default constructor.
-		BufferLayout(const std::initializer_list<BufferElement>& element) :
-			m_elements(element)
+		BufferLayout(const std::initializer_list<BufferElement>& element, uint32_t stride = 0) :
+			m_elements(element),
+			m_stride(stride)
 		{
 			calculateStrideAndOffset();
 		}							//!< constructor with params, returns the calculation of stride and offset.
 		inline uint32_t getStride() const { return m_stride; }		//!< get the length of the stride.
-		void addBufferElement(BufferElement element);			//!< add a buffer element.
+		void addBufferElement(BufferElement element);				//!< add a buffer element.
 		inline std::vector<BufferElement>::iterator begin() { return m_elements.begin(); }				//!< 
 		inline std::vector<BufferElement>::iterator end() { return m_elements.end(); }					//!< 
 		inline std::vector<BufferElement>::const_iterator begin() const { return m_elements.begin(); }	//!< 
