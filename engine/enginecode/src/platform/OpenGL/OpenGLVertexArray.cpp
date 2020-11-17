@@ -13,10 +13,14 @@ namespace Engine
 			//to make this faster can make an array.
 			switch (type)
 			{
-			case ShaderDataType::Float: return GL_FLOAT;
+			case ShaderDataType::Float:  return GL_FLOAT;
 			case ShaderDataType::Float2: return GL_FLOAT;
 			case ShaderDataType::Float3: return GL_FLOAT;
 			case ShaderDataType::Float4: return GL_FLOAT;
+			case ShaderDataType::Short:  return GL_SHORT;
+			case ShaderDataType::Short2: return GL_SHORT;
+			case ShaderDataType::Short3: return GL_SHORT;
+			case ShaderDataType::Short4: return GL_SHORT;
 			default: return GL_INVALID_ENUM;
 			}
 		}
