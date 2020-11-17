@@ -11,6 +11,7 @@ namespace Engine
 	{
 		None = 0, 
 		Float, Float2, Float3, Float4,
+		Short, Short2, Short3, Short4,
 
 	};
 
@@ -23,10 +24,14 @@ namespace Engine
 			//Will be MUCH FASTER.
 			switch (type)
 			{
-			case ShaderDataType::Float: return 4;			//size of a float is 4 bytes.
+			case ShaderDataType::Float:  return 4;			//size of a float is 4 bytes.
 			case ShaderDataType::Float2: return 4 * 2;		//2 floats is 8 bytes.
 			case ShaderDataType::Float3: return 4 * 3;		//3 floats is 12 bytes.
 			case ShaderDataType::Float4: return 4 * 4;		//4 floats is 16 bytes.
+			case ShaderDataType::Short:  return 2;			//size of a short is 2 bytes.
+			case ShaderDataType::Short2: return 2 * 2;		//2 floats is 4 bytes.
+			case ShaderDataType::Short3: return 2 * 3;		//3 floats is 6 bytes.
+			case ShaderDataType::Short4: return 2 * 4;		//4 floats is 8 bytes.
 			default: return 0;
 			}
 		}
@@ -35,10 +40,14 @@ namespace Engine
 		{
 			switch (type)
 			{
-			case ShaderDataType::Float: return 1;		//number of componets is 1.
+			case ShaderDataType::Float:  return 1;		//number of componets is 1.
 			case ShaderDataType::Float2: return 2;		//componets is 2.
 			case ShaderDataType::Float3: return 3;		//componets is 3.
 			case ShaderDataType::Float4: return 4;		//componets is 4.
+			case ShaderDataType::Short:  return 1;		//number of componets is 1.
+			case ShaderDataType::Short2: return 2;		//componets is 2.
+			case ShaderDataType::Short3: return 3;		//componets is 3.
+			case ShaderDataType::Short4: return 4;		//componets is 4.
 			default: return 0;
 			}
 

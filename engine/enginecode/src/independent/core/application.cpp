@@ -76,14 +76,15 @@ namespace Engine {
 	};
 
 #pragma endregion
+
 	//setting temp static vars 
 	BufferLayout FCVertex::s_BufferLayout = { ShaderDataType::Float3, ShaderDataType::Float3 };
-	BufferLayout TPVertexNormalised::s_BufferLayout = { ShaderDataType::Float3, ShaderDataType::Short3, ShaderDataType::Float2 };
+	BufferLayout TPVertexNormalised::s_BufferLayout = { ShaderDataType::Float3, { ShaderDataType::Short3, true }, { ShaderDataType::Short2, true } };
 
 	// Set static vars
 	Application* Application::s_instance = nullptr;
 
-	Application::Application()
+	Application::Application() 
 	{
 		/*examples of how you can check the the byte aligned of raw data.
 		//use uint32_t's though.
