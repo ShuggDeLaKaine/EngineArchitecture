@@ -22,6 +22,8 @@
 #include "rendering/vertexArray.h"
 #include "rendering/shaders.h"
 #include "rendering/textures.h"
+#include "rendering/uniformBuffer.h"
+
 
 
 namespace Engine {
@@ -511,6 +513,7 @@ namespace Engine {
 
 		//CAMERA UBO
 		uint32_t blockNum = 0;								//which block are we using.
+		/*
 		uint32_t cameraUBO_ID;								//openGL ID for camera UBO.
 		UniformBufferLayout cameraLayout = {{"u_projection", ShaderDataType::Mat4 }, {"u_view", ShaderDataType::Mat4 }};
 
@@ -535,6 +538,21 @@ namespace Engine {
 
 		//glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(projection));				//uploading projection between 0 and sizeof mat4 (64bytes).
 		//glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(view));	//uploading view but start off the sizeof mat4 and then the sizeof mat4 (64bytes).
+		*/
+
+		//generate, bind and set UBO for camera.
+		UniformBufferLayout cameraLayout = { {"u_projection", ShaderDataType::Mat4 }, {"u_view", ShaderDataType::Mat4 } };
+		std::shared_ptr<UniformBuffer> cameraUBO;
+		cameraUBO.reset(UniformBuffer::create(cameraLayout));
+
+		//now attach to shaders, FCShader first then TPShader.
+		cameraUBO->attachShaderBlock(FCShader, "b_camera");
+		cameraUBO->attachShaderBlock(TPShader, "b_camera");
+
+		//now send camera data to uniform buffer object.
+		cameraUBO->uploadDataToBlock("u_projection", glm::value_ptr(projection));
+		cameraUBO->uploadDataToBlock("u_view", glm::value_ptr(view));
+
 
 
 		//LIGHTING UBO	
@@ -552,7 +570,7 @@ namespace Engine {
 		glBindBufferRange(GL_UNIFORM_BUFFER, blockNum, lightsUBO_ID, 0, lightsDataSize);	//bind the range; to UNI_BUFFER, this block, this ubo, from 0 to data siz (ie all of it).
 		
 		//now attach to shaders, as lights just for the TPShader.
-		blockIndex = glGetUniformBlockIndex(TPShader->getRenderID(), "b_lights");			//first get the block number off the shader.
+		uint32_t blockIndex = glGetUniformBlockIndex(TPShader->getRenderID(), "b_lights");			//first get the block number off the shader.
 		glUniformBlockBinding(TPShader->getRenderID(), blockIndex, blockNum);				//link to binding point.
 		
 		//now send light data to uniform buffer object. These MUST be in the same order as in the shader file.

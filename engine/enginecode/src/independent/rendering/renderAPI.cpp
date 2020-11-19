@@ -46,7 +46,7 @@ namespace Engine
 	}
 
 	//
-	VertexBuffer* VertexBuffer::create(void* vertices, uint32_t size, VertexBufferLayout layout)
+	VertexBuffer* VertexBuffer::create(void* vertices, uint32_t size, const VertexBufferLayout& layout)
 	{
 		switch (RenderAPI::getAPI())
 		{

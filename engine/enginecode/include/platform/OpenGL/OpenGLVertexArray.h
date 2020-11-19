@@ -21,7 +21,7 @@ namespace Engine
 	private:
 		std::vector<std::shared_ptr<VertexBuffer>> m_vertexBuffer;		//!< shared pointe to hold the vertex buffer.
 		std::shared_ptr<IndexBuffer> m_indexBuffer;						//!< shared pointe to hold the index buffer.
-		uint32_t m_OpenGL_ID;						//!< OpenGL render identifier 
+		uint32_t m_OpenGL_ID;						//!< OpenGL render identifier.
 		uint32_t m_verArrAttributeIndex = 0;		//!< attribute index.
 	};
 
