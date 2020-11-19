@@ -509,8 +509,8 @@ namespace Engine {
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);	//matrix for how the camera views the world orthographic or perspective. first param field of view, so the camera ratio.
 
 		//CAMERA UBO
-		uint32_t blockNum = 0;		//which block are we using
-		uint32_t cameraUBO_ID;		//openGL ID for each UBO
+		uint32_t blockNum = 0;				//which block are we using.
+		uint32_t cameraUBO_ID;				//openGL ID for camera UBO.
 		uint32_t cameraDataSize = sizeof(glm::mat4) * 2;	//how big this is; 2 mat4s as will upload both the VIEW and the PROJECTION matrices.
 		//generate, bind and set UBO for camera.
 		glGenBuffers(1, &cameraUBO_ID);														//generate Buffer for camera UBO. 
@@ -525,7 +525,27 @@ namespace Engine {
 		//now send camera data to uniform buffer object. 
 		//TO DO! Ideally a single operation for the two below; would need to be stored sequentially, far more efficient this way. 
 		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(projection));				//uploading projection between 0 and sizeof mat4 (64bytes).
-		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(view));		//uploading view but start at sizeof mat4 and offset by sizeof mat4 (64bytes).
+		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(view));		//uploading view but start off the sizeof mat4 and then the sizeof mat4 (64bytes).
+
+		//LIGHTING UBO	
+		blockNum++;											//move block number along one.
+		glm::vec3 lightPosition(1.0f, 4.0f, 6.0f);			//vec3 for light position.
+		glm::vec3 viewPosition(0.0f, 0.0f, 0.0f);			//vec3 for view position.
+		glm::vec3 lightColour(1.0f, 1.0f, 1.0f);			//vec3 for light colour.
+		uint32_t lightsUBO_ID;								//openGL ID for lights UBO.
+		uint32_t lightsDataSize = sizeof(glm::vec4) * 3;	//how big this is; BUT can't use vec3! OpenGL needs either a 2N or 4N, so must use a vec4 here as a base alignment for a vec3 or WILL NOT WORK.
+		//generate, bind and set UBO for lights.
+		glGenBuffers(1, &lightsUBO_ID);														//generate Buffer for light UBO. 
+		glBindBuffer(GL_UNIFORM_BUFFER, lightsUBO_ID);										//bind buffer for light UBO.
+		glBufferData(GL_UNIFORM_BUFFER, lightsDataSize, nullptr, GL_DYNAMIC_DRAW);			//send data and size.
+		glBindBufferRange(GL_UNIFORM_BUFFER, blockNum, lightsUBO_ID, 0, lightsDataSize);	//bind the range; to UNI_BUFFER, this block, this ubo, from 0 to data siz (ie all of it).
+		//now attach to shaders, as lights just for the TPShader.
+		blockIndex = glGetUniformBlockIndex(TPShader->getRenderID(), "b_lights");			//first get the block number off the shader.
+		glUniformBlockBinding(TPShader->getRenderID(), blockIndex, blockNum);				//link to binding point.
+		//now send light data to uniform buffer object. These MUST be in the same order as in the shader file.
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::vec3), glm::value_ptr(lightPosition));					//uploading light position between 0 and sizeof vec3.
+		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4), sizeof(glm::vec3), glm::value_ptr(viewPosition));		//uploading view position starting at a vec4 (remember vec3 must have base alignment of 4N), then the size of a vec3.
+		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4) * 2, sizeof(glm::vec3), glm::value_ptr(lightColour));	//uploading light colour, same as above viewPosition but offsect vec4 * 2, as two vec4s prior.
 
 
 
@@ -534,8 +554,6 @@ namespace Engine {
 		models[0] = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.5f, -5.0f));
 		models[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-1.5f, -0.5f, -5.0f));
 		models[2] = glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, -0.5f, -5.0f));
-
-
 
 		//create a float for the time step and initialise at 0.
 		float timeStep = 0.0f;
@@ -566,10 +584,6 @@ namespace Engine {
 			GLuint location;
 			
 			//upload all relevant uniforms for projectionm, view and model.
-			location = glGetUniformLocation(FCShader->getRenderID(), "u_projection");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(projection));
-			location = glGetUniformLocation(FCShader->getRenderID(), "u_view");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(view));
 			location = glGetUniformLocation(FCShader->getRenderID(), "u_model");
 			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[0]));
 
@@ -585,26 +599,13 @@ namespace Engine {
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO->getRenderID());
 
 			//upload all relevant uniforms for projectionm, view and model.
-			location = glGetUniformLocation(TPShader->getRenderID(), "u_projection");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(projection));
-			location = glGetUniformLocation(TPShader->getRenderID(), "u_view");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(view));
 			location = glGetUniformLocation(TPShader->getRenderID(), "u_model");
 			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[1]));
 
-			//now the uniforms for lightColour, lightPos and viewPos; all needed for the Textured Phong shader (otherwise no light, just a black unlit cube). 
-			location = glGetUniformLocation(TPShader->getRenderID(), "u_lightColour");
-			glUniform3f(location, 1.0f, 1.0f, 1.0f);
-			location = glGetUniformLocation(TPShader->getRenderID(), "u_lightPos");
-			glUniform3f(location, 1.0f, 4.0f, 6.0f);		//back, up and off to the right.
-			location = glGetUniformLocation(TPShader->getRenderID(), "u_viewPos");
-			glUniform3f(location, 0.0f, 0.0f, 0.0f);		//just at origin here (0,0,0).
+			//bind the texture that is wanted.
+			glBindTexture(GL_TEXTURE_2D, letterTexture->getID());
 			location = glGetUniformLocation(TPShader->getRenderID(), "u_texData");
 			glUniform1i(location, 0);
-
-			//bind the texture that is wanted.
-			//glBindTexture(GL_TEXTURE_2D, letterTexture->getID());
-			glBindTexture(GL_TEXTURE_2D, letterTexture->getID());
 
 			//draw the CUBE!
 			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);

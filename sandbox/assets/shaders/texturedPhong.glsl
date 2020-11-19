@@ -31,10 +31,15 @@ layout(location = 0) out vec4 colour;
 in vec3 normal;
 in vec3 fragmentPos;
 in vec2 texCoord;
-uniform vec3 u_lightPos; 
-uniform vec3 u_viewPos; 
-uniform vec3 u_lightColour;
+
+layout (std140) uniform b_lights
+{
+	vec3 u_lightPos; 
+	vec3 u_viewPos; 
+	vec3 u_lightColour;
+};
 uniform sampler2D u_texData;
+
 void main()
 {
 	float ambientStrength = 0.4;
