@@ -508,19 +508,25 @@ namespace Engine {
 		);			//matrix for position and orientation.
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);	//matrix for how the camera views the world orthographic or perspective. first param field of view, so the camera ratio.
 
-		//camera UBO
+		//CAMERA UBO
 		uint32_t blockNum = 0;		//which block are we using
 		uint32_t cameraUBO_ID;		//openGL ID for each UBO
 		uint32_t cameraDataSize = sizeof(glm::mat4) * 2;	//how big this is; 2 mat4s as will upload both the VIEW and the PROJECTION matrices.
+		//generate, bind and set UBO for camera.
+		glGenBuffers(1, &cameraUBO_ID);														//generate Buffer for camera UBO. 
+		glBindBuffer(GL_UNIFORM_BUFFER, cameraUBO_ID);										//bind buffer for camera UBO.
+		glBufferData(GL_UNIFORM_BUFFER, cameraDataSize, nullptr, GL_DYNAMIC_DRAW);			//send data and size.
+		glBindBufferRange(GL_UNIFORM_BUFFER, blockNum, cameraUBO_ID, 0, cameraDataSize);	//bind the range; to UNI_BUFFER, this block, this ubo, from 0 to data siz (ie all of it).
+		//now attach to shaders, FCShader first then TPShader.
+		uint32_t blockIndex = glGetUniformBlockIndex(FCShader->getRenderID(), "b_camera");	//first get the block number off the shader.
+		glUniformBlockBinding(FCShader->getRenderID(), blockIndex, blockNum);				//link to binding point.
+		blockIndex = glGetUniformBlockIndex(TPShader->getRenderID(), "b_camera");			//same as above but for TPShader.
+		glUniformBlockBinding(TPShader->getRenderID(), blockIndex, blockNum);				//same as above but for TPShader.
+		//now send camera data to uniform buffer object. 
+		//TO DO! Ideally a single operation for the two below; would need to be stored sequentially, far more efficient this way. 
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(projection));				//uploading projection between 0 and sizeof mat4 (64bytes).
+		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(view));		//uploading view but start at sizeof mat4 and offset by sizeof mat4 (64bytes).
 
-		//generate and bind buffer for camera UBO.
-		glGenBuffers(1, &cameraUBO_ID);
-		glBindBuffer(GL_UNIFORM_BUFFER, cameraUBO_ID);
-		//send data and size.
-		glBufferData(GL_UNIFORM_BUFFER, cameraDataSize, nullptr, GL_DYNAMIC_DRAW);
-		//bind the range; to UNI_BUFFER, this block, this ubo, from 0 to data siz (ie all of it).
-		glBindBufferRange(GL_UNIFORM_BUFFER, blockNum, cameraUBO_ID, 0, cameraDataSize);
-		//attach to shader
 
 
 		//for the transofrm of the models, array as can have a pyramid and a cube.

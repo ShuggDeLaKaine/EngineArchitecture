@@ -10,10 +10,10 @@ out vec2 texCoord;
 
 layout (std140) uniform b_camera
 {
-	uniform mat4 u_view;
-	uniform mat4 u_projection;
-}
-uniform mat4 u_view;
+	mat4 u_projection;
+	mat4 u_view;
+};
+uniform mat4 u_model;
 
 void main()
 {

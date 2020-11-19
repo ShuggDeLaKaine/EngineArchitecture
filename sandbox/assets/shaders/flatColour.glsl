@@ -8,10 +8,9 @@ out vec3 fragmentColour;
 
 layout (std140) uniform b_camera
 {
-	uniform mat4 u_view;
-	uniform mat4 u_projection;
-}
-
+	mat4 u_projection;
+	mat4 u_view;
+};
 uniform mat4 u_model;
 
 void main()
