@@ -38,15 +38,15 @@ namespace Engine {
 	public:
 		FCVertex() : 
 			m_position(glm::vec3(0.0f)), 
-			m_colour(glm::vec3(0.0f)) 
+			m_colour(0) 
 		{};		//default constructor, initalising values to 0.
-		FCVertex(const glm::vec3& position, const glm::vec3& colour) : 
+		FCVertex(const glm::vec3& position, const uint32_t& colour) :
 			m_position(position), 
 			m_colour(colour) 
 		{};		//constructor with params for position and colour.
 		inline BufferLayout static getBufferLayout() { return s_BufferLayout; };	//!< accessor function to get the static buffer layout.
 		glm::vec3 m_position;		//!< vec3 to take position of vertex.
-		glm::vec3 m_colour;			//!< vec3 to take RGB colour of vertex.
+		uint32_t m_colour;			//!< int to take RGB colour of vertex.
 	private:
 		static BufferLayout s_BufferLayout;
 	};
@@ -78,7 +78,7 @@ namespace Engine {
 #pragma endregion
 
 	//setting temp static vars 
-	BufferLayout FCVertex::s_BufferLayout = { ShaderDataType::Float3, ShaderDataType::Float3 };
+	BufferLayout FCVertex::s_BufferLayout = { ShaderDataType::Float3, { ShaderDataType::Byte4, true } };
 	BufferLayout TPVertexNormalised::s_BufferLayout = {{ShaderDataType::Float3, { ShaderDataType::Short3, true }, { ShaderDataType::Short2, true }}, 24 };
 
 	// Set static vars
@@ -322,12 +322,33 @@ namespace Engine {
 		return result;
 	};
 
+	uint32_t package(const glm::vec4& colour)
+	{
+		//int to return the result, initialised to 0.
+		uint32_t result = 0;
+
+		//vars for each of the colour channels; R, G, B & A.
+		//converting them from 0-1 to 0-255, static casting from float to uint32_T
+		uint32_t r = (static_cast<uint32_t>(colour.r * 255.0f)) << 0;	//bytewise - 000R
+		uint32_t g = (static_cast<uint32_t>(colour.g * 255.0f)) << 8;	//00B0
+		uint32_t b = (static_cast<uint32_t>(colour.b * 255.0f)) << 16;	//0G00
+		uint32_t a = (static_cast<uint32_t>(colour.a * 255.0f)) << 24;	//A000
+
+		result = (r | g | b | a);
+		return result;
+	}
+
+	uint32_t package(const glm::vec3& colour)
+	{
+		return package({ colour.x, colour.y, colour.z, 1.0f});
+	}
+
 	void Application::run()
 	{
 
 
 #pragma region RAW_DATA
-		
+
 		std::vector<TPVertexNormalised> cubeVertices(24);
 		//										 <------- Pos ------->             <----- normal ----->             <---- UV ---->
 		cubeVertices.at(0)	= TPVertexNormalised({ 0.5f,  0.5f, -0.5f}, normalise({ 0.0f,  0.0f, -1.0f}), normalise({0.0f,  0.0f}));
@@ -357,23 +378,23 @@ namespace Engine {
 
 
 		std::vector<FCVertex> pyramidVertices(16);
-		//	                              <------- Pos ------->  <---- colour ----> 
-		pyramidVertices.at(0)  = FCVertex({-0.5f, -0.5f, -0.5f}, {0.8f, 0.2f, 0.8f});	//square Magneta
-		pyramidVertices.at(1)  = FCVertex({ 0.5f, -0.5f, -0.5f}, {0.8f, 0.2f, 0.8f});
-		pyramidVertices.at(2)  = FCVertex({ 0.5f, -0.5f,  0.5f}, {0.8f, 0.2f, 0.8f});
-		pyramidVertices.at(3)  = FCVertex({-0.5f, -0.5f,  0.5f}, {0.8f, 0.2f, 0.8f});
-		pyramidVertices.at(4)  = FCVertex({-0.5f, -0.5f, -0.5f}, {0.2f, 0.8f, 0.2f});	//triangle Green
-		pyramidVertices.at(5)  = FCVertex({-0.5f, -0.5f,  0.5f}, {0.2f, 0.8f, 0.2f});
-		pyramidVertices.at(6)  = FCVertex({ 0.0f,  0.5f,  0.0f}, {0.2f, 0.8f, 0.2f});
-		pyramidVertices.at(7)  = FCVertex({-0.5f, -0.5f,  0.5f}, {1.0f, 0.0f, 0.0f});	//triangle Red
-		pyramidVertices.at(8)  = FCVertex({ 0.5f, -0.5f,  0.5f}, {1.0f, 0.0f, 0.0f});
-		pyramidVertices.at(9)  = FCVertex({ 0.0f,  0.5f,  0.0f}, {1.0f, 0.0f, 0.0f});
-		pyramidVertices.at(10) = FCVertex({ 0.5f, -0.5f,  0.5f}, {0.8f, 0.8f, 0.2f});	//triangle Yellow
-		pyramidVertices.at(11) = FCVertex({ 0.5f, -0.5f, -0.5f}, {0.8f, 0.8f, 0.2f});
-		pyramidVertices.at(12) = FCVertex({ 0.0f,  0.5f,  0.0f}, {0.8f, 0.8f, 0.2f});
-		pyramidVertices.at(13) = FCVertex({ 0.5f, -0.5f, -0.5f}, {0.0f, 0.2f, 1.0f});	//triangle Blue
-		pyramidVertices.at(14) = FCVertex({-0.5f, -0.5f, -0.5f}, {0.0f, 0.2f, 1.0f});
-		pyramidVertices.at(15) = FCVertex({ 0.0f,  0.5f,  0.0f}, {0.0f, 0.2f, 1.0f});														  
+		//	                              <------- Pos ------->           <---- colour ----> 
+		pyramidVertices.at(0)  = FCVertex({-0.5f, -0.5f, -0.5f}, package({0.8f, 0.2f, 0.8f}));	//square Magneta
+		pyramidVertices.at(1)  = FCVertex({ 0.5f, -0.5f, -0.5f}, package({0.8f, 0.2f, 0.8f}));
+		pyramidVertices.at(2)  = FCVertex({ 0.5f, -0.5f,  0.5f}, package({0.8f, 0.2f, 0.8f}));
+		pyramidVertices.at(3)  = FCVertex({-0.5f, -0.5f,  0.5f}, package({0.8f, 0.2f, 0.8f}));
+		pyramidVertices.at(4)  = FCVertex({-0.5f, -0.5f, -0.5f}, package({0.2f, 0.8f, 0.2f}));	//triangle Green
+		pyramidVertices.at(5)  = FCVertex({-0.5f, -0.5f,  0.5f}, package({0.2f, 0.8f, 0.2f}));
+		pyramidVertices.at(6)  = FCVertex({ 0.0f,  0.5f,  0.0f}, package({0.2f, 0.8f, 0.2f}));
+		pyramidVertices.at(7)  = FCVertex({-0.5f, -0.5f,  0.5f}, package({1.0f, 0.0f, 0.0f}));	//triangle Red
+		pyramidVertices.at(8)  = FCVertex({ 0.5f, -0.5f,  0.5f}, package({1.0f, 0.0f, 0.0f}));
+		pyramidVertices.at(9)  = FCVertex({ 0.0f,  0.5f,  0.0f}, package({1.0f, 0.0f, 0.0f}));
+		pyramidVertices.at(10) = FCVertex({ 0.5f, -0.5f,  0.5f}, package({0.8f, 0.8f, 0.2f}));	//triangle Yellow
+		pyramidVertices.at(11) = FCVertex({ 0.5f, -0.5f, -0.5f}, package({0.8f, 0.8f, 0.2f}));
+		pyramidVertices.at(12) = FCVertex({ 0.0f,  0.5f,  0.0f}, package({0.8f, 0.8f, 0.2f}));
+		pyramidVertices.at(13) = FCVertex({ 0.5f, -0.5f, -0.5f}, package({0.0f, 0.2f, 1.0f}));	//triangle Blue
+		pyramidVertices.at(14) = FCVertex({-0.5f, -0.5f, -0.5f}, package({0.0f, 0.2f, 1.0f}));
+		pyramidVertices.at(15) = FCVertex({ 0.0f,  0.5f,  0.0f}, package({0.0f, 0.2f, 1.0f}));														  
 
 
 		uint32_t pyramidIndices[3 * 6] =
@@ -487,11 +508,27 @@ namespace Engine {
 		);			//matrix for position and orientation.
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);	//matrix for how the camera views the world orthographic or perspective. first param field of view, so the camera ratio.
 
+		//camera UBO
+		uint32_t blockNum = 0;		//which block are we using
+		uint32_t cameraUBO_ID;		//openGL ID for each UBO
+		uint32_t cameraDataSize = sizeof(glm::mat4) * 2;	//how big this is; 2 mat4s as will upload both the VIEW and the PROJECTION matrices.
+
+		//generate and bind buffer for camera UBO.
+		glGenBuffers(1, &cameraUBO_ID);
+		glBindBuffer(GL_UNIFORM_BUFFER, cameraUBO_ID);
+		//send data and size.
+		glBufferData(GL_UNIFORM_BUFFER, cameraDataSize, nullptr, GL_DYNAMIC_DRAW);
+		//bind the range; to UNI_BUFFER, this block, this ubo, from 0 to data siz (ie all of it).
+		glBindBufferRange(GL_UNIFORM_BUFFER, blockNum, cameraUBO_ID, 0, cameraDataSize);
+		//attach to shader
+
+
 		//for the transofrm of the models, array as can have a pyramid and a cube.
 		glm::mat4 models[3];
 		models[0] = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.5f, -5.0f));
 		models[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-1.5f, -0.5f, -5.0f));
 		models[2] = glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, -0.5f, -5.0f));
+
 
 
 		//create a float for the time step and initialise at 0.

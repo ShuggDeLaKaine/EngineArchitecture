@@ -12,7 +12,7 @@ namespace Engine
 		None = 0, 
 		Float, Float2, Float3, Float4,
 		Short, Short2, Short3, Short4,
-
+		Byte2, Byte4,
 	};
 
 	//SDT- Shader Data Type
@@ -32,6 +32,8 @@ namespace Engine
 			case ShaderDataType::Short2: return 2 * 2;		//2 floats is 4 bytes.
 			case ShaderDataType::Short3: return 2 * 3;		//3 floats is 6 bytes.
 			case ShaderDataType::Short4: return 2 * 4;		//4 floats is 8 bytes.
+			case ShaderDataType::Byte2:  return 1 * 2;		//2 bytes.
+			case ShaderDataType::Byte4:  return 1 * 4;		//4 bytes.
 			default: return 0;
 			}
 		}
@@ -41,13 +43,15 @@ namespace Engine
 			switch (type)
 			{
 			case ShaderDataType::Float:  return 1;		//number of componets is 1.
-			case ShaderDataType::Float2: return 2;		//componets is 2.
-			case ShaderDataType::Float3: return 3;		//componets is 3.
-			case ShaderDataType::Float4: return 4;		//componets is 4.
+			case ShaderDataType::Float2: return 2;		//component is 2.
+			case ShaderDataType::Float3: return 3;		//component is 3.
+			case ShaderDataType::Float4: return 4;		//component is 4.
 			case ShaderDataType::Short:  return 1;		//number of componets is 1.
-			case ShaderDataType::Short2: return 2;		//componets is 2.
-			case ShaderDataType::Short3: return 3;		//componets is 3.
-			case ShaderDataType::Short4: return 4;		//componets is 4.
+			case ShaderDataType::Short2: return 2;		//component is 2.
+			case ShaderDataType::Short3: return 3;		//component is 3.
+			case ShaderDataType::Short4: return 4;		//component is 4.
+			case ShaderDataType::Byte2:  return 2;		//component is 2.
+			case ShaderDataType::Byte4:  return 4;		//component is 4.
 			default: return 0;
 			}
 
