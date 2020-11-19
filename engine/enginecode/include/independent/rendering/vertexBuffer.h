@@ -15,9 +15,9 @@ namespace Engine
 		virtual ~VertexBuffer() = default;										//!< virtual destructor.
 		virtual void edit(void* vertices, uint32_t size, uint32_t offset) = 0;	//!< virtual to edit function, to edit the vertex buffer.
 		virtual inline uint32_t getRenderID() const = 0;						//!< virtual to gets and returns the renderer ID.
-		virtual inline const BufferLayout& const getLayout() = 0;				//!< virtual to gets and returns the buffer layout.
+		virtual inline const VertexBufferLayout& const getLayout() = 0;				//!< virtual to gets and returns the buffer layout.
 
-		static VertexBuffer* create(void* vertices, uint32_t size, BufferLayout layout);	//!< please note, function declared in renderAPI.cpp
+		static VertexBuffer* create(void* vertices, uint32_t size, VertexBufferLayout layout);	//!< please note, function declared in renderAPI.cpp
 
 	private:
 		

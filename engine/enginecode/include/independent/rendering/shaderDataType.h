@@ -54,7 +54,24 @@ namespace Engine
 			case ShaderDataType::Byte4:  return 4;		//component is 4.
 			default: return 0;
 			}
+		}
 
+		static uint32_t std140align(ShaderDataType type)
+		{
+			switch (type)
+			{
+			case ShaderDataType::Float:  return 4;			//size of a float is 4 bytes.
+			case ShaderDataType::Float2: return 4 * 2;		//2 floats is 8 bytes.
+			case ShaderDataType::Float3: return 4 * 4;		//4 floats is 16 bytes.  4! not 3, to do with alignment, must be aligned to N2 or N4.
+			case ShaderDataType::Float4: return 4 * 4;		//4 floats is 16 bytes.
+			case ShaderDataType::Short:  return 2;			//size of a short is 2 bytes.
+			case ShaderDataType::Short2: return 2 * 2;		//2 floats is 4 bytes.
+			case ShaderDataType::Short3: return 2 * 4;		//4 floats is 8 bytes. 4! not 3, to do with alignment, must be aligned to N2 or N4.
+			case ShaderDataType::Short4: return 2 * 4;		//4 floats is 8 bytes.
+			case ShaderDataType::Byte2:  return 1 * 2;		//2 bytes.
+			case ShaderDataType::Byte4:  return 1 * 4;		//4 bytes.
+			default: return 0;
+			}
 		}
 	}
 

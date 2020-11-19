@@ -44,11 +44,11 @@ namespace Engine {
 			m_position(position), 
 			m_colour(colour) 
 		{};		//constructor with params for position and colour.
-		inline BufferLayout static getBufferLayout() { return s_BufferLayout; };	//!< accessor function to get the static buffer layout.
+		inline VertexBufferLayout static getBufferLayout() { return s_BufferLayout; };	//!< accessor function to get the static buffer layout.
 		glm::vec3 m_position;		//!< vec3 to take position of vertex.
 		uint32_t m_colour;			//!< int to take RGB colour of vertex.
 	private:
-		static BufferLayout s_BufferLayout;
+		static VertexBufferLayout s_BufferLayout;
 	};
 
 	//textured phong normalised vertex class
@@ -70,16 +70,16 @@ namespace Engine {
 		std::array<int16_t, 3> m_normalise; 		//!< short var to take normalised values. Array used as very easy to pass back arrays from functions.
 		std::array<int16_t, 2> m_UVcoords;			//!< short var to take UV coordinate values. Array used as very easy to pass back arrays from functions.
 
-		inline BufferLayout static getBufferLayout() { return s_BufferLayout; }		//!< accessor function to get the static buffer layout.
+		inline VertexBufferLayout static getBufferLayout() { return s_BufferLayout; }		//!< accessor function to get the static buffer layout.
 	private:
-		static BufferLayout s_BufferLayout;
+		static VertexBufferLayout s_BufferLayout;
 	};
 
 #pragma endregion
 
 	//setting temp static vars 
-	BufferLayout FCVertex::s_BufferLayout = { ShaderDataType::Float3, { ShaderDataType::Byte4, true } };
-	BufferLayout TPVertexNormalised::s_BufferLayout = {{ShaderDataType::Float3, { ShaderDataType::Short3, true }, { ShaderDataType::Short2, true }}, 24 };
+	VertexBufferLayout FCVertex::s_BufferLayout = { ShaderDataType::Float3, { ShaderDataType::Byte4, true } };
+	VertexBufferLayout TPVertexNormalised::s_BufferLayout = {{ShaderDataType::Float3, { ShaderDataType::Short3, true }, { ShaderDataType::Short2, true }}, 24 };
 
 	// Set static vars
 	Application* Application::s_instance = nullptr;
