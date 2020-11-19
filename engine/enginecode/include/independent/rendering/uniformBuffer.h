@@ -19,7 +19,7 @@ namespace Engine
 		virtual void attachShaderBlock(const std::shared_ptr<Shaders>& shader, const char* blockName) = 0;	//!< 
 		virtual void uploadDataToBlock(const char* uniformName, void * data) = 0;		//!< 
 
-		static UniformBuffer* create(const UniformBufferLayout& layout);		//!< create function, a little like a constructor.
+		static UniformBuffer* create(const UniformBufferLayout& layout);	//!< create function, a little like a constructor. Please note, function declared in renderAPI.cpp
 	protected:
 		UniformBufferLayout m_BufferLayout;				//!< uniform bugger layout.
 		uint32_t m_blockNumber;							//!< block number for this uniform buffer layout.
