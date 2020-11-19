@@ -10,7 +10,8 @@ namespace Engine
 	{
 		static GLenum toGLType(ShaderDataType type)
 		{
-			//to make this faster can make an array.
+			//TO DO - make this faster can make an array.
+			//TO DO - need to consider Mat3 and Mat4s.
 			switch (type)
 			{
 			case ShaderDataType::Byte2:  return GL_UNSIGNED_BYTE;
@@ -39,6 +40,7 @@ namespace Engine
 		glDeleteVertexArrays(1, &m_OpenGL_ID);
 	}
 
+	//TO DO - need to consider Mat3 and Mat4s as they are different; they cannot be passed directly as a vertice attribute.
 	void OpenGLVertexArray::addVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
 	{
 		//need to bind first.

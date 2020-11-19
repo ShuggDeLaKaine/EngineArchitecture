@@ -42,12 +42,12 @@ namespace Engine
 		const char *m_name;				//!< name so we can search for it.
 
 		UniformBufferElement() {};		//!< default constructor.
-		UniformBufferElement(const char * name, ShaderDataType dataType, bool normalised = false) :
+		UniformBufferElement(const char * name, ShaderDataType dataType) :
 			m_name(name),
 			m_dataType(dataType),
 			m_size(SDT::std140align(dataType)),
 			m_offset(0)
-		{} //!< constructor with params. Takes name, dataType and whether it is normalised; with initialisor list linked to above vars (offset init to 0 as this will need calculating).
+		{} //!< constructor with params. Takes name and dataType; with initialisor list linked to above vars (offset init to 0 as this will need calculating).
 	private:
 
 	};

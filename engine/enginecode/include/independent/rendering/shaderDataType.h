@@ -13,6 +13,7 @@ namespace Engine
 		Float, Float2, Float3, Float4,
 		Short, Short2, Short3, Short4,
 		Byte2, Byte4,
+		Mat3, Mat4,
 	};
 
 	//SDT- Shader Data Type
@@ -24,6 +25,8 @@ namespace Engine
 			//Will be MUCH FASTER.
 			switch (type)
 			{
+			case ShaderDataType::Mat3:   return 4 * 3 * 3;	//size of a mat3 is 36 bytes.
+			case ShaderDataType::Mat4:   return 4 * 4 * 4;	//size of a mat4 is 64 bytes.
 			case ShaderDataType::Float:  return 4;			//size of a float is 4 bytes.
 			case ShaderDataType::Float2: return 4 * 2;		//2 floats is 8 bytes.
 			case ShaderDataType::Float3: return 4 * 3;		//3 floats is 12 bytes.
@@ -42,6 +45,8 @@ namespace Engine
 		{
 			switch (type)
 			{
+			case ShaderDataType::Mat3:   return 3 * 3;	//component is 9.
+			case ShaderDataType::Mat4:   return 4 * 4;	//component is 16.
 			case ShaderDataType::Float:  return 1;		//number of componets is 1.
 			case ShaderDataType::Float2: return 2;		//component is 2.
 			case ShaderDataType::Float3: return 3;		//component is 3.
@@ -60,6 +65,8 @@ namespace Engine
 		{
 			switch (type)
 			{
+			case ShaderDataType::Mat3:   return 4 * 3 * 3;	//size of a mat3 is 36 bytes.
+			case ShaderDataType::Mat4:   return 4 * 4 * 4;	//size of a mat4 is 64 bytes.
 			case ShaderDataType::Float:  return 4;			//size of a float is 4 bytes.
 			case ShaderDataType::Float2: return 4 * 2;		//2 floats is 8 bytes.
 			case ShaderDataType::Float3: return 4 * 4;		//4 floats is 16 bytes.  4! not 3, to do with alignment, must be aligned to N2 or N4.

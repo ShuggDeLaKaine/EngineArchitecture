@@ -508,24 +508,34 @@ namespace Engine {
 		);			//matrix for position and orientation.
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);	//matrix for how the camera views the world orthographic or perspective. first param field of view, so the camera ratio.
 
+
 		//CAMERA UBO
-		uint32_t blockNum = 0;				//which block are we using.
-		uint32_t cameraUBO_ID;				//openGL ID for camera UBO.
-		uint32_t cameraDataSize = sizeof(glm::mat4) * 2;	//how big this is; 2 mat4s as will upload both the VIEW and the PROJECTION matrices.
+		uint32_t blockNum = 0;								//which block are we using.
+		uint32_t cameraUBO_ID;								//openGL ID for camera UBO.
+		UniformBufferLayout cameraLayout = {{"u_projection", ShaderDataType::Mat4 }, {"u_view", ShaderDataType::Mat4 }};
+
 		//generate, bind and set UBO for camera.
 		glGenBuffers(1, &cameraUBO_ID);														//generate Buffer for camera UBO. 
 		glBindBuffer(GL_UNIFORM_BUFFER, cameraUBO_ID);										//bind buffer for camera UBO.
-		glBufferData(GL_UNIFORM_BUFFER, cameraDataSize, nullptr, GL_DYNAMIC_DRAW);			//send data and size.
-		glBindBufferRange(GL_UNIFORM_BUFFER, blockNum, cameraUBO_ID, 0, cameraDataSize);	//bind the range; to UNI_BUFFER, this block, this ubo, from 0 to data siz (ie all of it).
+		glBufferData(GL_UNIFORM_BUFFER, cameraLayout.getStride(), nullptr, GL_DYNAMIC_DRAW);		//send data and size.
+		glBindBufferRange(GL_UNIFORM_BUFFER, blockNum, cameraUBO_ID, 0, cameraLayout.getStride());	//bind the range; to UNI_BUFFER, this block, this ubo, from 0 to data siz (ie all of it).
+		
 		//now attach to shaders, FCShader first then TPShader.
 		uint32_t blockIndex = glGetUniformBlockIndex(FCShader->getRenderID(), "b_camera");	//first get the block number off the shader.
 		glUniformBlockBinding(FCShader->getRenderID(), blockIndex, blockNum);				//link to binding point.
 		blockIndex = glGetUniformBlockIndex(TPShader->getRenderID(), "b_camera");			//same as above but for TPShader.
 		glUniformBlockBinding(TPShader->getRenderID(), blockIndex, blockNum);				//same as above but for TPShader.
+		
 		//now send camera data to uniform buffer object. 
 		//TO DO! Ideally a single operation for the two below; would need to be stored sequentially, far more efficient this way. 
-		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(projection));				//uploading projection between 0 and sizeof mat4 (64bytes).
-		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(view));		//uploading view but start off the sizeof mat4 and then the sizeof mat4 (64bytes).
+		auto element = *cameraLayout.begin();
+		glBufferSubData(GL_UNIFORM_BUFFER, element.m_offset, element.m_size, glm::value_ptr(projection));
+		element = *(cameraLayout.begin() + 1);
+		glBufferSubData(GL_UNIFORM_BUFFER, element.m_offset, element.m_size, glm::value_ptr(view));
+
+		//glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(projection));				//uploading projection between 0 and sizeof mat4 (64bytes).
+		//glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(view));	//uploading view but start off the sizeof mat4 and then the sizeof mat4 (64bytes).
+
 
 		//LIGHTING UBO	
 		blockNum++;											//move block number along one.
@@ -534,14 +544,17 @@ namespace Engine {
 		glm::vec3 lightColour(1.0f, 1.0f, 1.0f);			//vec3 for light colour.
 		uint32_t lightsUBO_ID;								//openGL ID for lights UBO.
 		uint32_t lightsDataSize = sizeof(glm::vec4) * 3;	//how big this is; BUT can't use vec3! OpenGL needs either a 2N or 4N, so must use a vec4 here as a base alignment for a vec3 or WILL NOT WORK.
+		
 		//generate, bind and set UBO for lights.
 		glGenBuffers(1, &lightsUBO_ID);														//generate Buffer for light UBO. 
 		glBindBuffer(GL_UNIFORM_BUFFER, lightsUBO_ID);										//bind buffer for light UBO.
 		glBufferData(GL_UNIFORM_BUFFER, lightsDataSize, nullptr, GL_DYNAMIC_DRAW);			//send data and size.
 		glBindBufferRange(GL_UNIFORM_BUFFER, blockNum, lightsUBO_ID, 0, lightsDataSize);	//bind the range; to UNI_BUFFER, this block, this ubo, from 0 to data siz (ie all of it).
+		
 		//now attach to shaders, as lights just for the TPShader.
 		blockIndex = glGetUniformBlockIndex(TPShader->getRenderID(), "b_lights");			//first get the block number off the shader.
 		glUniformBlockBinding(TPShader->getRenderID(), blockIndex, blockNum);				//link to binding point.
+		
 		//now send light data to uniform buffer object. These MUST be in the same order as in the shader file.
 		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::vec3), glm::value_ptr(lightPosition));					//uploading light position between 0 and sizeof vec3.
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4), sizeof(glm::vec3), glm::value_ptr(viewPosition));		//uploading view position starting at a vec4 (remember vec3 must have base alignment of 4N), then the size of a vec3.
