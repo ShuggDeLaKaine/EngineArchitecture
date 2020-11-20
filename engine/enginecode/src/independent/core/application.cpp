@@ -559,7 +559,7 @@ namespace Engine {
 		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 
 		TextureUnitManager textureUnitManager(32);
-
+		uint32_t unit;
 
 
 
@@ -589,24 +589,25 @@ namespace Engine {
 			glUseProgram(TPShader->getRenderID()); 
 			glBindVertexArray(cubeVAO->getRenderID()); 
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO->getRenderID()); 
+			
 			//upload all relevant info & bind texture & draw the CUBE!
 			TPShader->uploatMat4("u_model", models[1]);
-
-
-			glBindTexture(GL_TEXTURE_2D, letterTexture->getID());
-			TPShader->uploadInt("u_texData", 0);
-
-
+			if (textureUnitManager.getUnit(letterTexture->getID(), unit) == true)
+			{
+				glActiveTexture(GL_TEXTURE0 + unit);
+				glBindTexture(GL_TEXTURE_2D, letterTexture->getID());
+			}
+			TPShader->uploadInt("u_texData", unit);
 			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 
 			//DRAW CUBE B!
 			TPShader->uploatMat4("u_model", models[2]);
-
-
-			glBindTexture(GL_TEXTURE_2D, numberTexture->getID());
-			TPShader->uploadInt("u_texData", 0);
-
-
+			if (textureUnitManager.getUnit(numberTexture->getID(), unit) == true)
+			{
+				glActiveTexture(GL_TEXTURE0 + unit);
+				glBindTexture(GL_TEXTURE_2D, numberTexture->getID());
+			}
+			TPShader->uploadInt("u_texData", unit);
 			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 
 
