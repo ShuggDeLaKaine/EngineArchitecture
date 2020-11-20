@@ -510,7 +510,6 @@ namespace Engine {
 		);			//matrix for position and orientation.
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);	//matrix for how the camera views the world orthographic or perspective. first param field of view, so the camera ratio.
 
-
 		//CAMERA UBO
 		uint32_t blockNum = 0;								//which block are we using.
 		//generate, bind and set UBO for camera.
@@ -523,8 +522,6 @@ namespace Engine {
 		//now send camera data to uniform buffer object.
 		cameraUBO->uploadDataToBlock("u_projection", glm::value_ptr(projection));
 		cameraUBO->uploadDataToBlock("u_view", glm::value_ptr(view));
-
-
 
 		//LIGHTING UBO	
 		blockNum++;											//move block number along one.
@@ -548,8 +545,6 @@ namespace Engine {
 		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::vec3), glm::value_ptr(lightPosition));					//uploading light position between 0 and sizeof vec3.
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4), sizeof(glm::vec3), glm::value_ptr(viewPosition));		//uploading view position starting at a vec4 (remember vec3 must have base alignment of 4N), then the size of a vec3.
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4) * 2, sizeof(glm::vec3), glm::value_ptr(lightColour));	//uploading light colour, same as above viewPosition but offsect vec4 * 2, as two vec4s prior.
-
-
 
 		//for the transofrm of the models, array as can have a pyramid and a cube.
 		glm::mat4 models[3];
@@ -575,49 +570,33 @@ namespace Engine {
 			//things to do in the frame...
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			//draw a PYRAMID.
-			//bind the shader FCproram (Flat Coloured shader)
+			//DRAW A PYRAMID.
+			//bind the shader FCproram (Flat Coloured shader) & bind the correct buffers, vertex array and index buffer.
 			glUseProgram(FCShader->getRenderID());
-			//bind the correct buffers, vertex array and index buffer.
 			glBindVertexArray(pyramidVAO->getRenderID());
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO->getRenderID());
-
-			//need a location to upload it, represents a place in the shader we are going to use.
-			GLuint location;
-			
-			//upload all relevant uniforms for projectionm, view and model.
-			location = glGetUniformLocation(FCShader->getRenderID(), "u_model");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[0]));
-
-			//draw the PYRAMID!
+			//upload all relevant uniforms for projectionm, view and model, then draw the PYRAMID!
+			FCShader->uploatMat4("u_model", models[0]);
 			glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 
-			
-			//draw a CUBE.
-			//bind the shader (textured phong shader)
-			glUseProgram(TPShader->getRenderID());
-			//binc the buffers, vertex array and index buffer.
-			glBindVertexArray(cubeVAO->getRenderID());
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO->getRenderID());
-
-			//upload all relevant uniforms for projectionm, view and model.
-			location = glGetUniformLocation(TPShader->getRenderID(), "u_model");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[1]));
-
-			//bind the texture that is wanted.
+			//DRAW CUBE A.
+			//bind the shader (textured phong shader) & bind the buffers, vertex array and index buffer.
+			glUseProgram(TPShader->getRenderID()); 
+			glBindVertexArray(cubeVAO->getRenderID()); 
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO->getRenderID()); 
+			//upload all relevant info & bind texture & draw the CUBE!
+			TPShader->uploatMat4("u_model", models[1]);
 			glBindTexture(GL_TEXTURE_2D, letterTexture->getID());
-			location = glGetUniformLocation(TPShader->getRenderID(), "u_texData");
-			glUniform1i(location, 0);
+			TPShader->uploadInt("u_texData", 0);
+			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 
-			//draw the CUBE!
+			//DRAW CUBE B!
+			TPShader->uploatMat4("u_model", models[2]);
+			glBindTexture(GL_TEXTURE_2D, numberTexture->getID());
+			TPShader->uploadInt("u_texData", 0);
 			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
-			
-			//draw ANOTHER CUBE!
-			location = glGetUniformLocation(TPShader->getRenderID(), "u_model");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[2]));
-			glBindTexture(GL_TEXTURE_2D, numberTexture->getID());		
-			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
-			
+
+
 			m_window->onUpdate(timeStep);
 		}
 
@@ -625,6 +604,40 @@ namespace Engine {
 
 }
 
+
+
+
+
+
+/*
+//need a location to upload uniform.
+//GLuint uniformLocation;
+
+//upload all relevant uniforms for projectionm, view and model.
+//uniformLocation = glGetUniformLocation(FCShader->getRenderID(), "u_model");
+//glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[0]));
+//draw the PYRAMID!
+//glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+*/
+/*
+//upload all relevant uniforms for projectionm, view and model.
+uniformLocation = glGetUniformLocation(TPShader->getRenderID(), "u_model");
+glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[1]));
+
+//bind the texture that is wanted.
+glBindTexture(GL_TEXTURE_2D, letterTexture->getID());
+uniformLocation = glGetUniformLocation(TPShader->getRenderID(), "u_texData");
+glUniform1i(uniformLocation, 0);
+
+//draw the CUBE!
+glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+*/
+/*
+uniformLocation = glGetUniformLocation(TPShader->getRenderID(), "u_model");
+glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[2]));
+glBindTexture(GL_TEXTURE_2D, numberTexture->getID());
+glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+*/
 
 
 /*
