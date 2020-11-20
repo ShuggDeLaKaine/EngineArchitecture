@@ -23,7 +23,7 @@
 #include "rendering/shaders.h"
 #include "rendering/textures.h"
 #include "rendering/uniformBuffer.h"
-
+#include "rendering/textureUnitManager.h"
 
 
 namespace Engine {
@@ -558,6 +558,11 @@ namespace Engine {
 		glEnable(GL_DEPTH_TEST);
 		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 
+		TextureUnitManager textureUnitManager(32);
+
+
+
+
 		while (m_running)
 		{
 			//update the time step with the timer function getElapsedTime()
@@ -586,14 +591,22 @@ namespace Engine {
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO->getRenderID()); 
 			//upload all relevant info & bind texture & draw the CUBE!
 			TPShader->uploatMat4("u_model", models[1]);
+
+
 			glBindTexture(GL_TEXTURE_2D, letterTexture->getID());
 			TPShader->uploadInt("u_texData", 0);
+
+
 			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 
 			//DRAW CUBE B!
 			TPShader->uploatMat4("u_model", models[2]);
+
+
 			glBindTexture(GL_TEXTURE_2D, numberTexture->getID());
 			TPShader->uploadInt("u_texData", 0);
+
+
 			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 
 
