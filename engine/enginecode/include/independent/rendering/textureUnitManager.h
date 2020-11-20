@@ -2,11 +2,10 @@
 #pragma once
 #include <vector>
 
-
 namespace Engine
 {
 	/* \class TextureUnitManager
-	*
+	* Class to act like a ring buffer to check, bind and store textures.
 	*/
 	class TextureUnitManager
 	{

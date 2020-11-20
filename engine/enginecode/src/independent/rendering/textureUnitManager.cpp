@@ -4,7 +4,6 @@
 
 namespace Engine
 {
-
 	void TextureUnitManager::clear()
 	{
 		m_head = 0;
