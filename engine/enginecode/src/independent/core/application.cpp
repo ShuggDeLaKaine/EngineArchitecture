@@ -35,25 +35,6 @@ namespace Engine {
 * one for static 3d vertices,
 * one for animated 3d vertices. */
 #pragma region TEMP_CLASS
-	//flat colour vertex class
-	class FCVertex
-	{
-	public:
-		FCVertex() : 
-			m_position(glm::vec3(0.0f)), 
-			m_colour(0) 
-		{};		//default constructor, initalising values to 0.
-		FCVertex(const glm::vec3& position, const uint32_t& colour) :
-			m_position(position), 
-			m_colour(colour) 
-		{};		//constructor with params for position and colour.
-		inline VertexBufferLayout static getBufferLayout() { return s_BufferLayout; };	//!< accessor function to get the static buffer layout.
-		glm::vec3 m_position;		//!< vec3 to take position of vertex.
-		uint32_t m_colour;			//!< int to take RGB colour of vertex.
-	private:
-		static VertexBufferLayout s_BufferLayout;
-	};
-
 	//textured phong normalised vertex class
 	class TPVertexNormalised
 	{
@@ -81,7 +62,6 @@ namespace Engine {
 #pragma endregion
 
 	//setting temp static vars 
-	VertexBufferLayout FCVertex::s_BufferLayout = { ShaderDataType::Float3, { ShaderDataType::Byte4, true } };
 	VertexBufferLayout TPVertexNormalised::s_BufferLayout = {{ShaderDataType::Float3, { ShaderDataType::Short3, true }, { ShaderDataType::Short2, true }}, 24 };
 
 	// Set static vars
@@ -482,10 +462,6 @@ namespace Engine {
 #pragma endregion
 
 #pragma region SHADERS
-
-		std::shared_ptr<Shaders> FCShader;
-		FCShader.reset(Shaders::create("assets/shaders/flatColour.glsl"));
-
 		std::shared_ptr<Shaders> TPShader;
 		TPShader.reset(Shaders::create("assets/shaders/texturedPhong.glsl"));
 
@@ -498,6 +474,10 @@ namespace Engine {
 
 		std::shared_ptr<Textures> numberTexture;
 		numberTexture.reset(Textures::create("assets/textures/numberCube.png"));
+
+		unsigned char whitePixel[4] = { 255, 255, 255, 255 };		//a white pixel.
+		std::shared_ptr<Textures> plainWhiteTexture;
+		plainWhiteTexture.reset(Textures::create(1, 1, 4, whitePixel));
 
 		/*
 		//testing the sub texture stuff out.
@@ -525,8 +505,7 @@ namespace Engine {
 		UniformBufferLayout cameraLayout = { {"u_projection", ShaderDataType::Mat4 }, {"u_view", ShaderDataType::Mat4 } };
 		std::shared_ptr<UniformBuffer> cameraUBO;
 		cameraUBO.reset(UniformBuffer::create(cameraLayout));
-		//now attach to shaders, FCShader first then TPShader.
-		cameraUBO->attachShaderBlock(FCShader, "b_camera");
+		//now attach to TPShader.
 		cameraUBO->attachShaderBlock(TPShader, "b_camera");
 		//now send camera data to uniform buffer object.
 		cameraUBO->uploadDataToBlock("u_projection", glm::value_ptr(projection));
@@ -605,14 +584,22 @@ namespace Engine {
 			glUseProgram(TPShader->getID());
 			glBindVertexArray(pyramidVAO->getID());
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO->getID());
-			//upload all relevant uniforms for projectionm, view and model, then draw the PYRAMID!
+			if (textureUnitManager.getUnit(plainWhiteTexture->getID(), unit) == true)
+			{
+				glActiveTexture(GL_TEXTURE0 + unit);
+				glBindTexture(GL_TEXTURE_2D, plainWhiteTexture->getID());
+			}
+
+			//upload all relevant uniforms for projection, view and model.
 			TPShader->uploadMat4("u_model", models[0]);
 			TPShader->uploadMat4("u_view", view);
 			TPShader->uploadMat4("u_projection", projection);
 			TPShader->uploadFloat3("u_lightColour", { 1.0f, 1.0f, 1.0f });
 			TPShader->uploadFloat3("u_lightPosition", { 1.0f, 4.0f, 6.0f });
 			TPShader->uploadFloat3("u_viewPosition", { 0.0f, 0.0f, 0.0f });
-			TPShader->uploadFloat4("u_tint", { 0.4f, 4.0f, 0.9f, 1.0f });
+			TPShader->uploadFloat4("u_tint", { 0.4f, 0.7f, 0.3f, 1.0f });
+			TPShader->uploadInt("u_texData", unit);
+			//draw the PYRAMID!
 			glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 
 			//DRAW CUBE A.
@@ -622,8 +609,6 @@ namespace Engine {
 			//upload all relevant info & bind texture & draw the CUBE!
 			TPShader->uploadMat4("u_model", models[1]);
 			TPShader->uploadFloat4("u_tint", { 1.0f, 1.0f, 1.0f, 1.0f });
-
-
 			if (textureUnitManager.getUnit(letterTexture->getID(), unit) == true)
 			{
 				glActiveTexture(GL_TEXTURE0 + unit);
@@ -633,8 +618,10 @@ namespace Engine {
 			TPShader->uploadInt("u_texData", unit);
 			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 
+
 			//DRAW CUBE B!
 			TPShader->uploadMat4("u_model", models[2]);
+			TPShader->uploadFloat4("u_tint", { 1.0f, 1.0f, 1.0f, 1.0f });
 			if (textureUnitManager.getUnit(numberTexture->getID(), unit) == true)
 			{
 				glActiveTexture(GL_TEXTURE0 + unit);
