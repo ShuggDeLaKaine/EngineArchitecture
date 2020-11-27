@@ -449,7 +449,6 @@ namespace Engine {
 		cubeVAO->addVertexBuffer(cubeVBO);
 		cubeVAO->setIndexBuffer(cubeIBO);
 
-
 		//SETTING UP THE PYRAMID.
 		std::shared_ptr<VertexArray> pyramidVAO;
 		std::shared_ptr<VertexBuffer> pyramidVBO;
@@ -507,11 +506,12 @@ namespace Engine {
 			glm::vec3(0.0f, 0.0f, 0.0f),	//eye: aka the position; 0.0f, 0.0f, 0.0f, is origin.
 			glm::vec3(0.0f, 0.0f, -1.0f),	//centre: aka which way we're looking, convention is to look down the Z axis
 			glm::vec3(0.0f, 1.0f, 0.0f)		//up: make up, up (if that makes sense...)
-		);			//matrix for position and orientation.
+		);									//matrix for position and orientation.
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);	//matrix for how the camera views the world orthographic or perspective. first param field of view, so the camera ratio.
 
+			
 		//CAMERA UBO
-		uint32_t blockNum = 0;								//which block are we using.
+		uint32_t blockNum = 0;								//which block are we using.										
 		//generate, bind and set UBO for camera.
 		UniformBufferLayout cameraLayout = { {"u_projection", ShaderDataType::Mat4 }, {"u_view", ShaderDataType::Mat4 } };
 		std::shared_ptr<UniformBuffer> cameraUBO;
@@ -522,7 +522,8 @@ namespace Engine {
 		//now send camera data to uniform buffer object.
 		cameraUBO->uploadDataToBlock("u_projection", glm::value_ptr(projection));
 		cameraUBO->uploadDataToBlock("u_view", glm::value_ptr(view));
-
+		
+			////////
 		//LIGHTING UBO	
 		blockNum++;											//move block number along one.
 		glm::vec3 lightPosition(1.0f, 4.0f, 6.0f);			//vec3 for light position.
@@ -538,13 +539,29 @@ namespace Engine {
 		glBindBufferRange(GL_UNIFORM_BUFFER, blockNum, lightsUBO_ID, 0, lightsDataSize);	//bind the range; to UNI_BUFFER, this block, this ubo, from 0 to data siz (ie all of it).
 		
 		//now attach to shaders, as lights just for the TPShader.
-		uint32_t blockIndex = glGetUniformBlockIndex(TPShader->getRenderID(), "b_lights");	//first get the block number off the shader.
-		glUniformBlockBinding(TPShader->getRenderID(), blockIndex, blockNum);				//link to binding point.
+		uint32_t blockIndex = glGetUniformBlockIndex(TPShader->getID(), "b_lights");	//first get the block number off the shader.
+		glUniformBlockBinding(TPShader->getID(), blockIndex, blockNum);				//link to binding point.
 		
 		//now send light data to uniform buffer object. These MUST be in the same order as in the shader file.
 		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::vec3), glm::value_ptr(lightPosition));					//uploading light position between 0 and sizeof vec3.
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4), sizeof(glm::vec3), glm::value_ptr(viewPosition));		//uploading view position starting at a vec4 (remember vec3 must have base alignment of 4N), then the size of a vec3.
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4) * 2, sizeof(glm::vec3), glm::value_ptr(lightColour));	//uploading light colour, same as above viewPosition but offsect vec4 * 2, as two vec4s prior.
+			////////
+		/*
+			DOES NOT WORK - SHIIIIIIT CODE
+		//glm::vec3 lightPosition(1.0f, 4.0f, 6.0f);			//vec3 for light position.
+		//glm::vec3 viewPosition(0.0f, 0.0f, 0.0f);				//vec3 for view position.
+		//glm::vec3 lightColour(1.0f, 1.0f, 1.0f);				//vec3 for light colour.
+		UniformBufferLayout lightLayout = { {"u_lightPos", ShaderDataType::Float3 }, {"u_viewPos", ShaderDataType::Float3 }, {"u_lightColour", ShaderDataType::Float3 } };
+		std::shared_ptr<UniformBuffer> lightUBO;
+		cameraUBO.reset(UniformBuffer::create(lightLayout));
+		//now attach to TPShader.
+		cameraUBO->attachShaderBlock(TPShader, "b_lights");
+		//now send lights data to uniform buffer object.
+		cameraUBO->uploadDataToBlock("u_lightPos", glm::value_ptr(lightPosition));
+		cameraUBO->uploadDataToBlock("u_viewPos", glm::value_ptr(viewPosition));
+		cameraUBO->uploadDataToBlock("u_lightColour", glm::value_ptr(lightColour));
+		*/
 
 		//for the transofrm of the models, array as can have a pyramid and a cube.
 		glm::mat4 models[3];
@@ -562,46 +579,55 @@ namespace Engine {
 		uint32_t unit;
 
 
-
 		while (m_running)
 		{
 			//update the time step with the timer function getElapsedTime()
 			timeStep = m_timer->getElapsedTime();
 			m_timer->reset();
 
-			//get the model to rotate (easier to see whether it is a 3d shape)
-			for (auto& model: models) model = glm::rotate(model, timeStep, glm::vec3(0.0f, 1.0f, 0.5f));
-
 			//things to do in the frame...
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+			//get the model to rotate (easier to see whether it is a 3d shape)
+			for (auto& model : models) model = glm::rotate(model, timeStep, glm::vec3(0.0f, 1.0f, 0.5f));
+
 			//DRAW A PYRAMID.
 			//bind the shader FCproram (Flat Coloured shader) & bind the correct buffers, vertex array and index buffer.
-			glUseProgram(FCShader->getRenderID());
-			glBindVertexArray(pyramidVAO->getRenderID());
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO->getRenderID());
+			glUseProgram(FCShader->getID());
+			glBindVertexArray(pyramidVAO->getID());
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO->getID());
 			//upload all relevant uniforms for projectionm, view and model, then draw the PYRAMID!
-			FCShader->uploatMat4("u_model", models[0]);
+			FCShader->uploadMat4("u_model", models[0]);
+			FCShader->uploadMat4("u_view", view);
+			FCShader->uploadMat4("u_projection", projection);
 			glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 
 			//DRAW CUBE A.
 			//bind the shader (textured phong shader) & bind the buffers, vertex array and index buffer.
-			glUseProgram(TPShader->getRenderID()); 
-			glBindVertexArray(cubeVAO->getRenderID()); 
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO->getRenderID()); 
-			
+			glUseProgram(TPShader->getID()); 
+			glBindVertexArray(cubeVAO->getID()); 
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO->getID()); 
 			//upload all relevant info & bind texture & draw the CUBE!
-			TPShader->uploatMat4("u_model", models[1]);
+			TPShader->uploadMat4("u_model", models[1]);
+			TPShader->uploadMat4("u_view", view);
+			TPShader->uploadMat4("u_projection", projection);
+			TPShader->uploadFloat3("u_lightColour", { 1.0f, 1.0f, 1.0f });
+			TPShader->uploadFloat3("u_lightPosition", { 1.0f, 4.0f, 6.0f });
+			TPShader->uploadFloat3("u_viewPosition", { 0.0f, 0.0f, 0.0f });
+			TPShader->uploadFloat4("u_tint", { 1.0f, 1.0f, 1.0f, 1.0f });
+
+
 			if (textureUnitManager.getUnit(letterTexture->getID(), unit) == true)
 			{
 				glActiveTexture(GL_TEXTURE0 + unit);
 				glBindTexture(GL_TEXTURE_2D, letterTexture->getID());
 			}
+			//upload texture & draw.
 			TPShader->uploadInt("u_texData", unit);
 			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 
 			//DRAW CUBE B!
-			TPShader->uploatMat4("u_model", models[2]);
+			TPShader->uploadMat4("u_model", models[2]);
 			if (textureUnitManager.getUnit(numberTexture->getID(), unit) == true)
 			{
 				glActiveTexture(GL_TEXTURE0 + unit);

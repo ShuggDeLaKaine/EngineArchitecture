@@ -16,7 +16,7 @@ namespace Engine
 	public:
 
 		virtual ~UniformBuffer() = default;				//!< destructor.
-		virtual uint32_t getRenderID() = 0;				//!< accessor for openGL ID.
+		virtual uint32_t getID() = 0;					//!< accessor for openGL ID.
 		virtual UniformBufferLayout getLayout() = 0;	//!< accessor for the uniform buffer layout.
 		virtual void attachShaderBlock(const std::shared_ptr<Shaders>& shader, const char* blockName) = 0;	//!< 
 		virtual void uploadDataToBlock(const char* uniformName, void * data) = 0;		//!< 

@@ -46,7 +46,7 @@ namespace Engine
 		//need to bind first.
 		glBindVertexArray(m_OpenGL_ID);
 		//then bind the buffer.
-		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer->getRenderID());
+		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer->getID());
 
 		//get layout and then iterate over it.
 		const auto& layout = vertexBuffer->getLayout();

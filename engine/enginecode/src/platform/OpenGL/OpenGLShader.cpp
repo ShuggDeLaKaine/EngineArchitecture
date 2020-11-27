@@ -162,7 +162,7 @@ namespace Engine
 		glUniform4f(location, value.x, value.y, value.z, value.w);
 	}
 
-	void OpenGLShader::uploatMat4(const char * name, const glm::mat4 & value)
+	void OpenGLShader::uploadMat4(const char * name, const glm::mat4 & value)
 	{
 		uint32_t location = glGetUniformLocation(m_OpenGL_ID, name);
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));

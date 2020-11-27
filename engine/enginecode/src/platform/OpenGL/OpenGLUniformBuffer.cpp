@@ -36,8 +36,8 @@ namespace Engine
 	void OpenGLUniformBuffer::attachShaderBlock(const std::shared_ptr<Shaders>& shader, const char * blockName)
 	{
 		//now attach to shader.
-		uint32_t blockIndex = glGetUniformBlockIndex(shader->getRenderID(), blockName);		//first get the block number off the shader.
-		glUniformBlockBinding(shader->getRenderID(), blockIndex, m_blockNumber);			//link to binding point.
+		uint32_t blockIndex = glGetUniformBlockIndex(shader->getID(), blockName);		//first get the block number off the shader.
+		glUniformBlockBinding(shader->getID(), blockIndex, m_blockNumber);				//link to binding point.
 
 	}
 

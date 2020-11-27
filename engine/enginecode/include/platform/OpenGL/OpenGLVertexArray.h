@@ -16,7 +16,7 @@ namespace Engine
 		virtual void addVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer) override;	//!< add a vertex buffer.
 		virtual void setIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer) override;		//!< set the index buffer.
 		virtual uint32_t getDrawCount() override;										//!< get the draw count of index buffer.
-		virtual inline uint32_t getRenderID() const override { return m_OpenGL_ID; }	//!< gets and returns the renderer ID.
+		virtual inline uint32_t getID() const override { return m_OpenGL_ID; }			//!< gets and returns the renderer ID.
 
 	private:
 		std::vector<std::shared_ptr<VertexBuffer>> m_vertexBuffer;		//!< shared pointe to hold the vertex buffer.
