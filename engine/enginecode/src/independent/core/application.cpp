@@ -349,7 +349,6 @@ namespace Engine {
 	void Application::run()
 	{
 
-
 #pragma region RAW_DATA
 
 		std::vector<TPVertexNormalised> cubeVertices(24);
@@ -384,56 +383,28 @@ namespace Engine {
 		cubeVertices.at(22)	= TPVertexNormalised({ 0.5f,  0.5f,  0.5f}, normalise({ 1.0f,  0.0f,  0.0f}), normalise({0.66f, 0.5f}));
 		cubeVertices.at(23)	= TPVertexNormalised({ 0.5f, -0.5f,  0.5f}, normalise({ 1.0f,  0.0f,  0.0f}), normalise({0.66f, 1.0f}));
 
-
-		std::vector<FCVertex> pyramidVertices(16);
-		//								  <------- Pos ------->          <----- colour ----->       
-		pyramidVertices.at(0)  = FCVertex({-0.5f, -0.5f, -0.5f}, package({0.8f, 0.2f, 0.8f}));	//square Magneta
-		pyramidVertices.at(1)  = FCVertex({ 0.5f, -0.5f, -0.5f}, package({0.8f, 0.2f, 0.8f}));
-		pyramidVertices.at(2)  = FCVertex({ 0.5f, -0.5f,  0.5f}, package({0.8f, 0.2f, 0.8f}));
-		pyramidVertices.at(3)  = FCVertex({-0.5f, -0.5f,  0.5f}, package({0.8f, 0.2f, 0.8f}));
-
-		pyramidVertices.at(4)  = FCVertex({-0.5f, -0.5f, -0.5f}, package({0.2f, 0.8f, 0.2f}));	//triangle Green
-		pyramidVertices.at(5)  = FCVertex({-0.5f, -0.5f,  0.5f}, package({0.2f, 0.8f, 0.2f}));
-		pyramidVertices.at(6)  = FCVertex({ 0.0f,  0.5f,  0.0f}, package({0.2f, 0.8f, 0.2f}));
-
-		pyramidVertices.at(7)  = FCVertex({-0.5f, -0.5f,  0.5f}, package({1.0f, 0.0f, 0.0f}));	//triangle Red
-		pyramidVertices.at(8)  = FCVertex({ 0.5f, -0.5f,  0.5f}, package({1.0f, 0.0f, 0.0f}));
-		pyramidVertices.at(9)  = FCVertex({ 0.0f,  0.5f,  0.0f}, package({1.0f, 0.0f, 0.0f}));
-
-		pyramidVertices.at(10) = FCVertex({ 0.5f, -0.5f,  0.5f}, package({0.8f, 0.8f, 0.2f}));	//triangle Yellow
-		pyramidVertices.at(11) = FCVertex({ 0.5f, -0.5f, -0.5f}, package({0.8f, 0.8f, 0.2f}));
-		pyramidVertices.at(12) = FCVertex({ 0.0f,  0.5f,  0.0f}, package({0.8f, 0.8f, 0.2f}));
-
-		pyramidVertices.at(13) = FCVertex({ 0.5f, -0.5f, -0.5f}, package({0.0f, 0.2f, 1.0f}));	//triangle Blue
-		pyramidVertices.at(14) = FCVertex({-0.5f, -0.5f, -0.5f}, package({0.0f, 0.2f, 1.0f}));
-		pyramidVertices.at(15) = FCVertex({ 0.0f,  0.5f,  0.0f}, package({0.0f, 0.2f, 1.0f}));		
-
-		/*
-		//This is for that GARGABE FIRST RENDERING VIDEO, that DOES NOT take into account ANY of the extra work, WASTE OF TIME.
-				float pyramidVertices[8 * 16] = {
-			//  <------ Pos ------>         <---- normal ---->             <--- UV --->
-				-0.5f, -0.5f, -0.5f,		0.0f,	  -1.0f,	0.0f,		0.0f,  0.0f,		//square Magneta
-				 0.5f, -0.5f, -0.5f,		0.0f,	  -1.0f,	0.0f,		0.0f,  0.0f,
-				 0.5f, -0.5f,  0.5f,		0.0f,     -1.0f,	0.0f,		0.0f,  0.0f,
-				-0.5f, -0.5f,  0.5f,		0.0f,	  -1.0f,	0.0f,		0.0f,  0.0f,
-
-				-0.5f, -0.5f, -0.5f,		-0.8944f, 0.4472f,  0.0f,		0.0f,  0.0f,		//triangle Green
-				-0.5f, -0.5f,  0.5f,		-0.8944f, 0.4472f,  0.0f,		0.0f,  0.0f,
-				 0.0f,  0.5f,  0.0f,		-0.8944f, 0.4472f,  0.0f,		0.0f,  0.0f,
-
-				-0.5f, -0.5f,  0.5f,		0.0f,	  0.4472f,	0.8944f,	0.0f,  0.0f,		//triangle Red
-				 0.5f, -0.5f,  0.5f,		0.0f,	  0.4472f,	0.8944f,	0.0f,  0.0f,
-				 0.0f,  0.5f,  0.0f,		0.0f,	  0.4472f,	0.8944f,	0.0f,  0.0f,
-
-				 0.5f, -0.5f,  0.5f,		0.8944f,  0.4472f,	0.0f,		0.0f,  0.0f,		//triangle Yellow
-				 0.5f, -0.5f, -0.5f,		0.8944f,  0.4472f,	0.0f,		0.0f,  0.0f,
-				 0.0f,  0.5f,  0.0f,		0.8944f,  0.4472f,	0.0f,		0.0f,  0.0f,
-
-				 0.5f, -0.5f, -0.5f,		0.0f,	0.4472f,    -0.8944f,	0.0f,  0.0f,		//triangle Blue
-				-0.5f, -0.5f, -0.5f,		0.0f,	0.4472f,	-0.8944f,	0.0f,  0.0f,
-				 0.0f,  0.5f,  0.0f,		0.0f,	0.4472f,	-0.8944f,	0.0f,  0.0f,
-		};
-		*/
+		std::vector<TPVertexNormalised> pyramidVertices(16);
+		//										     <------- Pos ------->            <--------- normal --------->               <---- UV ---->		
+		pyramidVertices.at(0)  = TPVertexNormalised({-0.5f, -0.5f, -0.5f }, normalise({ 0.0f,	-1.0f,     0.0f }),    normalise({ 0.0f,  0.0f }));	
+		pyramidVertices.at(1)  = TPVertexNormalised({ 0.5f, -0.5f, -0.5f }, normalise({ 0.0f,	-1.0f,	   0.0f }),    normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(2)  = TPVertexNormalised({ 0.5f, -0.5f,  0.5f }, normalise({ 0.0f,	-1.0f,     0.0f }),    normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(3)  = TPVertexNormalised({-0.5f, -0.5f,  0.5f }, normalise({ 0.0f,	-1.0f,     0.0f }),    normalise({ 0.0f,  0.0f }));
+							  							  										     
+		pyramidVertices.at(4)  = TPVertexNormalised({-0.5f, -0.5f, -0.5f }, normalise({-0.8944f, 0.4472f,  0.0f }),    normalise({ 0.0f,  0.0f }));	
+		pyramidVertices.at(5)  = TPVertexNormalised({-0.5f, -0.5f,  0.5f }, normalise({-0.8944f, 0.4472f,  0.0f }),    normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(6)  = TPVertexNormalised({ 0.0f,  0.5f,  0.0f }, normalise({-0.8944f, 0.4472f,  0.0f }),    normalise({ 0.0f,  0.0f }));
+							  							  
+		pyramidVertices.at(7)  = TPVertexNormalised({-0.5f, -0.5f,  0.5f }, normalise({ 0.0f,	 0.4472f,  0.8944f }), normalise({ 0.0f,  0.0f }));	
+		pyramidVertices.at(8)  = TPVertexNormalised({ 0.5f, -0.5f,  0.5f }, normalise({ 0.0f,	 0.4472f,  0.8944f }), normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(9)  = TPVertexNormalised({ 0.0f,  0.5f,  0.0f }, normalise({ 0.0f,	 0.4472f,  0.8944f }), normalise({ 0.0f,  0.0f }));
+														  
+		pyramidVertices.at(10) = TPVertexNormalised({ 0.5f, -0.5f,  0.5f }, normalise({ 0.8944f, 0.4472f,  0.0f }),	   normalise({ 0.0f,  0.0f }));	
+		pyramidVertices.at(11) = TPVertexNormalised({ 0.5f, -0.5f, -0.5f }, normalise({ 0.8944f, 0.4472f,  0.0f }),	   normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(12) = TPVertexNormalised({ 0.0f,  0.5f,  0.0f }, normalise({ 0.8944f, 0.4472f,  0.0f }),	   normalise({ 0.0f,  0.0f }));
+														  
+		pyramidVertices.at(13) = TPVertexNormalised({ 0.5f, -0.5f, -0.5f }, normalise({ 0.0f,	 0.4472f, -0.8944f }), normalise({ 0.0f,  0.0f }));	
+		pyramidVertices.at(14) = TPVertexNormalised({-0.5f, -0.5f, -0.5f }, normalise({ 0.0f,	 0.4472f, -0.8944f }), normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(15) = TPVertexNormalised({ 0.0f,  0.5f,  0.0f }, normalise({ 0.0f,	 0.4472f, -0.8944f }), normalise({ 0.0f,  0.0f }));
 
 
 		uint32_t pyramidIndices[3 * 6] =
@@ -502,8 +473,7 @@ namespace Engine {
 
 		//create/reset the VAO, VBO & IBO.
 		pyramidVAO.reset(VertexArray::create());
-		pyramidVBO.reset(VertexBuffer::create(pyramidVertices.data(), sizeof(FCVertex) * pyramidVertices.size(), FCVertex::getBufferLayout()));
-		//pyramidVBO.reset(VertexBuffer::create(pyramidVertices, sizeof(pyramidVertices), TPVertexNormalised::getBufferLayout()));
+		pyramidVBO.reset(VertexBuffer::create(pyramidVertices.data(), sizeof(TPVertexNormalised) * pyramidVertices.size(), TPVertexNormalised::getBufferLayout()));
 		pyramidIBO.reset(IndexBuffer::create(pyramidIndices, 18));
 
 		//set the vertex and index buffers. 
@@ -687,8 +657,9 @@ namespace Engine {
 
 
 /*
-		FIRST VIDEO OF RENDER
-		float pyramidVertices[8 * 16] = {
+		/*
+		//This is for that GARGABE FIRST RENDERING VIDEO, that DOES NOT take into account ANY of the extra work, WASTE OF TIME.
+				float pyramidVertices[8 * 16] = {
 			//  <------ Pos ------>         <---- normal ---->             <--- UV --->
 				-0.5f, -0.5f, -0.5f,		0.0f,	  -1.0f,	0.0f,		0.0f,  0.0f,		//square Magneta
 				 0.5f, -0.5f, -0.5f,		0.0f,	  -1.0f,	0.0f,		0.0f,  0.0f,
@@ -711,6 +682,30 @@ namespace Engine {
 				-0.5f, -0.5f, -0.5f,		0.0f,	0.4472f,	-0.8944f,	0.0f,  0.0f,
 				 0.0f,  0.5f,  0.0f,		0.0f,	0.4472f,	-0.8944f,	0.0f,  0.0f,
 		};
+		*/
+		/*
+		std::vector<FCVertex> pyramidVertices(16);
+		//								  <------- Pos ------->          <----- colour ----->
+		pyramidVertices.at(0)  = FCVertex({-0.5f, -0.5f, -0.5f}, package({0.8f, 0.2f, 0.8f}));	//square Magneta
+		pyramidVertices.at(1)  = FCVertex({ 0.5f, -0.5f, -0.5f}, package({0.8f, 0.2f, 0.8f}));
+		pyramidVertices.at(2)  = FCVertex({ 0.5f, -0.5f,  0.5f}, package({0.8f, 0.2f, 0.8f}));
+		pyramidVertices.at(3)  = FCVertex({-0.5f, -0.5f,  0.5f}, package({0.8f, 0.2f, 0.8f}));
+
+		pyramidVertices.at(4)  = FCVertex({-0.5f, -0.5f, -0.5f}, package({0.2f, 0.8f, 0.2f}));	//triangle Green
+		pyramidVertices.at(5)  = FCVertex({-0.5f, -0.5f,  0.5f}, package({0.2f, 0.8f, 0.2f}));
+		pyramidVertices.at(6)  = FCVertex({ 0.0f,  0.5f,  0.0f}, package({0.2f, 0.8f, 0.2f}));
+
+		pyramidVertices.at(7)  = FCVertex({-0.5f, -0.5f,  0.5f}, package({1.0f, 0.0f, 0.0f}));	//triangle Red
+		pyramidVertices.at(8)  = FCVertex({ 0.5f, -0.5f,  0.5f}, package({1.0f, 0.0f, 0.0f}));
+		pyramidVertices.at(9)  = FCVertex({ 0.0f,  0.5f,  0.0f}, package({1.0f, 0.0f, 0.0f}));
+
+		pyramidVertices.at(10) = FCVertex({ 0.5f, -0.5f,  0.5f}, package({0.8f, 0.8f, 0.2f}));	//triangle Yellow
+		pyramidVertices.at(11) = FCVertex({ 0.5f, -0.5f, -0.5f}, package({0.8f, 0.8f, 0.2f}));
+		pyramidVertices.at(12) = FCVertex({ 0.0f,  0.5f,  0.0f}, package({0.8f, 0.8f, 0.2f}));
+
+		pyramidVertices.at(13) = FCVertex({ 0.5f, -0.5f, -0.5f}, package({0.0f, 0.2f, 1.0f}));	//triangle Blue
+		pyramidVertices.at(14) = FCVertex({-0.5f, -0.5f, -0.5f}, package({0.0f, 0.2f, 1.0f}));
+		pyramidVertices.at(15) = FCVertex({ 0.0f,  0.5f,  0.0f}, package({0.0f, 0.2f, 1.0f}));
 		*/
 
 
