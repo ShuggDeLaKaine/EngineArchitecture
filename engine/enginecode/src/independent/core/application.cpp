@@ -22,6 +22,7 @@
 #include "rendering/vertexArray.h"
 #include "rendering/shaders.h"
 #include "rendering/textures.h"
+#include "rendering/bufferLayout.h"
 #include "rendering/uniformBuffer.h"
 #include "rendering/textureUnitManager.h"
 
@@ -357,22 +358,27 @@ namespace Engine {
 		cubeVertices.at(1)	= TPVertexNormalised({ 0.5f, -0.5f, -0.5f}, normalise({ 0.0f,  0.0f, -1.0f}), normalise({0.0f,  0.5f}));
 		cubeVertices.at(2)	= TPVertexNormalised({-0.5f, -0.5f, -0.5f}, normalise({ 0.0f,  0.0f, -1.0f}), normalise({0.33f, 0.5f}));
 		cubeVertices.at(3)	= TPVertexNormalised({-0.5f,  0.5f, -0.5f}, normalise({ 0.0f,  0.0f, -1.0f}), normalise({0.33f, 0.0f}));
+
 		cubeVertices.at(4)	= TPVertexNormalised({-0.5f, -0.5f,  0.5f}, normalise({ 0.0f,  0.0f,  1.0f}), normalise({0.33f, 0.5f}));
 		cubeVertices.at(5)	= TPVertexNormalised({ 0.5f, -0.5f,  0.5f}, normalise({ 0.0f,  0.0f,  1.0f}), normalise({0.66f, 0.5f}));
 		cubeVertices.at(6)	= TPVertexNormalised({ 0.5f,  0.5f,  0.5f}, normalise({ 0.0f,  0.0f,  1.0f}), normalise({0.66f, 0.0f}));
 		cubeVertices.at(7)	= TPVertexNormalised({-0.5f,  0.5f,  0.5f}, normalise({ 0.0f,  0.0f,  1.0f}), normalise({0.33f, 0.0f}));
+
 		cubeVertices.at(8)	= TPVertexNormalised({-0.5f, -0.5f, -0.5f}, normalise({ 0.0f, -1.0f,  0.0f}), normalise({1.0f,  0.0f}));
 		cubeVertices.at(9)	= TPVertexNormalised({ 0.5f, -0.5f, -0.5f}, normalise({ 0.0f, -1.0f,  0.0f}), normalise({0.66f, 0.0f}));
 		cubeVertices.at(10)	= TPVertexNormalised({ 0.5f, -0.5f,  0.5f}, normalise({ 0.0f, -1.0f,  0.0f}), normalise({0.66f, 0.5f}));
 		cubeVertices.at(11)	= TPVertexNormalised({-0.5f, -0.5f,  0.5f}, normalise({ 0.0f, -1.0f,  0.0f}), normalise({1.0f,  0.5f}));
+
 		cubeVertices.at(12)	= TPVertexNormalised({ 0.5f,  0.5f,  0.5f}, normalise({ 0.0f,  1.0f,  0.0f}), normalise({0.0f,  0.5f}));
 		cubeVertices.at(13)	= TPVertexNormalised({ 0.5f,  0.5f, -0.5f}, normalise({ 0.0f,  1.0f,  0.0f}), normalise({0.0f,  1.0f}));
 		cubeVertices.at(14)	= TPVertexNormalised({-0.5f,  0.5f, -0.5f}, normalise({ 0.0f,  1.0f,  0.0f}), normalise({0.33f, 1.0f}));
 		cubeVertices.at(15)	= TPVertexNormalised({-0.5f,  0.5f,  0.5f}, normalise({ 0.0f,  1.0f,  0.0f}), normalise({0.3f,  0.5f}));
+
 		cubeVertices.at(16)	= TPVertexNormalised({-0.5f,  0.5f,  0.5f}, normalise({-1.0f,  0.0f,  0.0f}), normalise({0.66f, 0.5f}));
 		cubeVertices.at(17)	= TPVertexNormalised({-0.5f,  0.5f, -0.5f}, normalise({-1.0f,  0.0f,  0.0f}), normalise({0.33f, 0.5f}));
 		cubeVertices.at(18)	= TPVertexNormalised({-0.5f, -0.5f, -0.5f}, normalise({-1.0f,  0.0f,  0.0f}), normalise({0.33f, 1.0f}));
 		cubeVertices.at(19)	= TPVertexNormalised({-0.5f, -0.5f,  0.5f}, normalise({-1.0f,  0.0f,  0.0f}), normalise({0.66f, 1.0f}));
+
 		cubeVertices.at(20)	= TPVertexNormalised({ 0.5f, -0.5f, -0.5f}, normalise({ 1.0f,  0.0f,  0.0f}), normalise({1.0f,  1.0f}));
 		cubeVertices.at(21)	= TPVertexNormalised({ 0.5f,  0.5f, -0.5f}, normalise({ 1.0f,  0.0f,  0.0f}), normalise({1.0f,  0.5f}));
 		cubeVertices.at(22)	= TPVertexNormalised({ 0.5f,  0.5f,  0.5f}, normalise({ 1.0f,  0.0f,  0.0f}), normalise({0.66f, 0.5f}));
@@ -380,23 +386,54 @@ namespace Engine {
 
 
 		std::vector<FCVertex> pyramidVertices(16);
-		//	                              <------- Pos ------->           <---- colour ----> 
+		//								  <------- Pos ------->          <----- colour ----->       
 		pyramidVertices.at(0)  = FCVertex({-0.5f, -0.5f, -0.5f}, package({0.8f, 0.2f, 0.8f}));	//square Magneta
 		pyramidVertices.at(1)  = FCVertex({ 0.5f, -0.5f, -0.5f}, package({0.8f, 0.2f, 0.8f}));
 		pyramidVertices.at(2)  = FCVertex({ 0.5f, -0.5f,  0.5f}, package({0.8f, 0.2f, 0.8f}));
 		pyramidVertices.at(3)  = FCVertex({-0.5f, -0.5f,  0.5f}, package({0.8f, 0.2f, 0.8f}));
+
 		pyramidVertices.at(4)  = FCVertex({-0.5f, -0.5f, -0.5f}, package({0.2f, 0.8f, 0.2f}));	//triangle Green
 		pyramidVertices.at(5)  = FCVertex({-0.5f, -0.5f,  0.5f}, package({0.2f, 0.8f, 0.2f}));
 		pyramidVertices.at(6)  = FCVertex({ 0.0f,  0.5f,  0.0f}, package({0.2f, 0.8f, 0.2f}));
+
 		pyramidVertices.at(7)  = FCVertex({-0.5f, -0.5f,  0.5f}, package({1.0f, 0.0f, 0.0f}));	//triangle Red
 		pyramidVertices.at(8)  = FCVertex({ 0.5f, -0.5f,  0.5f}, package({1.0f, 0.0f, 0.0f}));
 		pyramidVertices.at(9)  = FCVertex({ 0.0f,  0.5f,  0.0f}, package({1.0f, 0.0f, 0.0f}));
+
 		pyramidVertices.at(10) = FCVertex({ 0.5f, -0.5f,  0.5f}, package({0.8f, 0.8f, 0.2f}));	//triangle Yellow
 		pyramidVertices.at(11) = FCVertex({ 0.5f, -0.5f, -0.5f}, package({0.8f, 0.8f, 0.2f}));
 		pyramidVertices.at(12) = FCVertex({ 0.0f,  0.5f,  0.0f}, package({0.8f, 0.8f, 0.2f}));
+
 		pyramidVertices.at(13) = FCVertex({ 0.5f, -0.5f, -0.5f}, package({0.0f, 0.2f, 1.0f}));	//triangle Blue
 		pyramidVertices.at(14) = FCVertex({-0.5f, -0.5f, -0.5f}, package({0.0f, 0.2f, 1.0f}));
-		pyramidVertices.at(15) = FCVertex({ 0.0f,  0.5f,  0.0f}, package({0.0f, 0.2f, 1.0f}));														  
+		pyramidVertices.at(15) = FCVertex({ 0.0f,  0.5f,  0.0f}, package({0.0f, 0.2f, 1.0f}));		
+
+		/*
+		//This is for that GARGABE FIRST RENDERING VIDEO, that DOES NOT take into account ANY of the extra work, WASTE OF TIME.
+				float pyramidVertices[8 * 16] = {
+			//  <------ Pos ------>         <---- normal ---->             <--- UV --->
+				-0.5f, -0.5f, -0.5f,		0.0f,	  -1.0f,	0.0f,		0.0f,  0.0f,		//square Magneta
+				 0.5f, -0.5f, -0.5f,		0.0f,	  -1.0f,	0.0f,		0.0f,  0.0f,
+				 0.5f, -0.5f,  0.5f,		0.0f,     -1.0f,	0.0f,		0.0f,  0.0f,
+				-0.5f, -0.5f,  0.5f,		0.0f,	  -1.0f,	0.0f,		0.0f,  0.0f,
+
+				-0.5f, -0.5f, -0.5f,		-0.8944f, 0.4472f,  0.0f,		0.0f,  0.0f,		//triangle Green
+				-0.5f, -0.5f,  0.5f,		-0.8944f, 0.4472f,  0.0f,		0.0f,  0.0f,
+				 0.0f,  0.5f,  0.0f,		-0.8944f, 0.4472f,  0.0f,		0.0f,  0.0f,
+
+				-0.5f, -0.5f,  0.5f,		0.0f,	  0.4472f,	0.8944f,	0.0f,  0.0f,		//triangle Red
+				 0.5f, -0.5f,  0.5f,		0.0f,	  0.4472f,	0.8944f,	0.0f,  0.0f,
+				 0.0f,  0.5f,  0.0f,		0.0f,	  0.4472f,	0.8944f,	0.0f,  0.0f,
+
+				 0.5f, -0.5f,  0.5f,		0.8944f,  0.4472f,	0.0f,		0.0f,  0.0f,		//triangle Yellow
+				 0.5f, -0.5f, -0.5f,		0.8944f,  0.4472f,	0.0f,		0.0f,  0.0f,
+				 0.0f,  0.5f,  0.0f,		0.8944f,  0.4472f,	0.0f,		0.0f,  0.0f,
+
+				 0.5f, -0.5f, -0.5f,		0.0f,	0.4472f,    -0.8944f,	0.0f,  0.0f,		//triangle Blue
+				-0.5f, -0.5f, -0.5f,		0.0f,	0.4472f,	-0.8944f,	0.0f,  0.0f,
+				 0.0f,  0.5f,  0.0f,		0.0f,	0.4472f,	-0.8944f,	0.0f,  0.0f,
+		};
+		*/
 
 
 		uint32_t pyramidIndices[3 * 6] =
@@ -431,7 +468,8 @@ namespace Engine {
 		std::shared_ptr<VertexBuffer> cubeVBO;
 		std::shared_ptr<IndexBuffer> cubeIBO;
 
-		/* THIS IS UP IN THE TEMP VERTEX CLASSES
+		/*
+		//THIS IS UP IN THE TEMP VERTEX CLASSES
 		//creating a buffer layout with its initialiser list (check out bufferLayout.h)
 		BufferLayout cubeBL = {
 			{ ShaderDataType::Float3, false },
@@ -465,6 +503,7 @@ namespace Engine {
 		//create/reset the VAO, VBO & IBO.
 		pyramidVAO.reset(VertexArray::create());
 		pyramidVBO.reset(VertexBuffer::create(pyramidVertices.data(), sizeof(FCVertex) * pyramidVertices.size(), FCVertex::getBufferLayout()));
+		//pyramidVBO.reset(VertexBuffer::create(pyramidVertices, sizeof(pyramidVertices), TPVertexNormalised::getBufferLayout()));
 		pyramidIBO.reset(IndexBuffer::create(pyramidIndices, 18));
 
 		//set the vertex and index buffers. 
@@ -548,7 +587,7 @@ namespace Engine {
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4) * 2, sizeof(glm::vec3), glm::value_ptr(lightColour));	//uploading light colour, same as above viewPosition but offsect vec4 * 2, as two vec4s prior.
 			////////
 		/*
-			DOES NOT WORK - SHIIIIIIT CODE
+			DOES NOT WORK - SHIIIIIIT CODE - think issue is with uploadDataToBlock.
 		//glm::vec3 lightPosition(1.0f, 4.0f, 6.0f);			//vec3 for light position.
 		//glm::vec3 viewPosition(0.0f, 0.0f, 0.0f);				//vec3 for view position.
 		//glm::vec3 lightColour(1.0f, 1.0f, 1.0f);				//vec3 for light colour.
@@ -592,28 +631,26 @@ namespace Engine {
 			for (auto& model : models) model = glm::rotate(model, timeStep, glm::vec3(0.0f, 1.0f, 0.5f));
 
 			//DRAW A PYRAMID.
-			//bind the shader FCproram (Flat Coloured shader) & bind the correct buffers, vertex array and index buffer.
-			glUseProgram(FCShader->getID());
+			//bind the shader TPShader & bind the correct buffers, vertex array and index buffer.
+			glUseProgram(TPShader->getID());
 			glBindVertexArray(pyramidVAO->getID());
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO->getID());
 			//upload all relevant uniforms for projectionm, view and model, then draw the PYRAMID!
-			FCShader->uploadMat4("u_model", models[0]);
-			FCShader->uploadMat4("u_view", view);
-			FCShader->uploadMat4("u_projection", projection);
-			glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
-
-			//DRAW CUBE A.
-			//bind the shader (textured phong shader) & bind the buffers, vertex array and index buffer.
-			glUseProgram(TPShader->getID()); 
-			glBindVertexArray(cubeVAO->getID()); 
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO->getID()); 
-			//upload all relevant info & bind texture & draw the CUBE!
-			TPShader->uploadMat4("u_model", models[1]);
+			TPShader->uploadMat4("u_model", models[0]);
 			TPShader->uploadMat4("u_view", view);
 			TPShader->uploadMat4("u_projection", projection);
 			TPShader->uploadFloat3("u_lightColour", { 1.0f, 1.0f, 1.0f });
 			TPShader->uploadFloat3("u_lightPosition", { 1.0f, 4.0f, 6.0f });
 			TPShader->uploadFloat3("u_viewPosition", { 0.0f, 0.0f, 0.0f });
+			TPShader->uploadFloat4("u_tint", { 0.4f, 4.0f, 0.9f, 1.0f });
+			glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+
+			//DRAW CUBE A.
+			//TPShader bound above, so bind the buffers, vertex array and index buffer. 
+			glBindVertexArray(cubeVAO->getID()); 
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO->getID()); 
+			//upload all relevant info & bind texture & draw the CUBE!
+			TPShader->uploadMat4("u_model", models[1]);
 			TPShader->uploadFloat4("u_tint", { 1.0f, 1.0f, 1.0f, 1.0f });
 
 
@@ -648,6 +685,33 @@ namespace Engine {
 
 
 
+
+/*
+		FIRST VIDEO OF RENDER
+		float pyramidVertices[8 * 16] = {
+			//  <------ Pos ------>         <---- normal ---->             <--- UV --->
+				-0.5f, -0.5f, -0.5f,		0.0f,	  -1.0f,	0.0f,		0.0f,  0.0f,		//square Magneta
+				 0.5f, -0.5f, -0.5f,		0.0f,	  -1.0f,	0.0f,		0.0f,  0.0f,
+				 0.5f, -0.5f,  0.5f,		0.0f,     -1.0f,	0.0f,		0.0f,  0.0f,
+				-0.5f, -0.5f,  0.5f,		0.0f,	  -1.0f,	0.0f,		0.0f,  0.0f,
+
+				-0.5f, -0.5f, -0.5f,		-0.8944f, 0.4472f,  0.0f,		0.0f,  0.0f,		//triangle Green
+				-0.5f, -0.5f,  0.5f,		-0.8944f, 0.4472f,  0.0f,		0.0f,  0.0f,
+				 0.0f,  0.5f,  0.0f,		-0.8944f, 0.4472f,  0.0f,		0.0f,  0.0f,
+
+				-0.5f, -0.5f,  0.5f,		0.0f,	  0.4472f,	0.8944f,	0.0f,  0.0f,		//triangle Red
+				 0.5f, -0.5f,  0.5f,		0.0f,	  0.4472f,	0.8944f,	0.0f,  0.0f,
+				 0.0f,  0.5f,  0.0f,		0.0f,	  0.4472f,	0.8944f,	0.0f,  0.0f,
+
+				 0.5f, -0.5f,  0.5f,		0.8944f,  0.4472f,	0.0f,		0.0f,  0.0f,		//triangle Yellow
+				 0.5f, -0.5f, -0.5f,		0.8944f,  0.4472f,	0.0f,		0.0f,  0.0f,
+				 0.0f,  0.5f,  0.0f,		0.8944f,  0.4472f,	0.0f,		0.0f,  0.0f,
+
+				 0.5f, -0.5f, -0.5f,		0.0f,	0.4472f,    -0.8944f,	0.0f,  0.0f,		//triangle Blue
+				-0.5f, -0.5f, -0.5f,		0.0f,	0.4472f,	-0.8944f,	0.0f,  0.0f,
+				 0.0f,  0.5f,  0.0f,		0.0f,	0.4472f,	-0.8944f,	0.0f,  0.0f,
+		};
+		*/
 
 
 /*
