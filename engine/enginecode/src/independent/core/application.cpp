@@ -26,6 +26,8 @@
 #include "rendering/uniformBuffer.h"
 #include "rendering/textureUnitManager.h"
 
+#include "renderer/renderer3D.h"
+
 
 namespace Engine {
 
@@ -489,6 +491,18 @@ namespace Engine {
 		*/
 #pragma endregion
 
+#pragma region MATERIALS
+		std::shared_ptr<Material> pyramidMaterial;
+		std::shared_ptr<Material> letterCubeMaterial;
+		std::shared_ptr<Material> numberCubeMaterial;
+
+		pyramidMaterial.reset(new Material(TPShader, plainWhiteTexture, { 0.3f, 0.9f, 0.4f, 1.0f }));
+		letterCubeMaterial.reset(new Material(TPShader, letterTexture));
+		numberCubeMaterial.reset(new Material(TPShader, numberTexture));
+
+#pragma endregion
+
+
 		//need a view, a projection (for camera) and a model matrix.
 		//two mat4s for the camera.
 		glm::mat4 view = glm::lookAt(
@@ -557,6 +571,20 @@ namespace Engine {
 		models[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-1.5f, -0.5f, -5.0f));
 		models[2] = glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, -0.5f, -5.0f));
 
+
+
+		//create the scene wide uniforms.
+		SceneWideUniforms swu3D;
+		//what the scene wide uniforms, what is consistant across the scene.
+		swu3D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(view)));
+		swu3D["u_projection"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(projection)));
+		//vec3 to initialise the light data.
+		glm::vec3 lightData[3] = { { 1.0f, 1.0f, 1.0f }, { 1.0f, 4.0f, 6.0f }, { 0.0f, 0.0f, 0.0f } };
+		swu3D["u_lightColour"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightData[0])));
+		swu3D["u_lightPosition"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightData[1])));
+		swu3D["u_viewPosition"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightData[2])));
+		
+
 		//create a float for the time step and initialise at 0.
 		float timeStep = 0.0f;
 
@@ -565,6 +593,8 @@ namespace Engine {
 
 		TextureUnitManager textureUnitManager(32);
 		uint32_t unit;
+
+		Renderer3D::init();
 
 
 		while (m_running)
@@ -579,28 +609,59 @@ namespace Engine {
 			//get the model to rotate (easier to see whether it is a 3d shape)
 			for (auto& model : models) model = glm::rotate(model, timeStep, glm::vec3(0.0f, 1.0f, 0.5f));
 
+			//begin rendering with the scene wide uniforms. 
+			//NOTE - with camera implementation this will have to be altered.
+			Renderer3D::begin(swu3D);
+
+			//submit renderer info with vertex array, material and mat4 model of object that needs to be drawn.
+			Renderer3D::submit(pyramidVAO, pyramidMaterial, models[0]);		//pyramidMaterial
+			Renderer3D::submit(cubeVAO, numberCubeMaterial, models[1]);
+			Renderer3D::submit(cubeVAO, letterCubeMaterial, models[2]);
+			
+			//end the rendering.
+			Renderer3D::end();
+
+		
+			m_window->onUpdate(timeStep);
+		}
+	}
+}
+
+
+
+
+
+/*
+		/*
 			//DRAW A PYRAMID.
 			//bind the shader TPShader & bind the correct buffers, vertex array and index buffer.
+			
 			glUseProgram(TPShader->getID());
-			glBindVertexArray(pyramidVAO->getID());
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO->getID());
+
 			if (textureUnitManager.getUnit(plainWhiteTexture->getID(), unit) == true)
 			{
 				glActiveTexture(GL_TEXTURE0 + unit);
 				glBindTexture(GL_TEXTURE_2D, plainWhiteTexture->getID());
 			}
 
+			glBindVertexArray(pyramidVAO->getID());
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO->getID());
+
 			//upload all relevant uniforms for projection, view and model.
-			TPShader->uploadMat4("u_model", models[0]);
 			TPShader->uploadMat4("u_view", view);
 			TPShader->uploadMat4("u_projection", projection);
 			TPShader->uploadFloat3("u_lightColour", { 1.0f, 1.0f, 1.0f });
 			TPShader->uploadFloat3("u_lightPosition", { 1.0f, 4.0f, 6.0f });
 			TPShader->uploadFloat3("u_viewPosition", { 0.0f, 0.0f, 0.0f });
+
+			TPShader->uploadMat4("u_model", models[0]);
 			TPShader->uploadFloat4("u_tint", { 0.4f, 0.7f, 0.3f, 1.0f });
 			TPShader->uploadInt("u_texData", unit);
+
 			//draw the PYRAMID!
 			glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+			
+
 
 			//DRAW CUBE A.
 			//TPShader bound above, so bind the buffers, vertex array and index buffer. 
@@ -629,21 +690,9 @@ namespace Engine {
 			}
 			TPShader->uploadInt("u_texData", unit);
 			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+			*/
 
 
-			m_window->onUpdate(timeStep);
-		}
-
-	}
-
-
-}
-
-
-
-
-
-/*
 		/*
 		//This is for that GARGABE FIRST RENDERING VIDEO, that DOES NOT take into account ANY of the extra work, WASTE OF TIME.
 				float pyramidVertices[8 * 16] = {
