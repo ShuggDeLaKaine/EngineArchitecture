@@ -78,7 +78,7 @@ namespace Engine
 
 		//bind geometry (VAO & IBO).
 		glBindVertexArray(geometry->getID());
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry->setIndexBuffer()->getID());
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry->getIndexBuffer()->getID());
 
 		//finally, submit the draw call.
 		glDrawElements(GL_TRIANGLES, geometry->getDrawCount(), GL_UNSIGNED_INT, nullptr);

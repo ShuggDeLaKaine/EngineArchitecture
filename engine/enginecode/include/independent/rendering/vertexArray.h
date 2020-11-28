@@ -21,6 +21,9 @@ namespace Engine
 		virtual uint32_t getDrawCount() = 0;				//!< get the draw count of index buffer.
 		virtual inline uint32_t getID() const = 0;			//!< gets and returns the renderer ID.
 
+		virtual std::shared_ptr<VertexBuffer> getVertexBuffer() const = 0;		//!< get the vertex buffers.
+		virtual std::shared_ptr<IndexBuffer> getIndexBuffer() const = 0;		//!< get the index buffers.
+
 		static VertexArray* create();		//!< please note, function declared in renderAPI.cpp
 
 	private:
