@@ -40,13 +40,13 @@ namespace Engine
 		{
 			setFlag(flag_texture);
 		}			//!< constructor will shader and texture within within the params, initialised within the initialiser list, flag for texture set within function.
-		Material(const std::shared_ptr<Shaders>& shader, const std::shared_ptr<Textures>& texture, const glm::vec4& tint) :
+		Material(const std::shared_ptr<Shaders>& shader, const glm::vec4& tint) :
 			m_shader(shader),
-			m_texture(texture),
+			m_texture(nullptr),
 			m_tint(tint)
 		{
 			setFlag(flag_tint);
-		}			//!< constructor will shader and texture within within the params, initialised within the initialiser list, flag for tint set within function.
+		}			//!< constructor will shader and tint within within the params, initialised within the initialiser list, flag for tint set within function.
 		
 		inline std::shared_ptr<Shaders> getShader() const { return m_shader; }		//!< accessor function for getting the shader.
 		inline std::shared_ptr<Textures> getTexture() const { return m_texture; }	//!< accessor function for getting the texture.
