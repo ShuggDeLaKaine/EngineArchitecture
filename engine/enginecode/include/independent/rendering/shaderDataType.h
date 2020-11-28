@@ -14,6 +14,7 @@ namespace Engine
 		Short, Short2, Short3, Short4,
 		Byte2, Byte4,
 		Mat3, Mat4,
+		Int,
 	};
 
 	//SDT- Shader Data Type
@@ -37,6 +38,7 @@ namespace Engine
 			case ShaderDataType::Short4: return 2 * 4;		//4 floats is 8 bytes.
 			case ShaderDataType::Byte2:  return 1 * 2;		//2 bytes.
 			case ShaderDataType::Byte4:  return 1 * 4;		//4 bytes.
+			case ShaderDataType::Int:    return 4;			//4 bytes.
 			default: return 0;
 			}
 		}
@@ -57,6 +59,7 @@ namespace Engine
 			case ShaderDataType::Short4: return 4;		//component is 4.
 			case ShaderDataType::Byte2:  return 2;		//component is 2.
 			case ShaderDataType::Byte4:  return 4;		//component is 4.
+			case ShaderDataType::Int:    return 1;		//component is 1
 			default: return 0;
 			}
 		}

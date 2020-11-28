@@ -52,11 +52,12 @@ namespace Engine
 		inline std::shared_ptr<Textures> getTexture() const { return m_texture; }	//!< accessor function for getting the texture.
 		inline glm::vec4 getTint() const { return m_tint; }		//!< accessor function to get the tint.
 
-		void setShader(const std::shared_ptr<Shaders>& shader) { m_shader = shader; }		//!< function to set the shader.
+		//setShader() removed as shouldn't be able to change a shader once it's been set with material; need a new shader then make a new material.
+		//void setShader(const std::shared_ptr<Shaders>& shader) { m_shader = shader; }		//!< function to set the shader.
 		void setTexture(const std::shared_ptr<Textures>& texture) { m_texture = texture; }	//!< function to set the texture.
 		void setTint(const glm::vec4 tint) { m_tint = tint; }		//!< function to set the tint colour.
 
-		bool isFlagSet(uint32_t flag) { return m_flags & flag; }	//!< function to check whether the flag has been set.
+		bool isFlagSet(uint32_t flag) { return m_flags & flag; }	//!< function to check whether the flag has been set. If either return anything than 0, flag is set.
 
 		constexpr static uint32_t flag_texture = 1 << 0;	//!< 00000001
 		constexpr static uint32_t flag_tint = 1 << 1;		//!< 00000010

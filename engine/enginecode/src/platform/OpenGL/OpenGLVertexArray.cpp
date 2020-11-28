@@ -24,6 +24,9 @@ namespace Engine
 			case ShaderDataType::Short2: return GL_SHORT;
 			case ShaderDataType::Short3: return GL_SHORT;
 			case ShaderDataType::Short4: return GL_SHORT;
+			case ShaderDataType::Mat3:   return GL_FLOAT;
+			case ShaderDataType::Mat4:   return GL_FLOAT;
+			case ShaderDataType::Int:    return GL_INT;
 			default: return GL_INVALID_ENUM;
 			}
 		}
