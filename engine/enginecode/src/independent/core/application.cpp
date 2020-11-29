@@ -588,13 +588,13 @@ namespace Engine {
 		//create a float for the time step and initialise at 0.
 		float timeStep = 0.0f;
 
-		glEnable(GL_DEPTH_TEST);
+		//glEnable(GL_DEPTH_TEST);
 		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 
 		TextureUnitManager textureUnitManager(32);
 		uint32_t unit;
 
-		Renderer3D::init();
+		//Renderer3D::init();
 
 
 		while (m_running)
@@ -609,18 +609,24 @@ namespace Engine {
 			//get the model to rotate (easier to see whether it is a 3d shape)
 			for (auto& model : models) model = glm::rotate(model, timeStep, glm::vec3(0.0f, 1.0f, 0.5f));
 
+			/*
+			glEnable(GL_DEPTH_TEST);
+
 			//begin rendering with the scene wide uniforms. 
 			//NOTE - with camera implementation this will have to be altered.
-			Renderer3D::begin(swu3D);
+			//Renderer3D::begin(swu3D);
 
+			
 			//submit renderer info with vertex array, material and mat4 model of object that needs to be drawn.
 			Renderer3D::submit(pyramidVAO, pyramidMaterial, models[0]);		//pyramidMaterial
 			Renderer3D::submit(cubeVAO, numberCubeMaterial, models[1]);
 			Renderer3D::submit(cubeVAO, letterCubeMaterial, models[2]);
-			
-			//end the rendering.
-			Renderer3D::end();
+			*/
 
+			//end the rendering.
+			//Renderer3D::end();
+
+			glDisable(GL_DEPTH_TEST);
 		
 			m_window->onUpdate(timeStep);
 		}

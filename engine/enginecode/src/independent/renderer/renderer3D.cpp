@@ -2,7 +2,6 @@
 
 #include "engine_pch.h"
 #include "renderer/renderer3D.h"
-#include <glad/glad.h>
 
 namespace Engine
 {
