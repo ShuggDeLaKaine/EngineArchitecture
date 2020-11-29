@@ -497,7 +497,7 @@ namespace Engine {
 		std::shared_ptr<Material> letterCubeMaterial;
 		std::shared_ptr<Material> numberCubeMaterial;
 
-		pyramidMaterial.reset(new Material(TPShader, plainWhiteTexture, { 0.3f, 0.9f, 0.4f, 1.0f }));
+		pyramidMaterial.reset(new Material(TPShader, { 0.3f, 0.9f, 0.4f, 1.0f }));
 		letterCubeMaterial.reset(new Material(TPShader, letterTexture));
 		numberCubeMaterial.reset(new Material(TPShader, numberTexture));
 
@@ -596,8 +596,15 @@ namespace Engine {
 		//create a float for the time step and initialise at 0.
 		float timeStep = 0.0f;
 
-		Quad quad1 = Quad::createCentreHalfExtents({ 400.0f, 200.0f }, { 100.0f, 50.0f });
-		//TO DO - some testing on the other create quads, using Simons example using paint to check they're working as expected.
+		Quad quads[7] =
+		{
+			Quad::createCentreHalfExtents({ 400.0f, 200.0f }, { 100.0f, 50.0f }),
+			Quad::createCentreHalfExtents({ 200.0f, 300.0f }, { 50.0f, 100.0f }),
+			Quad::createCentreHalfExtents({ 400.0f, 500.0f }, { 100.0f, 75.0f }),
+			Quad::createCentreHalfExtents({ 100.0f, 200.0f }, { 75.0f, 50.0f }),
+			Quad::createCentreHalfExtents({ 500.0f, 100.0f }, { 50.0f, 25.0f }),
+			Quad::createCentreHalfExtents({ 300.0f, 350.0f }, { 175.0f, 115.0f }),
+		};			//TO DO - some testing on the other create quads, using Simons example using paint to check they're working as expected.
 
 		//glEnable(GL_DEPTH_TEST);
 		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
@@ -620,7 +627,6 @@ namespace Engine {
 			//get the model to rotate (easier to see whether it is a 3d shape)
 			for (auto& model : models) model = glm::rotate(model, timeStep, glm::vec3(0.0f, 1.0f, 0.5f));
 
-			
 			glEnable(GL_DEPTH_TEST);
 
 			//begin rendering with the scene wide uniforms. 
@@ -636,14 +642,23 @@ namespace Engine {
 			Renderer3D::end();
 			
 			glDisable(GL_DEPTH_TEST);
-		
-			
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					
 			Renderer2D::begin(swu2D);
-			Renderer2D::submit(quad1, { 0.0f, 0.0f, 1.0f, 1.0f });
+
+			Renderer2D::submit(quads[0], { 0.0f, 0.0f, 1.0f, 1.0f });
+			Renderer2D::submit(quads[1], letterTexture);
+			Renderer2D::submit(quads[2], { 0.0f, 1.0f, 0.0f, 1.0f }, numberTexture);
+			Renderer2D::submit(quads[3], { 0.0f, 1.0f, 1.0f, 1.0f }, numberTexture, 45.0f, true);
+			Renderer2D::submit(quads[4], letterTexture, -20.0f, true);
+			Renderer2D::submit(quads[5], { 0.0f, 1.0f, 0.0f, 0.5f }, letterTexture, 90.0f, true);
+			Renderer2D::submit(quads[5], { 0.0f, 0.0f, 1.0f, 0.5f }, letterTexture, glm::radians(-60.0f));
+
 			Renderer2D::end();
 			
-
-
+			glDisable(GL_BLEND);
+			
 			m_window->onUpdate(timeStep);
 		}
 	}

@@ -34,9 +34,10 @@ namespace Engine
 		static void submit(const Quad& quad, const glm::vec4& tint);					//!< render a tinted (coloured) quad.
 		static void submit(const Quad& quad, const std::shared_ptr<Textures>& texture);	//!< render a textured quad.
 		static void submit(const Quad& quad, const glm::vec4& tint, const std::shared_ptr<Textures>& texture);	//!< render a tinted & textured quad.
-		static void submit(const Quad& quad, const glm::vec4& tint, const std::shared_ptr<Textures>& texture, float angle, bool degrees = false);		//!< render a tinted, textured & rotated quad.
 		static void submit(const Quad& quad, const glm::vec4& tint, float angle, bool degrees = false);			//!< render a tinted & rotated quad.
 		static void submit(const Quad& quad, const std::shared_ptr<Textures>& texture, float angle, bool degrees = false);		//!< render a textured & rotated quad.
+		static void submit(const Quad& quad, const glm::vec4& tint, const std::shared_ptr<Textures>& texture, float angle, bool degrees = false);		//!< render a tinted, textured & rotated quad.
+
 		static void end();					//!< end of the current 2D scene.
 
 	private:
