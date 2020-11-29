@@ -93,6 +93,109 @@ namespace Engine
 
 	}
 
+	void Renderer2D::submit(const Quad & quad, const std::shared_ptr<Textures>& texture)
+	{
+		//first bind the default texture.
+		glBindTexture(GL_TEXTURE_2D, texture->getID());
+
+		//now create the model by translating and scaling the model.
+		s_data->model = glm::scale(glm::translate(glm::mat4(1.0f), quad.m_translate), quad.m_scale);
+
+		//upload any per-draw-uniforms.
+		s_data->shader->uploadInt("u_texData", 0);						//the texture data.
+		s_data->shader->uploadFloat4("u_tint", s_data->defaultTint);	//the tint data.
+		s_data->shader->uploadMat4("u_model", s_data->model);			//the transform of the model.
+
+		//now draw it; remember using QUADS, not TRIANGLES.
+		glDrawElements(GL_QUADS, s_data->VAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+	}
+
+	void Renderer2D::submit(const Quad & quad, const glm::vec4 & tint, const std::shared_ptr<Textures>& texture)
+	{
+		//first bind the default texture.
+		glBindTexture(GL_TEXTURE_2D, texture->getID());
+
+		//now create the model by translating and scaling the model.
+		s_data->model = glm::scale(glm::translate(glm::mat4(1.0f), quad.m_translate), quad.m_scale);
+
+		//upload any per-draw-uniforms.
+		s_data->shader->uploadInt("u_texData", 0);				//the texture data.
+		s_data->shader->uploadFloat4("u_tint", tint);			//the tint data.
+		s_data->shader->uploadMat4("u_model", s_data->model);	//the transform of the model.
+
+		//now draw it; remember using QUADS, not TRIANGLES.
+		glDrawElements(GL_QUADS, s_data->VAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+	}
+
+	void Renderer2D::submit(const Quad & quad, const glm::vec4 & tint, const std::shared_ptr<Textures>& texture, float angle, bool degrees)
+	{
+		//check whether bool degrees tue, is so change angle to radians.
+		if (degrees)
+		{
+			angle = glm::radians(angle);
+		}
+
+		//first bind the default texture.
+		glBindTexture(GL_TEXTURE_2D, texture->getID());
+
+		//now create the model by translating & scaling the model, plus the rotation.
+		s_data->model = glm::scale(glm::rotate(glm::translate(glm::mat4(1.0f), quad.m_translate), angle, {0, 0, 1}), quad.m_scale);
+
+		//upload any per-draw-uniforms.
+		s_data->shader->uploadInt("u_texData", 0);				//the texture data.
+		s_data->shader->uploadFloat4("u_tint", tint);			//the tint data.
+		s_data->shader->uploadMat4("u_model", s_data->model);	//the transform of the model.
+
+		//now draw it; remember using QUADS, not TRIANGLES.
+		glDrawElements(GL_QUADS, s_data->VAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+	}
+
+	void Renderer2D::submit(const Quad & quad, const glm::vec4 & tint, float angle, bool degrees)
+	{
+		//check whether bool degrees tue, is so change angle to radians.
+		if (degrees)
+		{
+			angle = glm::radians(angle);
+		}
+
+		//first bind the default texture.
+		glBindTexture(GL_TEXTURE_2D, s_data->defaultTexture->getID());
+
+		//now create the model by translating & scaling the model, plus the rotation.
+		s_data->model = glm::scale(glm::rotate(glm::translate(glm::mat4(1.0f), quad.m_translate), angle, { 0, 0, 1 }), quad.m_scale);
+
+		//upload any per-draw-uniforms.
+		s_data->shader->uploadInt("u_texData", 0);				//the texture data.
+		s_data->shader->uploadFloat4("u_tint", tint);			//the tint data.
+		s_data->shader->uploadMat4("u_model", s_data->model);	//the transform of the model.
+
+		//now draw it; remember using QUADS, not TRIANGLES.
+		glDrawElements(GL_QUADS, s_data->VAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+	}
+
+	void Renderer2D::submit(const Quad & quad, const std::shared_ptr<Textures>& texture, float angle, bool degrees)
+	{
+		//check whether bool degrees tue, is so change angle to radians.
+		if (degrees)
+		{
+			angle = glm::radians(angle);
+		}
+
+		//first bind the default texture.
+		glBindTexture(GL_TEXTURE_2D, texture->getID());
+
+		//now create the model by translating & scaling the model, plus the rotation.
+		s_data->model = glm::scale(glm::rotate(glm::translate(glm::mat4(1.0f), quad.m_translate), angle, { 0, 0, 1 }), quad.m_scale);
+
+		//upload any per-draw-uniforms.
+		s_data->shader->uploadInt("u_texData", 0);						//the texture data.
+		s_data->shader->uploadFloat4("u_tint", s_data->defaultTint);	//the tint data.
+		s_data->shader->uploadMat4("u_model", s_data->model);			//the transform of the model.
+
+		//now draw it; remember using QUADS, not TRIANGLES.
+		glDrawElements(GL_QUADS, s_data->VAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+	}
+
 	void Renderer2D::end()
 	{
 
