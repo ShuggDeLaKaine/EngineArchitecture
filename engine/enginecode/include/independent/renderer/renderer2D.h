@@ -14,8 +14,8 @@ namespace Engine
 	{
 	public:
 		static void init();					//!< initiate the internal data of the renderer.
-		static void	begin(const SceneWideUniform& swu);						//!< begin a 2D scenen.
-		static void submit(const Quad& quad, const glm::vec4& tint);		//!< render a tinted (coloured) quad.
+		static void	begin(const SceneWideUniforms& swu);				//!< begin a 2D scene.
+		static void submit(const Quad& quad, const glm::vec4& tint);	//!< render a tinted (coloured) quad.
 		static void end();					//!< end of the current 2D scene.
 
 	private:
@@ -24,10 +24,10 @@ namespace Engine
 		{
 			//SceneWideUniforms sceneWideUniforms;		//!< replace with UBO in the future. - NOT NEEDED HERE, don't need to keep a reference to them.
 			std::shared_ptr<Textures> defaultTexture;	//!< empty white texture.
-			std::shared_ptr<Shaders> defaultShaders;	//!< the shader used.
+			std::shared_ptr<Shaders> shader;			//!< the shader used.
 			std::shared_ptr<VertexArray> VAO;			//!< prototypical quad for submitting (don't use geometry/VAO in 2d)
 			glm::vec4 defaultTint;						//!< default white tint.
-			glm::vec4 model;							//!< transform the the model.
+			glm::mat4 model;							//!< transform the the model.
 		};
 		static std::shared_ptr<InternalData> s_data;	//!< data internal to the renderer.
 

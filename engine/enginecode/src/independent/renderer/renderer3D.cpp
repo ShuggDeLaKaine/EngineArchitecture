@@ -5,7 +5,7 @@
 
 namespace Engine
 {
-	//instaniate static variables.
+	//initialise static variables.
 	std::shared_ptr<Renderer3D::InternalData> Renderer3D::s_data = nullptr;
 
 	void Renderer3D::init()
