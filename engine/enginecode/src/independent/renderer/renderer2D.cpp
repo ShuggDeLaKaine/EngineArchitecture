@@ -41,8 +41,38 @@ namespace Engine
 
 	}
 
-	void Renderer2D::begin(const SceneWideUniforms & swu)
+	void Renderer2D::begin(const SceneWideUniforms& swu)
 	{
+		//first bind the shader.
+		glUseProgram(s_data->shader->getID());
+
+		//apply scene wide uniforms to the shader. 
+		for (auto& dataPair : swu)
+		{
+			const char* uniformName = dataPair.first;
+			ShaderDataType sdt = dataPair.second.first;
+			void * addressValue = dataPair.second.second;
+
+			switch (sdt)
+			{
+			case ShaderDataType::Int:
+				s_data->shader->uploadInt(uniformName, *(int *)addressValue);
+				break;
+			case ShaderDataType::Float3:
+				s_data->shader->uploadFloat3(uniformName, *(glm::vec3 *)addressValue);
+				break;
+			case ShaderDataType::Float4:
+				s_data->shader->uploadFloat4(uniformName, *(glm::vec4 *)addressValue);
+				break;
+			case ShaderDataType::Mat4:
+				s_data->shader->uploadMat4(uniformName, *(glm::mat4 *)addressValue);
+				break;
+			}
+		}
+
+		//bind geometry (VAO & IBO).
+		glBindVertexArray(s_data->VAO->getID());
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, s_data->VAO->getIndexBuffer()->getID());
 
 	}
 
