@@ -35,10 +35,10 @@ namespace Engine
 		s_data->VAO.reset(VertexArray::create());			//create a new vertex array.
 		VBO.reset(VertexBuffer::create(vertices, sizeof(vertices), VertexBufferLayout({ ShaderDataType::Float2, ShaderDataType::Float2 })));		//set the VBO with vertices array, its size and a vertexbufferlayout of two float2s.
 		IBO.reset(IndexBuffer::create(indices, 4));			//set the IBO wih indices array and its count (4).
+		
 		//add the VBO & IBO to the VAO.
 		s_data->VAO->addVertexBuffer(VBO);
 		s_data->VAO->setIndexBuffer(IBO);
-
 	}
 
 	void Renderer2D::begin(const SceneWideUniforms& swu)
@@ -73,17 +73,79 @@ namespace Engine
 		//bind geometry (VAO & IBO).
 		glBindVertexArray(s_data->VAO->getID());
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, s_data->VAO->getIndexBuffer()->getID());
-
 	}
 
 	void Renderer2D::submit(const Quad & quad, const glm::vec4 & tint)
 	{
+		//first bind the default texture.
+		glBindTexture(GL_TEXTURE_2D, s_data->defaultTexture->getID());
+
+		//now create the model by translating and scaling the model.
+		s_data->model = glm::scale(glm::translate(glm::mat4(1.0f), quad.m_translate), quad.m_scale);
+
+		//upload any per-draw-uniforms.
+		s_data->shader->uploadInt("u_texData", 0);				//the texture data.
+		s_data->shader->uploadFloat4("u_tint", tint);			//the tint data.
+		s_data->shader->uploadMat4("u_model", s_data->model);	//the transform of the model.
+
+		//now draw it; remember using QUADS, not TRIANGLES.
+		glDrawElements(GL_QUADS, s_data->VAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 
 	}
 
 	void Renderer2D::end()
 	{
 
+	}
+
+	Quad Quad::createCentreHalfExtents(const glm::vec2& centre, const glm::vec2& halfExtents)
+	{
+		Quad result;
+
+		result.m_translate = glm::vec3(centre, 0.0f);
+		result.m_scale = glm::vec3(halfExtents * 2.0f, 1.0f);
+
+		return result;
+	}
+
+	Quad Quad::createCentreHalfExtents(const glm::vec2& centre, float halfExtents)
+	{
+		Quad result;
+
+		result.m_translate = glm::vec3(centre, 0.0f);
+		result.m_scale = glm::vec3(halfExtents * 2.0f, halfExtents * 2.0f, 1.0f);
+
+		return result;
+	}
+
+	Quad Quad::createCreateTopLeftSize(const glm::vec2& topLeft, const glm::vec2& size)
+	{
+		Quad result;
+
+		result.m_translate = glm::vec3(topLeft, 0.0f);
+		result.m_scale = glm::vec3(size /** 0.5f*/, 1.0f);
+
+		return result;
+	}
+
+	Quad Quad::createCreateTopLeftSize(const glm::vec2& topLeft, float size)
+	{
+		Quad result;
+
+		result.m_translate = glm::vec3(topLeft, 0.0f);
+		result.m_scale = glm::vec3(size * 0.5f, size * 0.5f, 1.0f);
+
+		return result;
+	}
+
+	Quad Quad::createCreateTopLeftBottomRight(const glm::vec2& topLeft, const glm::vec2& bottomRight)
+	{
+		Quad result;
+
+		result.m_translate = glm::vec3(topLeft, 0.0f);
+		result.m_scale = glm::vec3((bottomRight.x - topLeft.x), (bottomRight.y - topLeft.y), 1.0f);
+
+		return result;
 	}
 
 }

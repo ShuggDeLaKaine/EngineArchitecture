@@ -46,6 +46,8 @@ namespace Engine
 	//TO DO - need to consider Mat3 and Mat4s as they are different; they cannot be passed directly as a vertice attribute.
 	void OpenGLVertexArray::addVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
 	{
+		m_vertexBuffer.push_back(vertexBuffer);
+
 		//need to bind first.
 		glBindVertexArray(m_OpenGL_ID);
 		//then bind the buffer.

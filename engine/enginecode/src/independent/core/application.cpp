@@ -27,6 +27,7 @@
 #include "rendering/textureUnitManager.h"
 
 #include "renderer/renderer3D.h"
+#include "renderer/renderer2D.h"
 
 
 namespace Engine {
@@ -572,8 +573,11 @@ namespace Engine {
 		models[2] = glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, -0.5f, -5.0f));
 
 
+		glm::mat4 view2D = glm::mat4(1.0f);
+		glm::mat4 projection2D = glm::ortho(0.0f, static_cast<float>(m_window->getWidth()), static_cast<float>(m_window->getHeight()), 0.0f);		//orthographic projection.
 
-		//create the scene wide uniforms.
+
+		//create the scene wide uniforms for 3D rendering.
 		SceneWideUniforms swu3D;
 		//what the scene wide uniforms, what is consistant across the scene.
 		swu3D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(view)));
@@ -584,9 +588,16 @@ namespace Engine {
 		swu3D["u_lightPosition"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightData[1])));
 		swu3D["u_viewPosition"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightData[2])));
 		
+		//create the scene wide uniforms for 2D rendering.
+		SceneWideUniforms swu2D;
+		swu2D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(view2D)));
+		swu2D["u_projection"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(projection2D)));
 
 		//create a float for the time step and initialise at 0.
 		float timeStep = 0.0f;
+
+		Quad quad1 = Quad::createCentreHalfExtents({ 400.0f, 200.0f }, { 100.0f, 50.0f });
+		//TO DO - some testing on the other create quads, using Simons example using paint to check they're working as expected.
 
 		//glEnable(GL_DEPTH_TEST);
 		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
@@ -594,8 +605,8 @@ namespace Engine {
 		TextureUnitManager textureUnitManager(32);
 		uint32_t unit;
 
-		//Renderer3D::init();
-
+		Renderer3D::init();
+		Renderer2D::init();
 
 		while (m_running)
 		{
@@ -609,25 +620,30 @@ namespace Engine {
 			//get the model to rotate (easier to see whether it is a 3d shape)
 			for (auto& model : models) model = glm::rotate(model, timeStep, glm::vec3(0.0f, 1.0f, 0.5f));
 
-			/*
+			
 			glEnable(GL_DEPTH_TEST);
 
 			//begin rendering with the scene wide uniforms. 
 			//NOTE - with camera implementation this will have to be altered.
-			//Renderer3D::begin(swu3D);
-
+			Renderer3D::begin(swu3D);
 			
 			//submit renderer info with vertex array, material and mat4 model of object that needs to be drawn.
-			Renderer3D::submit(pyramidVAO, pyramidMaterial, models[0]);		//pyramidMaterial
+			Renderer3D::submit(pyramidVAO, pyramidMaterial, models[0]);		
 			Renderer3D::submit(cubeVAO, numberCubeMaterial, models[1]);
 			Renderer3D::submit(cubeVAO, letterCubeMaterial, models[2]);
-			*/
-
+			
 			//end the rendering.
-			//Renderer3D::end();
-
+			Renderer3D::end();
+			
 			glDisable(GL_DEPTH_TEST);
 		
+			
+			Renderer2D::begin(swu2D);
+			Renderer2D::submit(quad1, { 0.0f, 0.0f, 1.0f, 1.0f });
+			Renderer2D::end();
+			
+
+
 			m_window->onUpdate(timeStep);
 		}
 	}
