@@ -13,6 +13,8 @@
 #include "rendering/vertexArray.h"
 #include "rendering/shaderDataType.h"
 
+#include "systems/log.h"
+
 
 namespace Engine
 {

@@ -1,6 +1,8 @@
 /** \file renderer2d.h */
 #pragma once
 #include "renderer/rendererCommons.h"
+#include "ft2build.h"
+#include "freetype/freetype.h"
 
 namespace Engine
 {
@@ -38,6 +40,8 @@ namespace Engine
 		static void submit(const Quad& quad, const std::shared_ptr<Textures>& texture, float angle, bool degrees = false);		//!< render a textured & rotated quad.
 		static void submit(const Quad& quad, const glm::vec4& tint, const std::shared_ptr<Textures>& texture, float angle, bool degrees = false);		//!< render a tinted, textured & rotated quad.
 
+		static void submit(char ch, const glm::vec2& position, float& advance, const glm::vec4& colour);		//!< render text 
+
 		static void end();					//!< end of the current 2D scene.
 
 	private:
@@ -48,6 +52,12 @@ namespace Engine
 			std::shared_ptr<VertexArray> VAO;			//!< prototypical quad for submitting (don't use geometry/VAO in 2d)
 			glm::vec4 defaultTint;						//!< default white tint.
 			glm::mat4 model;							//!< transform the the model.
+
+			FT_Library ft;								//!< the freetype library.
+			FT_Face fontFace;							//!< the font face.
+			std::shared_ptr<Textures> fontTexture;		//!< texture for the font.
+			glm::ivec2 glyphBufferSize;					//!< int vec2 for the buffer size for the glyphs.
+			std::shared_ptr<unsigned char> glyphClearBuffer;		//!< 
 		};
 		static std::shared_ptr<InternalData> s_data;	//!< data internal to the renderer.
 	};

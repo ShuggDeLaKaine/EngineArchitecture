@@ -39,6 +39,19 @@ namespace Engine
 		//add the VBO & IBO to the VAO.
 		s_data->VAO->addVertexBuffer(VBO);
 		s_data->VAO->setIndexBuffer(IBO);
+
+		//initalise freetype.
+		if (FT_Init_FreeType(&s_data->ft))
+		{
+			Log::error("ERROR: FreeType could not be successfully initialised");
+		}
+
+		//s_data->ft = true type font;
+		//s_data->fontFace = true type font;
+		s_data->glyphBufferSize = { 256, 256 };		//big enough to hold any single glyph character.
+		//s_data->fontTexture= set to empty RBGA texture of glyphBufferSuze pixels.
+		//s_data->glyphClearBuffer = set to glyphBufferSize x 4 and filled with 0s.
+
 	}
 
 	void Renderer2D::begin(const SceneWideUniforms& swu)
@@ -131,6 +144,31 @@ namespace Engine
 
 		//now draw it; remember using QUADS, not TRIANGLES.
 		glDrawElements(GL_QUADS, s_data->VAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+	}
+
+	void Renderer2D::submit(char ch, const glm::vec2 & position, float & advance, const glm::vec4 & colour)
+	{
+		if (FT_Load_Char(s_data->fontFace, ch, FT_LOAD_RENDER))
+		{
+			Log::error("Error: Freetype could NOT load the glyph for {0}", ch);
+		}
+		else
+		{
+			//get the glyph data.
+			uint32_t glyphWidth = s_data->fontFace->glyph->bitmap.width;
+			uint32_t glyphHeight = s_data->fontFace->glyph->bitmap.rows;
+			glm::vec2 glyphSize(glyphWidth, glyphHeight);
+			glm::vec2 glyphBearing(s_data->fontFace->glyph->bitmap_left, -s_data->fontFace->glyph->bitmap_top);
+			//calculate the advamce
+			advance = float(s_data->fontFace->glyph->advance.x >> 6);
+
+			//convert the monochrome glyph bitmap to RBGA.
+
+
+			//render the glyph in the correct position.
+
+
+		}
 	}
 
 	void Renderer2D::submit(const Quad& quad, const glm::vec4& tint, float angle, bool degrees)

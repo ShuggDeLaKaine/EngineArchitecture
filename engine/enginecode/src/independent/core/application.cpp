@@ -642,11 +642,13 @@ namespace Engine {
 			Renderer3D::end();
 			
 			glDisable(GL_DEPTH_TEST);
+
+			//enable blending.
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-					
+			//begin rendering with the scene wide uniforms.		
 			Renderer2D::begin(swu2D);
-
+			//submit renderer info.
 			Renderer2D::submit(quads[0], { 0.0f, 0.0f, 1.0f, 1.0f });
 			Renderer2D::submit(quads[1], letterTexture);
 			Renderer2D::submit(quads[2], { 0.0f, 1.0f, 0.0f, 1.0f }, numberTexture);
@@ -654,7 +656,7 @@ namespace Engine {
 			Renderer2D::submit(quads[4], letterTexture, -20.0f, true);
 			Renderer2D::submit(quads[5], { 0.0f, 1.0f, 0.0f, 0.5f }, letterTexture, 90.0f, true);
 			Renderer2D::submit(quads[5], { 0.0f, 0.0f, 1.0f, 0.5f }, letterTexture, glm::radians(-60.0f));
-
+			//end the rendering.
 			Renderer2D::end();
 			
 			glDisable(GL_BLEND);
