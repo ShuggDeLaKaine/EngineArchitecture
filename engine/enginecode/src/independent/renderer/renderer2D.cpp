@@ -193,19 +193,18 @@ namespace Engine
 			glm::vec2 glyphCentre = (position + glyphBearing) + glyphHalfExtents;
 			Quad quad = Quad::createCentreHalfExtents(glyphCentre, glyphHalfExtents);
 
+			/*
 			//create a RGBA buffer for glyph.
 			unsigned char * glyphRBGABuffer = RtoRGBA(s_data->fontFace->glyph->bitmap.buffer, glyphWidth, glyphHeight);
 			//send to GPU.
 			s_data->fontTexture->edit(0, 0, glyphWidth, glyphHeight, glyphRBGABuffer);
 			free(glyphRBGABuffer);
+			*/
+			RtoRGBA(s_data->fontFace->glyph->bitmap.buffer, glyphWidth, glyphHeight);
+			s_data->fontTexture->edit(0, 0, s_data->glyphBufferDimensions.x, s_data->glyphBufferDimensions.y, s_data->glyphBuffer.get());
 
 			//submit quad
 			submit(quad, tint, s_data->fontTexture);
-
-			//convert the monochrome glyph bitmap to RBGA.
-
-			//render the glyph in the correct position.
-
 		}
 	}
 	
@@ -216,6 +215,28 @@ namespace Engine
 
 	unsigned char * Renderer2D::RtoRGBA(unsigned char * rBuffer, uint32_t width, uint32_t height)
 	{
+		memset(s_data->glyphBuffer.get(), 50, s_data->glyphBufferSize);
+
+		
+		//ptr walker pointing towards the result.
+		unsigned char * pWalker = s_data->glyphBuffer.get();
+
+		for (int32_t i = 0; i < height; i++)
+		{
+			for (int32_t j = 0; j < width; j++)
+			{
+				*pWalker = 255; pWalker++;	//R
+				*pWalker = 255; pWalker++;	//B
+				*pWalker = 255; pWalker++;	//G
+				*pWalker = *rBuffer;		//set the alpha channel.
+				pWalker++;		//go to R of the next pixel.
+				rBuffer++;		//go to next monochrome pixel.
+			}
+			pWalker += (s_data->glyphBufferDimensions.x - width) * 4;
+		}
+		
+		return nullptr;
+		/*
 		//int32 to take this glyphs buffer size as well as char point towards a piece of memory called result.
 		uint32_t bufferSize = width * height * 4 * sizeof(unsigned char);
 		unsigned char * result = (unsigned char*)malloc(bufferSize);
@@ -229,16 +250,15 @@ namespace Engine
 		{
 			for (int32_t j = 0; j < width; j++)
 			{
-				pWalker++;		//got to G.
-				pWalker++;		//got to B.
-				pWalker++;		//got to A.
+				pWalker += 3;	//go to A.
 				*pWalker = *rBuffer;	//set the alpha channel.
-				pWalker++;		//got to R of the next pixel.
+				pWalker++;		//go to R of the next pixel.
 				rBuffer++;		//go to next monochrome pixel.
 			}
 		}
 
-		return result;
+		return result; 
+		*/
 	}
 
 	Quad Quad::createCentreHalfExtents(const glm::vec2& centre, const glm::vec2& halfExtents)

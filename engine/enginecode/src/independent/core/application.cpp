@@ -660,9 +660,14 @@ namespace Engine {
 			//Renderer2D::submit(quads[5], { 0.0f, 1.0f, 0.0f, 0.5f }, letterTexture, 90.0f, true);
 			//Renderer2D::submit(quads[5], { 0.0f, 0.0f, 1.0f, 0.5f }, letterTexture, glm::radians(-60.0f));
 			
-			Renderer2D::submit('d', { 100.0f, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f });
-			//Renderer2D::submit('o', { 100.0f, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f });
-			//Renderer2D::submit('g', { 100.0f, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f });
+			uint32_t x = 100.0f;
+			Renderer2D::submit('g', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
+			//Renderer2D::submit('o', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
+			//Renderer2D::submit('g', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
+			//Renderer2D::submit(' ', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
+			//Renderer2D::submit('l', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
+			//Renderer2D::submit('o', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
+			//Renderer2D::submit('g', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
 			
 			//end the rendering.
 			Renderer2D::end();
