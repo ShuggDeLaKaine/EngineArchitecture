@@ -615,6 +615,10 @@ namespace Engine {
 		Renderer3D::init();
 		Renderer2D::init();
 
+		std::shared_ptr<RenderCommands> clearCommands;
+		clearCommands.reset(RenderCommandsFactory::createCommand(RenderCommands::Commands::clearColourAndDepthBuffer));
+
+
 		float advance;
 
 		while (m_running)
@@ -624,7 +628,8 @@ namespace Engine {
 			m_timer->reset();
 
 			//things to do in the frame...
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			RendererCommons::actionCommand(clearCommands);
 
 			//get the model to rotate (easier to see whether it is a 3d shape)
 			for (auto& model : models) model = glm::rotate(model, timeStep, glm::vec3(0.0f, 1.0f, 0.5f));
@@ -636,10 +641,10 @@ namespace Engine {
 			Renderer3D::begin(swu3D);
 			
 			//submit renderer info with vertex array, material and mat4 model of object that needs to be drawn.
-			//Renderer3D::submit(pyramidVAO, pyramidMaterial, models[0]);		
-			//Renderer3D::submit(cubeVAO, numberCubeMaterial, models[1]);
-			//Renderer3D::submit(cubeVAO, letterCubeMaterial, models[2]);
-			
+			Renderer3D::submit(pyramidVAO, pyramidMaterial, models[0]);		
+			Renderer3D::submit(cubeVAO, numberCubeMaterial, models[1]);
+			Renderer3D::submit(cubeVAO, letterCubeMaterial, models[2]);
+
 			//end the rendering.
 			Renderer3D::end();
 			
@@ -648,31 +653,25 @@ namespace Engine {
 			//enable blending.
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 			//begin rendering with the scene wide uniforms.		
 			Renderer2D::begin(swu2D);
 			
 			//submit renderer info.
-			//Renderer2D::submit(quads[0], { 0.0f, 0.0f, 1.0f, 1.0f });
-			//Renderer2D::submit(quads[1], letterTexture);
-			//Renderer2D::submit(quads[2], { 0.0f, 1.0f, 0.0f, 1.0f }, numberTexture);
-			//Renderer2D::submit(quads[3], { 0.0f, 1.0f, 1.0f, 1.0f }, numberTexture, 45.0f, true);
-			//Renderer2D::submit(quads[4], letterTexture, -20.0f, true);
-			//Renderer2D::submit(quads[5], { 0.0f, 1.0f, 0.0f, 0.5f }, letterTexture, 90.0f, true);
-			//Renderer2D::submit(quads[5], { 0.0f, 0.0f, 1.0f, 0.5f }, letterTexture, glm::radians(-60.0f));
-			
-			uint32_t x = 100.0f;
-			Renderer2D::submit('k', { x, 100.0f }, advance, { 1.0f, 0.0f, 0.0f, 1.0f }); x += advance;
-			Renderer2D::submit('n', { x, 100.0f }, advance, { 0.0f, 1.0f, 0.0f, 1.0f }); x += advance;
-			Renderer2D::submit('o', { x, 100.0f }, advance, { 0.0f, 0.0f, 1.0f, 1.0f }); x += advance;
-			Renderer2D::submit('b', { x, 100.0f }, advance, { 1.0f, 0.0f, 0.0f, 1.0f }); x += advance;
-			Renderer2D::submit(' ', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
-			Renderer2D::submit('h', { x, 100.0f }, advance, { 0.0f, 1.0f, 0.0f, 1.0f }); x += advance;
-			Renderer2D::submit('e', { x, 100.0f }, advance, { 0.0f, 0.0f, 1.0f, 1.0f }); x += advance;
-			Renderer2D::submit('a', { x, 100.0f }, advance, { 1.0f, 0.0f, 0.0f, 1.0f }); x += advance;
-			Renderer2D::submit('d', { x, 100.0f }, advance, { 0.0f, 1.0f, 0.0f, 1.0f }); x += advance;
+			/*
+			Renderer2D::submit(quads[0], { 0.0f, 0.0f, 1.0f, 1.0f });
+			Renderer2D::submit(quads[1], letterTexture);
+			Renderer2D::submit(quads[2], { 0.0f, 1.0f, 0.0f, 1.0f }, numberTexture);
+			Renderer2D::submit(quads[3], { 0.0f, 1.0f, 1.0f, 1.0f }, numberTexture, 45.0f, true);
+			Renderer2D::submit(quads[4], letterTexture, -20.0f, true);
+			Renderer2D::submit(quads[5], { 0.0f, 1.0f, 0.0f, 0.5f }, letterTexture, 90.0f, true);
+			Renderer2D::submit(quads[5], { 0.0f, 0.0f, 1.0f, 0.5f }, letterTexture, glm::radians(-60.0f));
+			*/
 
+			Renderer2D::submit("shit fuck cunt", { 100.0f, 100.0f }, { 0.0f, 1.0f, 0.0f, 1.0f });
+			Renderer2D::submit("dickhead", { 100.0f, 200.0f }, { 1.0f, 1.0f, 1.0f, 1.0f });
+			Renderer2D::submit("bumhole!!!", { 100.0f, 300.0f }, { 0.0f, 0.0f, 1.0f, 1.0f });
 
-			Renderer2D::submit("dickhead too", { 100.0f, 200.0f }, { 1.0f, 1.0f, 1.0f, 1.0f });
 
 			
 			//end the rendering.
@@ -690,6 +689,19 @@ namespace Engine {
 
 
 /*
+
+			/*
+			uint32_t x = 100.0f;
+			Renderer2D::submit('k', { x, 100.0f }, advance, { 1.0f, 0.0f, 0.0f, 1.0f }); x += advance;
+			Renderer2D::submit('n', { x, 100.0f }, advance, { 0.0f, 1.0f, 0.0f, 1.0f }); x += advance;
+			Renderer2D::submit('o', { x, 100.0f }, advance, { 0.0f, 0.0f, 1.0f, 1.0f }); x += advance;
+			Renderer2D::submit('b', { x, 100.0f }, advance, { 1.0f, 0.0f, 0.0f, 1.0f }); x += advance;
+			Renderer2D::submit(' ', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
+			Renderer2D::submit('h', { x, 100.0f }, advance, { 0.0f, 1.0f, 0.0f, 1.0f }); x += advance;
+			Renderer2D::submit('e', { x, 100.0f }, advance, { 0.0f, 0.0f, 1.0f, 1.0f }); x += advance;
+			Renderer2D::submit('a', { x, 100.0f }, advance, { 1.0f, 0.0f, 0.0f, 1.0f }); x += advance;
+			Renderer2D::submit('d', { x, 100.0f }, advance, { 0.0f, 1.0f, 0.0f, 1.0f }); x += advance;
+			*/
 		/*
 			//DRAW A PYRAMID.
 			//bind the shader TPShader & bind the correct buffers, vertex array and index buffer.

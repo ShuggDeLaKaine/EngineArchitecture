@@ -7,14 +7,15 @@
 #include <unordered_map>
 #include <memory>
 
+#include "systems/log.h"
+
 #include "rendering/textures.h"
 #include "rendering/shaders.h"
 #include "rendering/renderAPI.h"
 #include "rendering/vertexArray.h"
 #include "rendering/shaderDataType.h"
 
-#include "systems/log.h"
-
+#include "renderer/renderCommands.h"
 
 namespace Engine
 {
@@ -26,7 +27,7 @@ namespace Engine
 	class RendererCommons
 	{
 	public:
-
+		static void actionCommand(std::shared_ptr<RenderCommands>& command) { command->m_action(); }		//!< action the desired command.
 	private:
 
 	};

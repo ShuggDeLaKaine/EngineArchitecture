@@ -2,15 +2,9 @@
 
 #include "engine_pch.h"
 #include "systems/log.h"
+
 #include "rendering/renderAPI.h"
-/*
-#include "rendering/indexBuffer.h"
-#include "rendering/vertexBuffer.h"
-#include "rendering/vertexArray.h"
-#include "rendering/shaders.h"
-#include "rendering/textures.h"
-#include "rendering/uniformBuffer.h"
-*/
+
 #include "platform/OpenGL/OpenGLIndexBuffer.h"
 #include "platform/OpenGL/OpenGLVertexBuffer.h"
 #include "platform/OpenGL/OpenGLVertexArray.h"
