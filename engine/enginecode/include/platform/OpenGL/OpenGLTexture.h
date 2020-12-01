@@ -14,7 +14,7 @@ namespace Engine
 		OpenGLTexture(const char* filepath);	//!< constructor, takes the filepaths for texture.
 		OpenGLTexture(uint32_t width, uint32_t height, uint32_t channel, unsigned char * data);		//!< constructor; width, height and channel plus data in bytes (what unsigned char is).
 		virtual ~OpenGLTexture();				//!< deconstructor.
-		virtual void edit(glm::vec2 offset, uint32_t width, uint32_t height, uint32_t channel, unsigned char * data) override;	//!< edit the texture 
+		virtual void edit(uint32_t xOffset, uint32_t yOffset, uint32_t width, uint32_t height, unsigned char * data) override;	//!< edit the texture.
 		 
 		virtual inline uint32_t getID() override { return m_OpenGL_ID; }		//!< accessor to get openGL handle.
 		virtual inline uint32_t getWidth() override { return m_width; }			//!< accessor to get the texture width.		

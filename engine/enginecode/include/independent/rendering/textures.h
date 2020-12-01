@@ -14,7 +14,7 @@ namespace Engine
 	{
 	public:
 		virtual ~Textures() = default;					//!< deconstructor.
-		virtual void edit(glm::vec2 offset, uint32_t width, uint32_t height, uint32_t channel, unsigned char * data) = 0;	//!< edit the texture 
+		virtual void edit(uint32_t xOffset, uint32_t yOffset, uint32_t width, uint32_t height, unsigned char * data) = 0;	//!< edit the texture 
 
 		virtual inline uint32_t getID() = 0;			//!< accessor to get openGL handle.
 		virtual inline uint32_t getWidth() = 0;			//!< accessor to get the texture width.		

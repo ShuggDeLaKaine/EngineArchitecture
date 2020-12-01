@@ -16,17 +16,7 @@ namespace Engine
 		int width, height, channel;
 		unsigned char *data = stbi_load(filepath, &width, &height, &channel, 0);
 
-		//check whether there is data, then call init(). 
-		if (data)
-		{
-			init(width, height, channel, data);
-		}
-		else
-		{
-			//if no data, kick an error.
-			Log::error("Cannot load texture data!");
-			return;
-		}
+		init(width, height, channel, data);
 
 		//data passed on so can take off the CPU.
 		stbi_image_free(data);
@@ -34,17 +24,7 @@ namespace Engine
 
 	OpenGLTexture::OpenGLTexture(uint32_t width, uint32_t height, uint32_t channel, unsigned char * data)
 	{
-		//check whether there is data, then call init(). 
-		if (data)
-		{
-			init(width, height, channel, data);
-		}
-		else
-		{
-			//if no data, kick an error.
-			Log::error("Cannot load texture data!");
-			return;
-		}
+		init(width, height, channel, data);
 	}
 
 	OpenGLTexture::~OpenGLTexture()
@@ -52,7 +32,7 @@ namespace Engine
 		glDeleteTextures(1, &m_OpenGL_ID);
 	}
 
-	void OpenGLTexture::edit(glm::vec2 offset, uint32_t width, uint32_t height, uint32_t channel, unsigned char * data)
+	void OpenGLTexture::edit(uint32_t xOffset, uint32_t yOffset, uint32_t width, uint32_t height, unsigned char * data)
 	{
 		//first bind the texture.
 		glBindTexture(GL_TEXTURE_2D, m_OpenGL_ID);
@@ -60,13 +40,13 @@ namespace Engine
 		//check whether there is any data.
 		if (data)
 		{
-			if (channel == 3)
+			if (m_channel == 3)
 			{
-				glTextureSubImage2D(GL_TEXTURE_2D, 0, offset.x, offset.y, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
+				glTextureSubImage2D(m_OpenGL_ID, 0, xOffset, yOffset, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
 			}
-			else if (channel == 4)
+			else if (m_channel == 4)
 			{
-				glTextureSubImage2D(GL_TEXTURE_2D, 0, offset.x, offset.y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+				glTextureSubImage2D(m_OpenGL_ID, 0, xOffset, yOffset, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
 			}
 		}
 	}

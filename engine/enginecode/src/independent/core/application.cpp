@@ -636,9 +636,9 @@ namespace Engine {
 			Renderer3D::begin(swu3D);
 			
 			//submit renderer info with vertex array, material and mat4 model of object that needs to be drawn.
-			Renderer3D::submit(pyramidVAO, pyramidMaterial, models[0]);		
-			Renderer3D::submit(cubeVAO, numberCubeMaterial, models[1]);
-			Renderer3D::submit(cubeVAO, letterCubeMaterial, models[2]);
+			//Renderer3D::submit(pyramidVAO, pyramidMaterial, models[0]);		
+			//Renderer3D::submit(cubeVAO, numberCubeMaterial, models[1]);
+			//Renderer3D::submit(cubeVAO, letterCubeMaterial, models[2]);
 			
 			//end the rendering.
 			Renderer3D::end();
@@ -652,15 +652,17 @@ namespace Engine {
 			Renderer2D::begin(swu2D);
 			
 			//submit renderer info.
-			Renderer2D::submit(quads[0], { 0.0f, 0.0f, 1.0f, 1.0f });
-			Renderer2D::submit(quads[1], letterTexture);
-			Renderer2D::submit(quads[2], { 0.0f, 1.0f, 0.0f, 1.0f }, numberTexture);
-			Renderer2D::submit(quads[3], { 0.0f, 1.0f, 1.0f, 1.0f }, numberTexture, 45.0f, true);
-			Renderer2D::submit(quads[4], letterTexture, -20.0f, true);
-			Renderer2D::submit(quads[5], { 0.0f, 1.0f, 0.0f, 0.5f }, letterTexture, 90.0f, true);
-			Renderer2D::submit(quads[5], { 0.0f, 0.0f, 1.0f, 0.5f }, letterTexture, glm::radians(-60.0f));
+			//Renderer2D::submit(quads[0], { 0.0f, 0.0f, 1.0f, 1.0f });
+			//Renderer2D::submit(quads[1], letterTexture);
+			//Renderer2D::submit(quads[2], { 0.0f, 1.0f, 0.0f, 1.0f }, numberTexture);
+			//Renderer2D::submit(quads[3], { 0.0f, 1.0f, 1.0f, 1.0f }, numberTexture, 45.0f, true);
+			//Renderer2D::submit(quads[4], letterTexture, -20.0f, true);
+			//Renderer2D::submit(quads[5], { 0.0f, 1.0f, 0.0f, 0.5f }, letterTexture, 90.0f, true);
+			//Renderer2D::submit(quads[5], { 0.0f, 0.0f, 1.0f, 0.5f }, letterTexture, glm::radians(-60.0f));
 			
-			Renderer2D::submit('g', { 150.0f, 150.0f }, advance, { 0.0f, 0.0f, 1.0f, 1.0f });
+			Renderer2D::submit('d', { 100.0f, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f });
+			//Renderer2D::submit('o', { 100.0f, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f });
+			//Renderer2D::submit('g', { 100.0f, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f });
 			
 			//end the rendering.
 			Renderer2D::end();

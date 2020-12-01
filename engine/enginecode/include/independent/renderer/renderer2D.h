@@ -56,10 +56,12 @@ namespace Engine
 			FT_Library ft;								//!< the freetype library.
 			FT_Face fontFace;							//!< the font face.
 			std::shared_ptr<Textures> fontTexture;		//!< texture for the font.
-			//glm::ivec2 glyphBufferSize;					//!< int vec2 for the buffer size for the glyphs.
-			//std::shared_ptr<unsigned char> glyphClearBuffer;		//!< 
+			glm::ivec2 glyphBufferDimensions;			//!< dimensions for the buffer size for the glyphs.
+			uint32_t glyphBufferSize;					//!< the size of the glyph.
+			std::shared_ptr<unsigned char> glyphBuffer;	//!< the buffer for glyphs.
 		};
 		static std::shared_ptr<InternalData> s_data;	//!< data internal to the renderer.
+		static unsigned char * RtoRGBA(unsigned char* rBuffer, uint32_t width, uint32_t height);		//!< method to set memory block and fill with glyph(rbuffer) data.
 	};
 
 }

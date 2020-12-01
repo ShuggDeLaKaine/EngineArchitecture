@@ -40,6 +40,10 @@ namespace Engine
 		s_data->VAO->addVertexBuffer(VBO);
 		s_data->VAO->setIndexBuffer(IBO);
 
+		//set the dimensions of the glyph buffer.
+		s_data->glyphBufferDimensions = { 256 };
+		s_data->glyphBufferSize = s_data->glyphBufferDimensions.x * s_data->glyphBufferDimensions.y * 4 * sizeof(unsigned char);
+		s_data->glyphBuffer.reset(static_cast<unsigned char*>(malloc(s_data->glyphBufferSize)));
 
 		//initalise freetype.
 		if (FT_Init_FreeType(&s_data->ft))
@@ -56,7 +60,12 @@ namespace Engine
 			Log::error("ERROR: font size NOT set: {0}", characterSize);
 
 		//initialise the font texture.
-		s_data->fontTexture.reset(Textures::create(256, 256, 4, nullptr));
+		s_data->fontTexture.reset(Textures::create(s_data->glyphBufferDimensions.x, s_data->glyphBufferDimensions.y, 4, nullptr));
+		//fill the glyph buffer (using old c function memset as they're fast).
+		memset(s_data->glyphBuffer.get(), 60, s_data->glyphBufferSize);
+		//send glyph buffer to the texture on GPU.
+		s_data->fontTexture->edit(0, 0, s_data->glyphBufferDimensions.x, s_data->glyphBufferDimensions.y, s_data->glyphBuffer.get());
+
 
 	}
 
@@ -152,6 +161,15 @@ namespace Engine
 		glDrawElements(GL_QUADS, s_data->VAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
+	void Renderer2D::submit(const Quad& quad, const glm::vec4& tint, float angle, bool degrees)
+	{
+		Renderer2D::submit(quad, tint, s_data->defaultTexture, angle, degrees);
+	}
+
+	void Renderer2D::submit(const Quad& quad, const std::shared_ptr<Textures>& texture, float angle, bool degrees)
+	{
+		Renderer2D::submit(quad, s_data->defaultTint, texture, angle, degrees);
+	}
 	
 	void Renderer2D::submit(char ch, const glm::vec2& position, float& advance, const glm::vec4 tint)
 	{
@@ -166,7 +184,8 @@ namespace Engine
 			uint32_t glyphHeight = s_data->fontFace->glyph->bitmap.rows;
 			glm::vec2 glyphSize(glyphWidth, glyphHeight);
 			glm::vec2 glyphBearing(s_data->fontFace->glyph->bitmap_left, -s_data->fontFace->glyph->bitmap_top);
-			//calculate the advamce
+
+			//calculate the advance
 			advance = static_cast<float>(s_data->fontFace->glyph->advance.x >> 6);
 
 			//calculate quad for glyph.
@@ -174,31 +193,52 @@ namespace Engine
 			glm::vec2 glyphCentre = (position + glyphBearing) + glyphHalfExtents;
 			Quad quad = Quad::createCentreHalfExtents(glyphCentre, glyphHalfExtents);
 
+			//create a RGBA buffer for glyph.
+			unsigned char * glyphRBGABuffer = RtoRGBA(s_data->fontFace->glyph->bitmap.buffer, glyphWidth, glyphHeight);
+			//send to GPU.
+			s_data->fontTexture->edit(0, 0, glyphWidth, glyphHeight, glyphRBGABuffer);
+			free(glyphRBGABuffer);
+
 			//submit quad
 			submit(quad, tint, s_data->fontTexture);
 
 			//convert the monochrome glyph bitmap to RBGA.
 
-
 			//render the glyph in the correct position.
-
 
 		}
 	}
 	
-	void Renderer2D::submit(const Quad& quad, const glm::vec4& tint, float angle, bool degrees)
-	{
-		Renderer2D::submit(quad, tint, s_data->defaultTexture, angle, degrees);
-	}
-
-	void Renderer2D::submit(const Quad& quad, const std::shared_ptr<Textures>& texture, float angle, bool degrees)
-	{
-		Renderer2D::submit(quad, s_data->defaultTint, texture, angle, degrees);
-	}
-
 	void Renderer2D::end()
 	{
 
+	}
+
+	unsigned char * Renderer2D::RtoRGBA(unsigned char * rBuffer, uint32_t width, uint32_t height)
+	{
+		//int32 to take this glyphs buffer size as well as char point towards a piece of memory called result.
+		uint32_t bufferSize = width * height * 4 * sizeof(unsigned char);
+		unsigned char * result = (unsigned char*)malloc(bufferSize);
+
+		//fill set aside memory to be white to the size of the glyph.
+		memset(result, 255, bufferSize);
+
+		//ptr walker pointing towards the result.
+		unsigned char * pWalker = result;		
+		for (int32_t i = 0; i < height; i++)
+		{
+			for (int32_t j = 0; j < width; j++)
+			{
+				pWalker++;		//got to G.
+				pWalker++;		//got to B.
+				pWalker++;		//got to A.
+				*pWalker = *rBuffer;	//set the alpha channel.
+				pWalker++;		//got to R of the next pixel.
+				rBuffer++;		//go to next monochrome pixel.
+			}
+		}
+
+		return result;
 	}
 
 	Quad Quad::createCentreHalfExtents(const glm::vec2& centre, const glm::vec2& halfExtents)
