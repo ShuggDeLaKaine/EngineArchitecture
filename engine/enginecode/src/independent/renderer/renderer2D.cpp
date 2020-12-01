@@ -61,12 +61,12 @@ namespace Engine
 
 		//initialise the font texture.
 		s_data->fontTexture.reset(Textures::create(s_data->glyphBufferDimensions.x, s_data->glyphBufferDimensions.y, 4, nullptr));
+
 		//fill the glyph buffer (using old c function memset as they're fast).
 		memset(s_data->glyphBuffer.get(), 60, s_data->glyphBufferSize);
+
 		//send glyph buffer to the texture on GPU.
 		s_data->fontTexture->edit(0, 0, s_data->glyphBufferDimensions.x, s_data->glyphBufferDimensions.y, s_data->glyphBuffer.get());
-
-
 	}
 
 	void Renderer2D::begin(const SceneWideUniforms& swu)
@@ -171,7 +171,7 @@ namespace Engine
 		Renderer2D::submit(quad, s_data->defaultTint, texture, angle, degrees);
 	}
 	
-	void Renderer2D::submit(char ch, const glm::vec2& position, float& advance, const glm::vec4 tint)
+	void Renderer2D::submit(char ch, const glm::vec2& position, float& advance, const glm::vec4& tint)
 	{
 		if (FT_Load_Char(s_data->fontFace, ch, FT_LOAD_RENDER))
 		{
@@ -193,18 +193,28 @@ namespace Engine
 			glm::vec2 glyphCentre = (position + glyphBearing) + glyphHalfExtents;
 			Quad quad = Quad::createCentreHalfExtents(glyphCentre, glyphHalfExtents);
 
-			/*
 			//create a RGBA buffer for glyph.
-			unsigned char * glyphRBGABuffer = RtoRGBA(s_data->fontFace->glyph->bitmap.buffer, glyphWidth, glyphHeight);
-			//send to GPU.
-			s_data->fontTexture->edit(0, 0, glyphWidth, glyphHeight, glyphRBGABuffer);
-			free(glyphRBGABuffer);
-			*/
 			RtoRGBA(s_data->fontFace->glyph->bitmap.buffer, glyphWidth, glyphHeight);
+			//send to GPU.
 			s_data->fontTexture->edit(0, 0, s_data->glyphBufferDimensions.x, s_data->glyphBufferDimensions.y, s_data->glyphBuffer.get());
 
 			//submit quad
 			submit(quad, tint, s_data->fontTexture);
+		}
+	}
+
+	void Renderer2D::submit(const char * text, const glm::vec2 & position, const glm::vec4& tint)
+	{
+		//calculate the length of the string using strlen
+		uint32_t len = strlen(text);
+
+		float advance = 0.0f;
+		float x = position.x;
+
+		for (int32_t i = 0; i < len; i++)
+		{
+			submit(text[i], { x, position.y }, advance, tint);
+			x += advance;
 		}
 	}
 	
@@ -213,11 +223,10 @@ namespace Engine
 
 	}
 
-	unsigned char * Renderer2D::RtoRGBA(unsigned char * rBuffer, uint32_t width, uint32_t height)
+	void Renderer2D::RtoRGBA(unsigned char * rBuffer, uint32_t width, uint32_t height)
 	{
-		memset(s_data->glyphBuffer.get(), 50, s_data->glyphBufferSize);
+		memset(s_data->glyphBuffer.get(), 0, s_data->glyphBufferSize);
 
-		
 		//ptr walker pointing towards the result.
 		unsigned char * pWalker = s_data->glyphBuffer.get();
 
@@ -232,33 +241,8 @@ namespace Engine
 				pWalker++;		//go to R of the next pixel.
 				rBuffer++;		//go to next monochrome pixel.
 			}
-			pWalker += (s_data->glyphBufferDimensions.x - width) * 4;
+			pWalker += (s_data->glyphBufferDimensions.x - width) * 4;		//times 4 as 4 channels.
 		}
-		
-		return nullptr;
-		/*
-		//int32 to take this glyphs buffer size as well as char point towards a piece of memory called result.
-		uint32_t bufferSize = width * height * 4 * sizeof(unsigned char);
-		unsigned char * result = (unsigned char*)malloc(bufferSize);
-
-		//fill set aside memory to be white to the size of the glyph.
-		memset(result, 255, bufferSize);
-
-		//ptr walker pointing towards the result.
-		unsigned char * pWalker = result;		
-		for (int32_t i = 0; i < height; i++)
-		{
-			for (int32_t j = 0; j < width; j++)
-			{
-				pWalker += 3;	//go to A.
-				*pWalker = *rBuffer;	//set the alpha channel.
-				pWalker++;		//go to R of the next pixel.
-				rBuffer++;		//go to next monochrome pixel.
-			}
-		}
-
-		return result; 
-		*/
 	}
 
 	Quad Quad::createCentreHalfExtents(const glm::vec2& centre, const glm::vec2& halfExtents)

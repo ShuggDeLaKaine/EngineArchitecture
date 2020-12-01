@@ -661,13 +661,19 @@ namespace Engine {
 			//Renderer2D::submit(quads[5], { 0.0f, 0.0f, 1.0f, 0.5f }, letterTexture, glm::radians(-60.0f));
 			
 			uint32_t x = 100.0f;
-			Renderer2D::submit('g', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
-			//Renderer2D::submit('o', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
-			//Renderer2D::submit('g', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
-			//Renderer2D::submit(' ', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
-			//Renderer2D::submit('l', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
-			//Renderer2D::submit('o', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
-			//Renderer2D::submit('g', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
+			Renderer2D::submit('k', { x, 100.0f }, advance, { 1.0f, 0.0f, 0.0f, 1.0f }); x += advance;
+			Renderer2D::submit('n', { x, 100.0f }, advance, { 0.0f, 1.0f, 0.0f, 1.0f }); x += advance;
+			Renderer2D::submit('o', { x, 100.0f }, advance, { 0.0f, 0.0f, 1.0f, 1.0f }); x += advance;
+			Renderer2D::submit('b', { x, 100.0f }, advance, { 1.0f, 0.0f, 0.0f, 1.0f }); x += advance;
+			Renderer2D::submit(' ', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
+			Renderer2D::submit('h', { x, 100.0f }, advance, { 0.0f, 1.0f, 0.0f, 1.0f }); x += advance;
+			Renderer2D::submit('e', { x, 100.0f }, advance, { 0.0f, 0.0f, 1.0f, 1.0f }); x += advance;
+			Renderer2D::submit('a', { x, 100.0f }, advance, { 1.0f, 0.0f, 0.0f, 1.0f }); x += advance;
+			Renderer2D::submit('d', { x, 100.0f }, advance, { 0.0f, 1.0f, 0.0f, 1.0f }); x += advance;
+
+
+			Renderer2D::submit("dickhead too", { 100.0f, 200.0f }, { 1.0f, 1.0f, 1.0f, 1.0f });
+
 			
 			//end the rendering.
 			Renderer2D::end();

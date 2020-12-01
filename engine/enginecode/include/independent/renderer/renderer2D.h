@@ -40,7 +40,8 @@ namespace Engine
 		static void submit(const Quad& quad, const std::shared_ptr<Textures>& texture, float angle, bool degrees = false);		//!< render a textured & rotated quad.
 		static void submit(const Quad& quad, const glm::vec4& tint, const std::shared_ptr<Textures>& texture, float angle, bool degrees = false);		//!< render a tinted, textured & rotated quad.
 
-		static void submit(char ch, const glm::vec2& position, float& advance, const glm::vec4 tint);		//!< render a single character, with tint. 
+		static void submit(char ch, const glm::vec2& position, float& advance, const glm::vec4& tint);		//!< render a single character, with tint.
+		static void submit(const char* text, const glm::vec2& position, const glm::vec4& tint);		//!< render a string, with tint.
 
 		static void end();					//!< end of the current 2D scene.
 
@@ -61,7 +62,7 @@ namespace Engine
 			std::shared_ptr<unsigned char> glyphBuffer;	//!< the buffer for glyphs.
 		};
 		static std::shared_ptr<InternalData> s_data;	//!< data internal to the renderer.
-		static unsigned char * RtoRGBA(unsigned char* rBuffer, uint32_t width, uint32_t height);		//!< method to set memory block and fill with glyph(rbuffer) data.
+		static void RtoRGBA(unsigned char * rBuffer, uint32_t width, uint32_t height);		//!< method to set memory block and fill with glyph(rbuffer) data.
 	};
 
 }
