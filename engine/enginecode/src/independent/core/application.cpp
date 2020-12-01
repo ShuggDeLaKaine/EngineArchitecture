@@ -615,6 +615,8 @@ namespace Engine {
 		Renderer3D::init();
 		Renderer2D::init();
 
+		float advance;
+
 		while (m_running)
 		{
 			//update the time step with the timer function getElapsedTime()
@@ -648,6 +650,7 @@ namespace Engine {
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			//begin rendering with the scene wide uniforms.		
 			Renderer2D::begin(swu2D);
+			
 			//submit renderer info.
 			Renderer2D::submit(quads[0], { 0.0f, 0.0f, 1.0f, 1.0f });
 			Renderer2D::submit(quads[1], letterTexture);
@@ -656,6 +659,9 @@ namespace Engine {
 			Renderer2D::submit(quads[4], letterTexture, -20.0f, true);
 			Renderer2D::submit(quads[5], { 0.0f, 1.0f, 0.0f, 0.5f }, letterTexture, 90.0f, true);
 			Renderer2D::submit(quads[5], { 0.0f, 0.0f, 1.0f, 0.5f }, letterTexture, glm::radians(-60.0f));
+			
+			Renderer2D::submit('g', { 150.0f, 150.0f }, advance, { 0.0f, 0.0f, 1.0f, 1.0f });
+			
 			//end the rendering.
 			Renderer2D::end();
 			

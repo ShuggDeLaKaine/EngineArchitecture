@@ -40,17 +40,23 @@ namespace Engine
 		s_data->VAO->addVertexBuffer(VBO);
 		s_data->VAO->setIndexBuffer(IBO);
 
+
 		//initalise freetype.
 		if (FT_Init_FreeType(&s_data->ft))
-		{
 			Log::error("ERROR: FreeType could not be successfully initialised");
-		}
 
-		//s_data->ft = true type font;
-		//s_data->fontFace = true type font;
-		s_data->glyphBufferSize = { 256, 256 };		//big enough to hold any single glyph character.
-		//s_data->fontTexture= set to empty RBGA texture of glyphBufferSuze pixels.
-		//s_data->glyphClearBuffer = set to glyphBufferSize x 4 and filled with 0s.
+		//create filepath to font and load that font.
+		const char * filePath = "./assets/fonts/arial.ttf";
+		if (FT_New_Face(s_data->ft, filePath, 0, &s_data->fontFace))
+			Log::error("ERROR: font could NOT be loaded: {0}", filePath);
+
+		//create a character size and set it.
+		int32_t characterSize = 86;
+		if (FT_Set_Pixel_Sizes(s_data->fontFace, 0, characterSize))
+			Log::error("ERROR: font size NOT set: {0}", characterSize);
+
+		//initialise the font texture.
+		s_data->fontTexture.reset(Textures::create(256, 256, 4, nullptr));
 
 	}
 
@@ -146,7 +152,8 @@ namespace Engine
 		glDrawElements(GL_QUADS, s_data->VAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
-	void Renderer2D::submit(char ch, const glm::vec2 & position, float & advance, const glm::vec4 & colour)
+	
+	void Renderer2D::submit(char ch, const glm::vec2& position, float& advance, const glm::vec4 tint)
 	{
 		if (FT_Load_Char(s_data->fontFace, ch, FT_LOAD_RENDER))
 		{
@@ -160,7 +167,15 @@ namespace Engine
 			glm::vec2 glyphSize(glyphWidth, glyphHeight);
 			glm::vec2 glyphBearing(s_data->fontFace->glyph->bitmap_left, -s_data->fontFace->glyph->bitmap_top);
 			//calculate the advamce
-			advance = float(s_data->fontFace->glyph->advance.x >> 6);
+			advance = static_cast<float>(s_data->fontFace->glyph->advance.x >> 6);
+
+			//calculate quad for glyph.
+			glm::vec2 glyphHalfExtents(s_data->fontTexture->getWidthF() * 0.5f, s_data->fontTexture->getHeightF() * 0.5f);
+			glm::vec2 glyphCentre = (position + glyphBearing) + glyphHalfExtents;
+			Quad quad = Quad::createCentreHalfExtents(glyphCentre, glyphHalfExtents);
+
+			//submit quad
+			submit(quad, tint, s_data->fontTexture);
 
 			//convert the monochrome glyph bitmap to RBGA.
 
@@ -170,7 +185,7 @@ namespace Engine
 
 		}
 	}
-
+	
 	void Renderer2D::submit(const Quad& quad, const glm::vec4& tint, float angle, bool degrees)
 	{
 		Renderer2D::submit(quad, tint, s_data->defaultTexture, angle, degrees);
