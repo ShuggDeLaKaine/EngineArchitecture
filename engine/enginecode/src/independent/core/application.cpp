@@ -607,7 +607,7 @@ namespace Engine {
 		};			//TO DO - some testing on the other create quads, using Simons example using paint to check they're working as expected.
 
 		//glEnable(GL_DEPTH_TEST);
-		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+		//glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 
 		TextureUnitManager textureUnitManager(32);
 		uint32_t unit;
@@ -615,8 +615,14 @@ namespace Engine {
 		Renderer3D::init();
 		Renderer2D::init();
 
-		std::shared_ptr<RenderCommands> clearCommands;
-		clearCommands.reset(RenderCommandsFactory::createCommand(RenderCommands::Commands::clearColourAndDepthBuffer));
+		std::shared_ptr<RenderCommands> clearCommand;
+		clearCommand.reset(RenderCommandsFactory::createCommand(RenderCommands::Commands::clearColourAndDepthBuffer));
+
+		{
+			std::shared_ptr<RenderCommands> setClearCommand;
+			setClearCommand.reset(RenderCommandsFactory::createCommand(RenderCommands::Commands::setClearColour, 1.0f, 0.0f, 1.0f, 1.0f));
+			RendererCommons::actionCommand(setClearCommand);
+		}		//scope around as the memory used to create the the .reset() part will go out of scope. 
 
 
 		float advance;
@@ -629,7 +635,7 @@ namespace Engine {
 
 			//things to do in the frame...
 			//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			RendererCommons::actionCommand(clearCommands);
+			RendererCommons::actionCommand(clearCommand);
 
 			//get the model to rotate (easier to see whether it is a 3d shape)
 			for (auto& model : models) model = glm::rotate(model, timeStep, glm::vec3(0.0f, 1.0f, 0.5f));
