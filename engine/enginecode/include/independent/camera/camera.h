@@ -17,8 +17,8 @@ namespace Engine
 		{
 			view = glm::inverse(transform);
 		}			//!< update the view, taking the transform of the object, inverting the view based on this transform.
-	private:
 
+	private:
 	};
 
 	/** \class CameraController
@@ -30,7 +30,7 @@ namespace Engine
 		virtual inline Camera& getCamera() = 0;			//!< accessor for the camera.
 		virtual void onUpdate(float time) = 0;			//!< update function taking time.
 		virtual void onEvent(Event& event) = 0;			//!< event function taking events for camera manipulation.
-
+		virtual void normaliseAngle() = 0;				//!< normalise the angle.
 	protected:
 		Camera m_camera;								//!< the camera.
 	};
