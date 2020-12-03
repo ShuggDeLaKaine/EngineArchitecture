@@ -29,7 +29,7 @@ namespace Engine
 		glm::vec3 m_position = { 0.0f, 0.0f, 0.0f };						//!< vec3 to take position of camera.
 		const float m_zoom = 1.0f;											//!< rate of the zoom.
 		float m_rotation = 0.0f;											//!< the rotation (in degrees) of camera.
-		float m_CamMovementSpeed = 100.0f;									//!< speed of translation in scene.
-		float m_CamRotationSpeed = 30.0f;									//!< speed of rotation in scene.
+		float m_CamMovementSpeed = 150.0f;									//!< speed of translation in scene.
+		float m_CamRotationSpeed = 25.0f;									//!< speed of rotation in scene.
 	};
 }

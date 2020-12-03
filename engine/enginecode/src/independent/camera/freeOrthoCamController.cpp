@@ -33,7 +33,7 @@ namespace Engine
 		if (GLFWInputPoller::isKeyPressed(NG_KEY_Q))	//Q
 		{
 			//to-do - shift to radians.
-			m_rotation -= time * m_CamRotationSpeed;
+			m_rotation += time * m_CamRotationSpeed;
 			if (m_rotation >  180.0f)
 				m_rotation -= 360.0f;
 			else if (m_rotation <= -180.0f)
@@ -41,7 +41,7 @@ namespace Engine
 		}
 		if (GLFWInputPoller::isKeyPressed(NG_KEY_E))	//E
 		{
-			m_rotation += time * m_CamRotationSpeed;
+			m_rotation -= time * m_CamRotationSpeed;
 			if (m_rotation >  180.0f)
 				m_rotation -= 360.0f;
 			else if (m_rotation <= -180.0f)

@@ -580,7 +580,7 @@ namespace Engine {
 		//glm::mat4 projection2D = glm::ortho(0.0f, static_cast<float>(m_window->getWidth()), static_cast<float>(m_window->getHeight()), 0.0f);		//orthographic projection.
 
 		FreeOthroCamController cam2D({ 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, static_cast<float>(m_window->getWidth()), static_cast<float>(m_window->getHeight()), 0.0f);
-		FreeEulerCamController cam3D({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f });
+		FreeEulerCamController cam3D({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f });
 
 		//create the scene wide uniforms for 3D rendering.
 		SceneWideUniforms swu3D;

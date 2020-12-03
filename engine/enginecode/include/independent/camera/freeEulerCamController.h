@@ -13,18 +13,18 @@ namespace Engine
 	class FreeEulerCamController : public CameraController
 	{
 	public:
-		FreeEulerCamController(glm::vec3 pos, glm::vec3 forward, glm::vec3 up, glm::vec3 side) :
+		FreeEulerCamController(glm::vec3 pos, glm::vec3 rot, glm::vec3 forward, glm::vec3 up, glm::vec3 side) :
 			m_position(pos),
+			m_rotation(rot),
 			m_forwards(forward),
 			m_upwards(up),
 			m_sideways(side)
 		{
-			//m_transform =  { m_sideways, m_upwards, m_forwards, m_position };
-
-			//updateCameraVectors();
+			m_transform = glm::translate(glm::mat4(1.0f), m_position) * m_orientation;
+			m_camera.view = inverse(m_transform);
 		}	//!< constructor.
 
-		void updateCameraVectors();											//!< update the camera vectors.
+		//void updateCameraVectors();											//!< update the camera vectors.
 		virtual inline Camera& getCamera() override { return m_camera; }	//!< get the camera.
 		virtual void onUpdate(float time) override;							//!< on update function.
 		virtual void onEvent(Event& event) override;						//!< on event function.
@@ -34,7 +34,7 @@ namespace Engine
 			void handleMouseMove(float xoffset, float yoffset);
 			void handleMouseScroll(float yoffset)
 		*/
-
+		glm::vec2 m_lastMousePosition; /*= InputPoller::getMousePosition();*/	//!< 
 	private:
 		glm::mat4 m_transform;												//!< transform to give location of camera. A mat4 to take vec3s position, forwards, sideways and upwards.
 		glm::vec3 m_position = { 0.0f, 0.0f, 0.0f };						//!< vec3 to take position of camera.
@@ -47,10 +47,12 @@ namespace Engine
 		const float m_zoom = 45.0f;											//!< 
 		const float m_maxPitchAngle = 89.0f;								//!< 
 
-		//float m_rotation;													//!< the rotation (in degrees) of camera.
-		glm::vec3 m_rotation;												//!< rotationof camera, vec3 as in 3d.
+		float m_sensitivity = 0.1f;											//!< 
+		glm::vec3 m_rotation = { 0.0f, 0.0f, 0.0f };						//!< rotation of camera, vec3 as in 3d.
 		float m_CamMovementSpeed = 3.0f;									//!< speed of translation in scene.
 		float m_CamRotationSpeed = 200.0f;									//!< speed of rotation in scene.
+
+		glm::mat4 m_orientation;											//!< 
 		glm::mat4 m_viewProjection;											//!< mat4 to take the view/projection of the camera.
 	};
 }
