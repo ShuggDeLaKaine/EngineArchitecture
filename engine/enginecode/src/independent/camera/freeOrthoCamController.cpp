@@ -3,9 +3,6 @@
 #include "engine_pch.h"
 #include "camera/freeOrthoCamController.h"
 #include "core/inputPoller.h"
-
-#include <glm/glm.hpp>
-#include <GLFW/glfw3.h>
 #include "events/codes.h"
 
 namespace Engine

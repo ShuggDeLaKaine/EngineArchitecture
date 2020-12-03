@@ -13,13 +13,15 @@ namespace Engine
 	class FreeEulerCamController : public CameraController
 	{
 	public:
-		FreeEulerCamController(glm::vec3 pos, glm::vec3 up, float yaw, float pitch) :
+		FreeEulerCamController(glm::vec3 pos, glm::vec3 forward, glm::vec3 up, glm::vec3 side) :
 			m_position(pos),
+			m_forwards(forward),
 			m_upwards(up),
-			yawAngle(yaw),
-			pitchAngle(pitch)
+			m_sideways(side)
 		{
-			updateCameraVectors();
+			//m_transform =  { m_sideways, m_upwards, m_forwards, m_position };
+
+			//updateCameraVectors();
 		}	//!< constructor.
 
 		void updateCameraVectors();											//!< update the camera vectors.
@@ -34,8 +36,8 @@ namespace Engine
 		*/
 
 	private:
+		glm::mat4 m_transform;												//!< transform to give location of camera. A mat4 to take vec3s position, forwards, sideways and upwards.
 		glm::vec3 m_position = { 0.0f, 0.0f, 0.0f };						//!< vec3 to take position of camera.
-
 		glm::vec3 m_forwards;												//!< vec3 for forward (+/-) movement.
 		glm::vec3 m_sideways;												//!< vec3 for sideways (+/-) movement.
 		glm::vec3 m_upwards = { 0.0f, 1.0f, 0.0f };							//!< which way is up.
@@ -45,7 +47,8 @@ namespace Engine
 		const float m_zoom = 45.0f;											//!< 
 		const float m_maxPitchAngle = 89.0f;								//!< 
 
-		float m_rotation;													//!< the rotation (in degrees) of camera.
+		//float m_rotation;													//!< the rotation (in degrees) of camera.
+		glm::vec3 m_rotation;												//!< rotationof camera, vec3 as in 3d.
 		float m_CamMovementSpeed = 3.0f;									//!< speed of translation in scene.
 		float m_CamRotationSpeed = 200.0f;									//!< speed of rotation in scene.
 		glm::mat4 m_viewProjection;											//!< mat4 to take the view/projection of the camera.
