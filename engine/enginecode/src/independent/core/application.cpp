@@ -485,14 +485,7 @@ namespace Engine {
 		std::shared_ptr<Textures> plainWhiteTexture;
 		plainWhiteTexture.reset(Textures::create(1, 1, 4, whitePixel));
 
-		/*
-		//testing the sub texture stuff out.
-		letterTexture.reset(new OpenGLTexture("assets/textures/letterAndNumberCube.png"));
-		//setting the sub textures in this texture file.
-		//example - letterCube = start { 0.0f, 0.0f } / end { 1.0f, 0.5f } && numberCube = start { 0.0f, 0.5f } / end { 1.0f, 1.0f }
-		SubTexture letterCube(letterTexture, { 0.0f, 0.0f }, { 1.0f, 0.5f });
-		SubTexture numberCube(letterTexture, { 0.0f, 0.5f }, { 1.0f, 1.0f });
-		*/
+
 #pragma endregion
 
 #pragma region MATERIALS
@@ -506,20 +499,11 @@ namespace Engine {
 
 #pragma endregion
 
-		/*
-		//need a view, a projection (for camera) and a model matrix.
-		//two mat4s for the camera.
-		glm::mat4 view = glm::lookAt(
-			glm::vec3(0.0f, 0.0f, 0.0f),	//eye: aka the position; 0.0f, 0.0f, 0.0f, is origin.
-			glm::vec3(0.0f, 0.0f, -1.0f),	//centre: aka which way we're looking, convention is to look down the Z axis
-			glm::vec3(0.0f, 1.0f, 0.0f)		//up: make up, up (if that makes sense...)
-		);									//matrix for position and orientation.
-		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);	//matrix for how the camera views the world orthographic or perspective. first param field of view, so the camera ratio.
-		*/
 
+
+		//creating and setting the cameras.
 		FreeOthroCamController cam2D({ 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, static_cast<float>(m_window->getWidth()), static_cast<float>(m_window->getHeight()), 0.0f);
 		FreeEulerCamController cam3D({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, -1.0f }, { 0.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f });
-
 
 		//CAMERA UBO
 		uint32_t blockNum = 0;								//which block are we using.										
@@ -531,10 +515,6 @@ namespace Engine {
 		cameraUBO->attachShaderBlock(TPShader, "b_camera");
 		//now send camera data to uniform buffer object.
 
-		/*
-		cameraUBO->uploadDataToBlock("u_projection", glm::value_ptr(projection));
-		cameraUBO->uploadDataToBlock("u_view", glm::value_ptr(view));
-		*/
 
 		cameraUBO->uploadDataToBlock("u_projection", glm::value_ptr(cam3D.m_camera.projection));
 		cameraUBO->uploadDataToBlock("u_view", glm::value_ptr(cam3D.m_camera.view));
@@ -578,10 +558,7 @@ namespace Engine {
 		//what the scene wide uniforms, what is consistant across the scene.
 		swu3D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(cam3D.m_camera.view)));
 		swu3D["u_projection"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(cam3D.m_camera.projection)));
-		/*
-		swu3D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(view)));
-		swu3D["u_projection"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(projection)));
-		*/
+
 
 		//vec3 to initialise the light data.
 		glm::vec3 lightData[3] = { { 1.0f, 1.0f, 1.0f }, { 1.0f, 4.0f, 6.0f }, { 0.0f, 0.0f, 0.0f } };
@@ -637,7 +614,6 @@ namespace Engine {
 			glEnable(GL_DEPTH_TEST);
 
 			//begin rendering with the scene wide uniforms. 
-			//NOTE - with camera implementation this will have to be altered.
 			Renderer3D::begin(swu3D);
 			
 			//submit renderer info with vertex array, material and mat4 model of object that needs to be drawn.
@@ -650,8 +626,6 @@ namespace Engine {
 			
 			glDisable(GL_DEPTH_TEST);
 
-			//cam3D.onUpdate(timeStep);
-
 			//enable blending.
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -660,7 +634,6 @@ namespace Engine {
 			Renderer2D::begin(swu2D);
 			
 			//submit renderer info.
-			/*
 			Renderer2D::submit(quads[0], { 0.0f, 0.0f, 1.0f, 1.0f });
 			Renderer2D::submit(quads[1], letterTexture);
 			Renderer2D::submit(quads[2], { 0.0f, 1.0f, 0.0f, 1.0f }, numberTexture);
@@ -668,12 +641,11 @@ namespace Engine {
 			Renderer2D::submit(quads[4], letterTexture, -20.0f, true);
 			Renderer2D::submit(quads[5], { 0.0f, 1.0f, 0.0f, 0.5f }, letterTexture, 90.0f, true);
 			Renderer2D::submit(quads[5], { 0.0f, 0.0f, 1.0f, 0.5f }, letterTexture, glm::radians(-60.0f));
-			*/
 
 			Renderer2D::submit("shit fuck cunt", { 100.0f, 100.0f }, { 0.0f, 1.0f, 0.0f, 1.0f });
 			Renderer2D::submit("dickhead", { 100.0f, 200.0f }, { 1.0f, 1.0f, 1.0f, 1.0f });
 			Renderer2D::submit("bumhole!!!", { 100.0f, 300.0f }, { 0.0f, 0.0f, 1.0f, 1.0f });
-
+			
 			//end the rendering.
 			Renderer2D::end();
 			
@@ -687,552 +659,24 @@ namespace Engine {
 	}
 }
 
-
-
-
 /*
-	DOES NOT WORK - SHIIIIIIT CODE - think issue is with uploadDataToBlock.
-//glm::vec3 lightPosition(1.0f, 4.0f, 6.0f);			//vec3 for light position.
-//glm::vec3 viewPosition(0.0f, 0.0f, 0.0f);				//vec3 for view position.
-//glm::vec3 lightColour(1.0f, 1.0f, 1.0f);				//vec3 for light colour.
-UniformBufferLayout lightLayout = { {"u_lightPos", ShaderDataType::Float3 }, {"u_viewPos", ShaderDataType::Float3 }, {"u_lightColour", ShaderDataType::Float3 } };
-std::shared_ptr<UniformBuffer> lightUBO;
-cameraUBO.reset(UniformBuffer::create(lightLayout));
-//now attach to TPShader.
-cameraUBO->attachShaderBlock(TPShader, "b_lights");
-//now send lights data to uniform buffer object.
-cameraUBO->uploadDataToBlock("u_lightPos", glm::value_ptr(lightPosition));
-cameraUBO->uploadDataToBlock("u_viewPos", glm::value_ptr(viewPosition));
-cameraUBO->uploadDataToBlock("u_lightColour", glm::value_ptr(lightColour));
-*/
-
-
-
-
-/*
-		//glm::mat4 view2D = glm::mat4(1.0f);
-		//glm::mat4 projection2D = glm::ortho(0.0f, static_cast<float>(m_window->getWidth()), static_cast<float>(m_window->getHeight()), 0.0f);		//orthographic projection.
-
-				//glEnable(GL_DEPTH_TEST);
-		//glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
-
-			/*
-			uint32_t x = 100.0f;
-			Renderer2D::submit('k', { x, 100.0f }, advance, { 1.0f, 0.0f, 0.0f, 1.0f }); x += advance;
-			Renderer2D::submit('n', { x, 100.0f }, advance, { 0.0f, 1.0f, 0.0f, 1.0f }); x += advance;
-			Renderer2D::submit('o', { x, 100.0f }, advance, { 0.0f, 0.0f, 1.0f, 1.0f }); x += advance;
-			Renderer2D::submit('b', { x, 100.0f }, advance, { 1.0f, 0.0f, 0.0f, 1.0f }); x += advance;
-			Renderer2D::submit(' ', { x, 100.0f }, advance, { 1.0f, 1.0f, 1.0f, 1.0f }); x += advance;
-			Renderer2D::submit('h', { x, 100.0f }, advance, { 0.0f, 1.0f, 0.0f, 1.0f }); x += advance;
-			Renderer2D::submit('e', { x, 100.0f }, advance, { 0.0f, 0.0f, 1.0f, 1.0f }); x += advance;
-			Renderer2D::submit('a', { x, 100.0f }, advance, { 1.0f, 0.0f, 0.0f, 1.0f }); x += advance;
-			Renderer2D::submit('d', { x, 100.0f }, advance, { 0.0f, 1.0f, 0.0f, 1.0f }); x += advance;
-			*/
-		/*
-			//DRAW A PYRAMID.
-			//bind the shader TPShader & bind the correct buffers, vertex array and index buffer.
-			
-			glUseProgram(TPShader->getID());
-
-			if (textureUnitManager.getUnit(plainWhiteTexture->getID(), unit) == true)
-			{
-				glActiveTexture(GL_TEXTURE0 + unit);
-				glBindTexture(GL_TEXTURE_2D, plainWhiteTexture->getID());
-			}
-
-			glBindVertexArray(pyramidVAO->getID());
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO->getID());
-
-			//upload all relevant uniforms for projection, view and model.
-			TPShader->uploadMat4("u_view", view);
-			TPShader->uploadMat4("u_projection", projection);
-			TPShader->uploadFloat3("u_lightColour", { 1.0f, 1.0f, 1.0f });
-			TPShader->uploadFloat3("u_lightPosition", { 1.0f, 4.0f, 6.0f });
-			TPShader->uploadFloat3("u_viewPosition", { 0.0f, 0.0f, 0.0f });
-
-			TPShader->uploadMat4("u_model", models[0]);
-			TPShader->uploadFloat4("u_tint", { 0.4f, 0.7f, 0.3f, 1.0f });
-			TPShader->uploadInt("u_texData", unit);
-
-			//draw the PYRAMID!
-			glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
-			
-
-
-			//DRAW CUBE A.
-			//TPShader bound above, so bind the buffers, vertex array and index buffer. 
-			glBindVertexArray(cubeVAO->getID()); 
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO->getID()); 
-			//upload all relevant info & bind texture & draw the CUBE!
-			TPShader->uploadMat4("u_model", models[1]);
-			TPShader->uploadFloat4("u_tint", { 1.0f, 1.0f, 1.0f, 1.0f });
-			if (textureUnitManager.getUnit(letterTexture->getID(), unit) == true)
-			{
-				glActiveTexture(GL_TEXTURE0 + unit);
-				glBindTexture(GL_TEXTURE_2D, letterTexture->getID());
-			}
-			//upload texture & draw.
-			TPShader->uploadInt("u_texData", unit);
-			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
-
-
-			//DRAW CUBE B!
-			TPShader->uploadMat4("u_model", models[2]);
-			TPShader->uploadFloat4("u_tint", { 1.0f, 1.0f, 1.0f, 1.0f });
-			if (textureUnitManager.getUnit(numberTexture->getID(), unit) == true)
-			{
-				glActiveTexture(GL_TEXTURE0 + unit);
-				glBindTexture(GL_TEXTURE_2D, numberTexture->getID());
-			}
-			TPShader->uploadInt("u_texData", unit);
-			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
-			*/
-
-
-		/*
-		//This is for that GARGABE FIRST RENDERING VIDEO, that DOES NOT take into account ANY of the extra work, WASTE OF TIME.
-				float pyramidVertices[8 * 16] = {
-			//  <------ Pos ------>         <---- normal ---->             <--- UV --->
-				-0.5f, -0.5f, -0.5f,		0.0f,	  -1.0f,	0.0f,		0.0f,  0.0f,		//square Magneta
-				 0.5f, -0.5f, -0.5f,		0.0f,	  -1.0f,	0.0f,		0.0f,  0.0f,
-				 0.5f, -0.5f,  0.5f,		0.0f,     -1.0f,	0.0f,		0.0f,  0.0f,
-				-0.5f, -0.5f,  0.5f,		0.0f,	  -1.0f,	0.0f,		0.0f,  0.0f,
-
-				-0.5f, -0.5f, -0.5f,		-0.8944f, 0.4472f,  0.0f,		0.0f,  0.0f,		//triangle Green
-				-0.5f, -0.5f,  0.5f,		-0.8944f, 0.4472f,  0.0f,		0.0f,  0.0f,
-				 0.0f,  0.5f,  0.0f,		-0.8944f, 0.4472f,  0.0f,		0.0f,  0.0f,
-
-				-0.5f, -0.5f,  0.5f,		0.0f,	  0.4472f,	0.8944f,	0.0f,  0.0f,		//triangle Red
-				 0.5f, -0.5f,  0.5f,		0.0f,	  0.4472f,	0.8944f,	0.0f,  0.0f,
-				 0.0f,  0.5f,  0.0f,		0.0f,	  0.4472f,	0.8944f,	0.0f,  0.0f,
-
-				 0.5f, -0.5f,  0.5f,		0.8944f,  0.4472f,	0.0f,		0.0f,  0.0f,		//triangle Yellow
-				 0.5f, -0.5f, -0.5f,		0.8944f,  0.4472f,	0.0f,		0.0f,  0.0f,
-				 0.0f,  0.5f,  0.0f,		0.8944f,  0.4472f,	0.0f,		0.0f,  0.0f,
-
-				 0.5f, -0.5f, -0.5f,		0.0f,	0.4472f,    -0.8944f,	0.0f,  0.0f,		//triangle Blue
-				-0.5f, -0.5f, -0.5f,		0.0f,	0.4472f,	-0.8944f,	0.0f,  0.0f,
-				 0.0f,  0.5f,  0.0f,		0.0f,	0.4472f,	-0.8944f,	0.0f,  0.0f,
-		};
-		*/
-		/*
-		std::vector<FCVertex> pyramidVertices(16);
-		//								  <------- Pos ------->          <----- colour ----->
-		pyramidVertices.at(0)  = FCVertex({-0.5f, -0.5f, -0.5f}, package({0.8f, 0.2f, 0.8f}));	//square Magneta
-		pyramidVertices.at(1)  = FCVertex({ 0.5f, -0.5f, -0.5f}, package({0.8f, 0.2f, 0.8f}));
-		pyramidVertices.at(2)  = FCVertex({ 0.5f, -0.5f,  0.5f}, package({0.8f, 0.2f, 0.8f}));
-		pyramidVertices.at(3)  = FCVertex({-0.5f, -0.5f,  0.5f}, package({0.8f, 0.2f, 0.8f}));
-
-		pyramidVertices.at(4)  = FCVertex({-0.5f, -0.5f, -0.5f}, package({0.2f, 0.8f, 0.2f}));	//triangle Green
-		pyramidVertices.at(5)  = FCVertex({-0.5f, -0.5f,  0.5f}, package({0.2f, 0.8f, 0.2f}));
-		pyramidVertices.at(6)  = FCVertex({ 0.0f,  0.5f,  0.0f}, package({0.2f, 0.8f, 0.2f}));
-
-		pyramidVertices.at(7)  = FCVertex({-0.5f, -0.5f,  0.5f}, package({1.0f, 0.0f, 0.0f}));	//triangle Red
-		pyramidVertices.at(8)  = FCVertex({ 0.5f, -0.5f,  0.5f}, package({1.0f, 0.0f, 0.0f}));
-		pyramidVertices.at(9)  = FCVertex({ 0.0f,  0.5f,  0.0f}, package({1.0f, 0.0f, 0.0f}));
-
-		pyramidVertices.at(10) = FCVertex({ 0.5f, -0.5f,  0.5f}, package({0.8f, 0.8f, 0.2f}));	//triangle Yellow
-		pyramidVertices.at(11) = FCVertex({ 0.5f, -0.5f, -0.5f}, package({0.8f, 0.8f, 0.2f}));
-		pyramidVertices.at(12) = FCVertex({ 0.0f,  0.5f,  0.0f}, package({0.8f, 0.8f, 0.2f}));
-
-		pyramidVertices.at(13) = FCVertex({ 0.5f, -0.5f, -0.5f}, package({0.0f, 0.2f, 1.0f}));	//triangle Blue
-		pyramidVertices.at(14) = FCVertex({-0.5f, -0.5f, -0.5f}, package({0.0f, 0.2f, 1.0f}));
-		pyramidVertices.at(15) = FCVertex({ 0.0f,  0.5f,  0.0f}, package({0.0f, 0.2f, 1.0f}));
-		*/
-
-
-/*
-//need a location to upload uniform.
-//GLuint uniformLocation;
-
-//upload all relevant uniforms for projectionm, view and model.
-//uniformLocation = glGetUniformLocation(FCShader->getRenderID(), "u_model");
-//glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[0]));
-//draw the PYRAMID!
-//glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
-*/
-/*
-//upload all relevant uniforms for projectionm, view and model.
-uniformLocation = glGetUniformLocation(TPShader->getRenderID(), "u_model");
-glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[1]));
-
-//bind the texture that is wanted.
-glBindTexture(GL_TEXTURE_2D, letterTexture->getID());
-uniformLocation = glGetUniformLocation(TPShader->getRenderID(), "u_texData");
-glUniform1i(uniformLocation, 0);
-
-//draw the CUBE!
-glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
-*/
-/*
-uniformLocation = glGetUniformLocation(TPShader->getRenderID(), "u_model");
-glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[2]));
-glBindTexture(GL_TEXTURE_2D, numberTexture->getID());
-glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+//need a view, a projection (for camera) and a model matrix.
+//two mat4s for the camera.
+glm::mat4 view = glm::lookAt(
+	glm::vec3(0.0f, 0.0f, 0.0f),	//eye: aka the position; 0.0f, 0.0f, 0.0f, is origin.
+	glm::vec3(0.0f, 0.0f, -1.0f),	//centre: aka which way we're looking, convention is to look down the Z axis
+	glm::vec3(0.0f, 1.0f, 0.0f)		//up: make up, up (if that makes sense...)
+);									//matrix for position and orientation.
+glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);	//matrix for how the camera views the world orthographic or perspective. first param field of view, so the camera ratio.
 */
 
 
 /*
-uint32_t cameraUBO_ID;								//openGL ID for camera UBO.
-UniformBufferLayout cameraLayout = {{"u_projection", ShaderDataType::Mat4 }, {"u_view", ShaderDataType::Mat4 }};
-
-//generate, bind and set UBO for camera.
-glGenBuffers(1, &cameraUBO_ID);														//generate Buffer for camera UBO.
-glBindBuffer(GL_UNIFORM_BUFFER, cameraUBO_ID);										//bind buffer for camera UBO.
-glBufferData(GL_UNIFORM_BUFFER, cameraLayout.getStride(), nullptr, GL_DYNAMIC_DRAW);		//send data and size.
-glBindBufferRange(GL_UNIFORM_BUFFER, blockNum, cameraUBO_ID, 0, cameraLayout.getStride());	//bind the range; to UNI_BUFFER, this block, this ubo, from 0 to data siz (ie all of it).
-
-//now attach to shaders, FCShader first then TPShader.
-uint32_t blockIndex = glGetUniformBlockIndex(FCShader->getRenderID(), "b_camera");	//first get the block number off the shader.
-glUniformBlockBinding(FCShader->getRenderID(), blockIndex, blockNum);				//link to binding point.
-blockIndex = glGetUniformBlockIndex(TPShader->getRenderID(), "b_camera");			//same as above but for TPShader.
-glUniformBlockBinding(TPShader->getRenderID(), blockIndex, blockNum);				//same as above but for TPShader.
-
-//now send camera data to uniform buffer object.
-//TO DO! Ideally a single operation for the two below; would need to be stored sequentially, far more efficient this way.
-auto element = *cameraLayout.begin();
-glBufferSubData(GL_UNIFORM_BUFFER, element.m_offset, element.m_size, glm::value_ptr(projection));
-element = *(cameraLayout.begin() + 1);
-glBufferSubData(GL_UNIFORM_BUFFER, element.m_offset, element.m_size, glm::value_ptr(view));
-
-//glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(projection));				//uploading projection between 0 and sizeof mat4 (64bytes).
-//glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(view));	//uploading view but start off the sizeof mat4 and then the sizeof mat4 (64bytes).
+cameraUBO->uploadDataToBlock("u_projection", glm::value_ptr(projection));
+cameraUBO->uploadDataToBlock("u_view", glm::value_ptr(view));
 */
 
-//RAW DATA STUFF
 /*
-			//shaders MUST match your raw data and buffers.
-			//for the pyramid, matches with 3 by 3 (the vertex position and colour)
-std::string FCvertSrc = R"(
-				#version 440 core
-			
-				layout(location = 0) in vec3 a_vertexPosition;
-				layout(location = 1) in vec3 a_vertexColour;
-				out vec3 fragmentColour;
-				uniform mat4 u_model;
-				uniform mat4 u_view;
-				uniform mat4 u_projection;
-				void main()
-				{
-					fragmentColour = a_vertexColour;
-					gl_Position =  u_projection * u_view * u_model * vec4(a_vertexPosition,1);
-				}
-			)";
-
-std::string FCFragSrc = R"(
-				#version 440 core
-			
-				layout(location = 0) out vec4 colour;
-				in vec3 fragmentColour;
-				void main()
-				{
-					colour = vec4(fragmentColour, 1.0);
-				}
-		)";
-
-//textured phong shader, matches with cube (3, 3, 2 of data... vertice positions, normals and then UV)
-std::string TPvertSrc = R"(
-				#version 440 core
-			
-				layout(location = 0) in vec3 a_vertexPosition;
-				layout(location = 1) in vec3 a_vertexNormal;
-				layout(location = 2) in vec2 a_texCoord;
-				out vec3 fragmentPos;
-				out vec3 normal;
-				out vec2 texCoord;
-				uniform mat4 u_model;
-				uniform mat4 u_view;
-				uniform mat4 u_projection;
-				void main()
-				{
-					fragmentPos = vec3(u_model * vec4(a_vertexPosition, 1.0));
-					normal = mat3(transpose(inverse(u_model))) * a_vertexNormal;
-					texCoord = vec2(a_texCoord.x, a_texCoord.y);
-					gl_Position =  u_projection * u_view * u_model * vec4(a_vertexPosition,1.0);
-				}
-			)";
-
-std::string TPFragSrc = R"(
-				#version 440 core
-			
-				layout(location = 0) out vec4 colour;
-				in vec3 normal;
-				in vec3 fragmentPos;
-				in vec2 texCoord;
-				uniform vec3 u_lightPos; 
-				uniform vec3 u_viewPos; 
-				uniform vec3 u_lightColour;
-				uniform sampler2D u_texData;
-				void main()
-				{
-					float ambientStrength = 0.4;
-					vec3 ambient = ambientStrength * u_lightColour;
-					vec3 norm = normalize(normal);
-					vec3 lightDir = normalize(u_lightPos - fragmentPos);
-					float diff = max(dot(norm, lightDir), 0.0);
-					vec3 diffuse = diff * u_lightColour;
-					float specularStrength = 0.8;
-					vec3 viewDir = normalize(u_viewPos - fragmentPos);
-					vec3 reflectDir = reflect(-lightDir, norm);  
-					float spec = pow(max(dot(viewDir, reflectDir), 0.0), 64);
-					vec3 specular = specularStrength * spec * u_lightColour;  
-					
-					colour = vec4((ambient + diffuse + specular), 1.0) * texture(u_texData, texCoord);
-				}
-		)";
-
-		//compiling the shaders, 3 stages; two shaders, vertex and fragment.
-		//NEED to compile each of these then link to the shader program, 3 stages.
-
-		//OpenGL IDs for the shader program, handles into the shader.
-		uint32_t FCprogram, TPprogram;
-
-		//vertex shader stuff...
-		//create the vertex shader.
-		GLuint FCVertShader = glCreateShader(GL_VERTEX_SHADER);
-
-		//get the source and compile it.
-		const GLchar* source = FCvertSrc.c_str();
-		glShaderSource(FCVertShader, 1, &source, 0);
-		glCompileShader(FCVertShader);
-
-		GLint isCompiled = 0;
-		glGetShaderiv(FCVertShader, GL_COMPILE_STATUS, &isCompiled);
-		//check it has compiled, error message if not and delete it.
-		if (isCompiled == GL_FALSE)
-		{
-			GLint maxLength = 0;
-			glGetShaderiv(FCVertShader, GL_INFO_LOG_LENGTH, &maxLength);
-
-			std::vector<GLchar> infoLog(maxLength);
-			glGetShaderInfoLog(FCVertShader, maxLength, &maxLength, &infoLog[0]);
-			Log::error("Shader compile error: {0}", std::string(infoLog.begin(), infoLog.end()));
-
-			//deleting it here if it has failed to compile.
-			glDeleteShader(FCVertShader);
-			return;
-		}
-
-		//fragment shader stuff...
-		//create the fragment shader.
-		GLuint FCFragShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-		//give it the source and compile it.
-		source = FCFragSrc.c_str();
-		glShaderSource(FCFragShader, 1, &source, 0);
-		glCompileShader(FCFragShader);
-
-		glGetShaderiv(FCFragShader, GL_COMPILE_STATUS, &isCompiled);
-		//check that it has been compiled, delete this AND vertex shader if failed to so.
-		if (isCompiled == GL_FALSE)
-		{
-			GLint maxLength = 0;
-			glGetShaderiv(FCFragShader, GL_INFO_LOG_LENGTH, &maxLength);
-
-			std::vector<GLchar> infoLog(maxLength);
-			glGetShaderInfoLog(FCFragShader, maxLength, &maxLength, &infoLog[0]);
-			Log::error("Shader compile error: {0}", std::string(infoLog.begin(), infoLog.end()));
-
-			//deleting the fragment AND vertex shaders if it has failed to compile.
-			glDeleteShader(FCFragShader);
-			glDeleteShader(FCVertShader);
-
-			return;
-		}
-
-		//got to link them up with the program.
-		//all compile fined, so create the final shader program.
-		FCprogram = glCreateProgram();
-		//attach the vertex and fragment shaders and link them.
-		glAttachShader(FCprogram, FCVertShader);
-		glAttachShader(FCprogram, FCFragShader);
-		glLinkProgram(FCprogram);
-
-		GLint isLinked = 0;
-		glGetProgramiv(FCprogram, GL_LINK_STATUS, (int*)&isLinked);
-		//check whether they have linked, if not delete all three shaders.
-		if (isLinked == GL_FALSE)
-		{
-			GLint maxLength = 0;
-			glGetProgramiv(FCprogram, GL_INFO_LOG_LENGTH, &maxLength);
-
-			std::vector<GLchar> infoLog(maxLength);
-			glGetProgramInfoLog(FCprogram, maxLength, &maxLength, &infoLog[0]);
-			Log::error("Shader linking error: {0}", std::string(infoLog.begin(), infoLog.end()));
-
-			glDeleteProgram(FCprogram);
-			glDeleteShader(FCVertShader);
-			glDeleteShader(FCFragShader);
-
-			return;
-		}
-
-		//now linked, can deattach shaders as done with them, just need the final FCprogram.
-		glDetachShader(FCprogram, FCVertShader);
-		glDetachShader(FCprogram, FCFragShader);
-
-
-		//below is pretty much the exact SAME as the shader above, minus some specific Log information.
-		GLuint TPVertShader = glCreateShader(GL_VERTEX_SHADER);
-
-		source = TPvertSrc.c_str();
-		glShaderSource(TPVertShader, 1, &source, 0);
-		glCompileShader(TPVertShader);
-
-		isCompiled = 0;
-		glGetShaderiv(TPVertShader, GL_COMPILE_STATUS, &isCompiled);
-		if (isCompiled == GL_FALSE)
-		{
-			GLint maxLength = 0;
-			glGetShaderiv(TPVertShader, GL_INFO_LOG_LENGTH, &maxLength);
-
-			std::vector<GLchar> infoLog(maxLength);
-			glGetShaderInfoLog(TPVertShader, maxLength, &maxLength, &infoLog[0]);
-			Log::error("Shader compile error: {0}", std::string(infoLog.begin(), infoLog.end()));
-
-			glDeleteShader(TPVertShader);
-			return;
-		}
-
-		GLuint TPFragShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-		source = TPFragSrc.c_str();
-		glShaderSource(TPFragShader, 1, &source, 0);
-		glCompileShader(TPFragShader);
-
-		glGetShaderiv(TPFragShader, GL_COMPILE_STATUS, &isCompiled);
-		if (isCompiled == GL_FALSE)
-		{
-			GLint maxLength = 0;
-			glGetShaderiv(TPFragShader, GL_INFO_LOG_LENGTH, &maxLength);
-
-			std::vector<GLchar> infoLog(maxLength);
-			glGetShaderInfoLog(TPFragShader, maxLength, &maxLength, &infoLog[0]);
-			Log::error("Shader compile error: {0}", std::string(infoLog.begin(), infoLog.end()));
-
-			glDeleteShader(TPFragShader);
-			glDeleteShader(TPVertShader);
-
-			return;
-		}
-
-		TPprogram = glCreateProgram();
-		glAttachShader(TPprogram, TPVertShader);
-		glAttachShader(TPprogram, TPFragShader);
-		glLinkProgram(TPprogram);
-
-		isLinked = 0;
-		glGetProgramiv(TPprogram, GL_LINK_STATUS, (int*)&isLinked);
-		if (isLinked == GL_FALSE)
-		{
-			GLint maxLength = 0;
-			glGetProgramiv(TPprogram, GL_INFO_LOG_LENGTH, &maxLength);
-
-			std::vector<GLchar> infoLog(maxLength);
-			glGetProgramInfoLog(TPprogram, maxLength, &maxLength, &infoLog[0]);
-			Log::error("Shader linking error: {0}", std::string(infoLog.begin(), infoLog.end()));
-
-			glDeleteProgram(TPprogram);
-			glDeleteShader(TPVertShader);
-			glDeleteShader(TPFragShader);
-
-			return;
-		}
-
-		glDetachShader(TPprogram, TPVertShader);
-		glDetachShader(TPprogram, TPFragShader);
-		*/
-
-
-//BUFFER STUFF
-		/*
-		uint32_t cubeVAO, cubeVBO, cubeIBO;
-
-		glCreateVertexArrays(1, &cubeVAO);
-		glBindVertexArray(cubeVAO);
-
-		glCreateBuffers(1, &cubeVBO);
-		glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
-
-		glCreateBuffers(1, &cubeIBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cubeIndices), cubeIndices, GL_STATIC_DRAW);
-
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0); // position
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))); // Normal
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))); // UV co-ords
-
-
-				uint32_t pyramidVAO, pyramidVBO, pyramidIBO;
-
-		glCreateVertexArrays(1, &pyramidVAO);
-		glBindVertexArray(pyramidVAO);
-
-		glCreateBuffers(1, &pyramidVBO);
-		glBindBuffer(GL_ARRAY_BUFFER, pyramidVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(pyramidVertices), pyramidVertices, GL_STATIC_DRAW);
-
-		glCreateBuffers(1, &pyramidIBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(pyramidIndices), pyramidIndices, GL_STATIC_DRAW);
-
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0); // Position
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float))); // Colour
-		*/
-
-//THIS WAS ALL IN THE APPLICATION::RUN()
-//USED FOR TESTING STUFF.
-/*
-
-			//float accumulatedTime = 0.0f;
-			//accumulatedTime += timeStep;
-
-
-			//***event testing***
-			//testing that the window closes after a second.
-			if (accumulatedTime > 1.0f)
-			{
-				WindowCloseEvent close;
-				auto& callback = m_eventHandler.getOnWindowCloseCallback();
-				callback(close);
-			}
-			
-			//***logging system tests***
-			//Log::trace("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
-			//Log::file("Hey Hey HEY! {0} {1}", 42, "How long is piece of string");
-			//Log::trace("FPS {0}", 1.0f / timeStep);
-
-			//***random number generator system tests***
-			//Log::trace("{0}", RandomNumberGenerator::uniformIntBetween(-10, 10));
-			//Log::trace("{0}", RandomNumberGenerator::uniformFloatBetween(-10, 10));
-			//Log::trace("{0}", RandomNumberGenerator::normalIntBetween(10.0f, 2.5f));
-			//Log::trace("{0}", RandomNumberGenerator::normalFloatBetween(5.0f, 1.25f));
-
-			
-			//testing key and mouse button press.
-			if (InputPoller::isKeyPressed(NG_KEY_W))
-			{
-				Log::error("W Pressed");
-			}
-			if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_1))
-			{
-				Log::error("LEFT Mouse Button Pressed");
-			}
-			if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_2))
-			{
-				Log::error("RIGHT Mouse Button Pressed");
-			}
-			if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_3))
-			{
-				Log::error("MIDDLE Mouse Button Pressed");
-			}
-
-			//Log::trace("Current Mouse Position: ({0}, {1})", InputPoller::getMouseXPos(), InputPoller::getMouseYPos());
-			
+swu3D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(view)));
+swu3D["u_projection"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(projection)));
 */

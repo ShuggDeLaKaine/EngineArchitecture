@@ -20,7 +20,7 @@ namespace Engine
 			m_rotation(rot),
 			m_forwards(forward),
 			m_upwards(up),
-			m_sideways(side) 
+			m_sideways(side)
 		{
 			m_lastMousePosition = InputPoller::getMousePosition();
 
@@ -38,33 +38,22 @@ namespace Engine
 		virtual inline Camera& getCamera() override { return m_camera; }	//!< get the camera.
 		virtual void onUpdate(float time) override;							//!< on update function.
 		virtual void onEvent(Event& event) override;						//!< on event function.
-		
+
 	private:
 		glm::mat4 m_transform;												//!< transform to give location of camera. A mat4 to take vec3s position, forwards, sideways and upwards.
 		glm::vec3 m_position = { 0.0f, 0.0f, 0.0f };						//!< vec3 to take position of camera.
 		glm::vec3 m_forwards = { 0.0f, 0.0f, -1.0f };						//!< vec3 for forward (+/-) movement.
-		glm::vec3 m_sideways;												//!< vec3 for sideways (+/-) movement.
+		glm::vec3 m_sideways = { 1.0f, 0.0f, 0.0f };						//!< vec3 for sideways (+/-) movement.
 		glm::vec3 m_upwards = { 0.0f, 1.0f, 0.0f };							//!< which way is up.
 
-		//float yawAngle = 0.0f;												//!< 
-		//float pitchAngle = 0.0f;											//!< 
-		const float m_zoom = 45.0f;											//!< 
-		//const float m_maxPitchAngle = 89.0f;								//!< 
-
-		float m_sensitivity = 0.1f;											//!< 
+		const float m_zoom = 1.0f;											//!< rate of the zoom. 
+		float m_sensitivity = 0.1f;											//!< mouse sensitivity.
 		glm::vec3 m_rotation = { 0.0f, 0.0f, 0.0f };						//!< rotation of camera, vec3 as in 3d.
-		float m_CamMovementSpeed = 3.0f;									//!< speed of translation in scene.
-		float m_CamRotationSpeed = 200.0f;									//!< speed of rotation in scene.
+		float m_CamMovementSpeed = 300.0f;									//!< speed of translation in scene.
+		float m_CamRotationSpeed = 20.0f;									//!< speed of rotation in scene.
 
-		glm::vec2 m_lastMousePosition;										//!< 
-		glm::mat4 m_orientation;											//!< 
-		glm::mat4 m_viewProjection;											//!< mat4 to take the view/projection of the camera.
+		glm::vec2 m_lastMousePosition;										//!< last position of the mouse.
+		glm::mat4 m_orientation;											//!< mat4 for the orientation of the camera.
+		//glm::mat4 m_viewProjection;										//!< mat4 to take the view/projection of the camera.
 	};
 }
-
-
-/*
-		//virtual void normaliseAngle() override;							//!< normalise the angle.
-
-
-*/
