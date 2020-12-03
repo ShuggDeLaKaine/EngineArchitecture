@@ -32,8 +32,6 @@ namespace Engine
 		virtual void onEvent(Event& event) = 0;			//!< event function taking events for camera manipulation.
 		Camera m_camera;								//!< the camera.
 	protected:
-		glm::vec3 m_position = { 0.0f, 0.0f, 0.0f };						//!< vec3 to take position of camera.
-
-		
+		glm::vec3 m_position = { 0.0f, 0.0f, 0.0f };	//!< vec3 to take position of camera.
 	};
 }

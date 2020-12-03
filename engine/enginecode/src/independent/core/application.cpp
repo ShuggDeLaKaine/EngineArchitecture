@@ -30,6 +30,7 @@
 #include "renderer/renderer2D.h"
 
 #include "camera/freeOrthoCamController.h"
+#include "camera/freeEulerCamController.h"
 
 
 namespace Engine {
