@@ -8,11 +8,9 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #ifdef  NG_PLATFORM_WINDOWS
-/*
-	#include "platform/windows/win32System.h"
+/*  #include "platform/windows/win32System.h"
 	#include "platform/windows/winTimer.h"
-#else
-*/
+	#else */
 	#include "platform/GLFW/GLFWSystem.h"
 #endif //  NG_PLATFORM_WINDOWS
 
@@ -34,13 +32,13 @@
 
 
 namespace Engine {
-
+#pragma region TEMP_CLASS
 //temporary class for vertex
 /* when done properly need three classes for final engine;
 * one for 2d rendering - 2d vertices,
 * one for static 3d vertices,
 * one for animated 3d vertices. */
-#pragma region TEMP_CLASS
+
 	//textured phong normalised vertex class
 	class TPVertexNormalised
 	{
@@ -75,31 +73,18 @@ namespace Engine {
 
 	Application::Application() 
 	{
-		/*examples of how you can check the the byte aligned of raw data.
-		//use uint32_t's though.
-		int alignVec3 = alignof(glm::vec3);
-		int alignFCVertex = alignof(FCVertex);
-		int sizeofVec3 = sizeof(glm::vec3);
-		int sizeofFCVertex = sizeof(FCVertex);
-		*/
-
 		if (s_instance == nullptr)
-		{
 			s_instance = this;
-		}
 
 		//start the systems.
-
 		//start the log system.
 		m_logSystem.reset(new Log);
 		m_logSystem->start();
 
 		//start the windows system.
 #ifdef NG_PLATFORM_WINDOWS
-		/*
-		m_windowsSystem.reset(new Win32System);
-#else
-*/
+		/* m_windowsSystem.reset(new Win32System);
+		#else */
 		m_windowsSystem.reset(new GLFWSystem);
 #endif
 		m_windowsSystem->start();
@@ -108,10 +93,8 @@ namespace Engine {
 		//if on a windows platform then make a windows timer, otherwise make a chrono timer.
 		//NOTE - not a system! Don't need to stop it.
 #ifdef  NG_PLATFORM_WINDOWS
-		/*
-		m_timer.reset(new WinTimer);
-#else
-*/
+		/* m_timer.reset(new WinTimer);
+		#else */
 		m_timer.reset(new ChronoTimer);
 #endif //  NG_PLATFORM_WINDOWS
 		m_timer->start();
@@ -133,6 +116,7 @@ namespace Engine {
 		m_timer->reset();
 	}
 
+#pragma region USER_EVENTS
 	void Application::bindAllEventsTypes()
 	{
 		//window events.
@@ -238,7 +222,7 @@ namespace Engine {
 		//Log::info("Mouse Scroll Event: ({0}, {1})", static_cast<float>(event.getXMouseScroll()), static_cast<float>(event.getYMouseScroll()));
 		return event.isEventHandled();
 	}
-
+#pragma endregion
 
 	Application::~Application()
 	{
@@ -253,6 +237,7 @@ namespace Engine {
 		m_logSystem->stop();
 	}
 
+#pragma region GEN_FUNCS
 	//TO DO!!! PUT THESE FUNCTIONS SOMEWHERE BETTER!
 	//utility functions, so maybe static functions in some class... maybe the BUFFERLAYOUT CLASS.
 	std::array<int16_t, 3> normalise(const glm::vec3& norm) 
@@ -331,6 +316,8 @@ namespace Engine {
 	{
 		return package({ colour.x, colour.y, colour.z, 1.0f});
 	}
+
+#pragma endregion
 
 	void Application::run()
 	{
@@ -499,8 +486,6 @@ namespace Engine {
 
 #pragma endregion
 
-
-
 		//creating and setting the cameras.
 		FreeOthroCamController cam2D({ 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, static_cast<float>(m_window->getWidth()), static_cast<float>(m_window->getHeight()), 0.0f);
 		FreeEulerCamController cam3D({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, -1.0f }, { 0.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f });
@@ -514,8 +499,6 @@ namespace Engine {
 		//now attach to TPShader.
 		cameraUBO->attachShaderBlock(TPShader, "b_camera");
 		//now send camera data to uniform buffer object.
-
-
 		cameraUBO->uploadDataToBlock("u_projection", glm::value_ptr(cam3D.m_camera.projection));
 		cameraUBO->uploadDataToBlock("u_view", glm::value_ptr(cam3D.m_camera.view));
 
@@ -559,7 +542,6 @@ namespace Engine {
 		swu3D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(cam3D.m_camera.view)));
 		swu3D["u_projection"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(cam3D.m_camera.projection)));
 
-
 		//vec3 to initialise the light data.
 		glm::vec3 lightData[3] = { { 1.0f, 1.0f, 1.0f }, { 1.0f, 4.0f, 6.0f }, { 0.0f, 0.0f, 0.0f } };
 		swu3D["u_lightColour"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightData[0])));
@@ -588,7 +570,6 @@ namespace Engine {
 
 		std::shared_ptr<RenderCommands> clearCommand;
 		clearCommand.reset(RenderCommandsFactory::createCommand(RenderCommands::Commands::clearColourAndDepthBuffer));
-
 		{
 			std::shared_ptr<RenderCommands> setClearCommand;
 			setClearCommand.reset(RenderCommandsFactory::createCommand(RenderCommands::Commands::setClearColour, 1.0f, 0.0f, 1.0f, 1.0f));
@@ -605,7 +586,6 @@ namespace Engine {
 			m_timer->reset();
 
 			//things to do in the frame...
-			//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			RendererCommons::actionCommand(clearCommand);
 
 			//get the model to rotate (easier to see whether it is a 3d shape)
@@ -651,6 +631,7 @@ namespace Engine {
 			
 			glDisable(GL_BLEND);
 			
+			//updates on cameras.
 			cam2D.onUpdate(timeStep);
 			cam3D.onUpdate(timeStep);
 
@@ -679,4 +660,17 @@ cameraUBO->uploadDataToBlock("u_view", glm::value_ptr(view));
 /*
 swu3D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(view)));
 swu3D["u_projection"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(projection)));
+*/
+
+/*
+//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+RendererCommons::actionCommand(clearCommand);
+*/
+
+/*examples of how you can check the the byte aligned of raw data.
+//use uint32_t's though.
+int alignVec3 = alignof(glm::vec3);
+int alignFCVertex = alignof(FCVertex);
+int sizeofVec3 = sizeof(glm::vec3);
+int sizeofFCVertex = sizeof(FCVertex);
 */
