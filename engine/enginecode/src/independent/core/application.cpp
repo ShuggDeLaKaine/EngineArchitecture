@@ -29,6 +29,8 @@
 #include "renderer/renderer3D.h"
 #include "renderer/renderer2D.h"
 
+#include "camera/freeOrthoCamController.h"
+
 
 namespace Engine {
 
@@ -573,8 +575,10 @@ namespace Engine {
 		models[2] = glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, -0.5f, -5.0f));
 
 
-		glm::mat4 view2D = glm::mat4(1.0f);
-		glm::mat4 projection2D = glm::ortho(0.0f, static_cast<float>(m_window->getWidth()), static_cast<float>(m_window->getHeight()), 0.0f);		//orthographic projection.
+		//glm::mat4 view2D = glm::mat4(1.0f);
+		//glm::mat4 projection2D = glm::ortho(0.0f, static_cast<float>(m_window->getWidth()), static_cast<float>(m_window->getHeight()), 0.0f);		//orthographic projection.
+
+		FreeOthroCamController cam2D({0.f, 0.0f, 0.0f}, 0.0f, 0.0f, static_cast<float>(m_window->getWidth()), static_cast<float>(m_window->getHeight()), 0.0f);
 
 
 		//create the scene wide uniforms for 3D rendering.
@@ -590,8 +594,8 @@ namespace Engine {
 		
 		//create the scene wide uniforms for 2D rendering.
 		SceneWideUniforms swu2D;
-		swu2D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(view2D)));
-		swu2D["u_projection"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(projection2D)));
+		swu2D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(cam2D.m_camera.view)));
+		swu2D["u_projection"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(cam2D.m_camera.projection)));
 
 		//create a float for the time step and initialise at 0.
 		float timeStep = 0.0f;
@@ -685,6 +689,8 @@ namespace Engine {
 			
 			glDisable(GL_BLEND);
 			
+			cam2D.onUpdate(timeStep);
+
 			m_window->onUpdate(timeStep);
 		}
 	}

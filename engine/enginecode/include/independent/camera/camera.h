@@ -24,14 +24,16 @@ namespace Engine
 	/** \class CameraController
 	*	\brief Class to control the camera with events and inputs.
 	*/
-	class CameraController : public Camera
+	class CameraController 
 	{
 	public:
 		virtual inline Camera& getCamera() = 0;			//!< accessor for the camera.
 		virtual void onUpdate(float time) = 0;			//!< update function taking time.
 		virtual void onEvent(Event& event) = 0;			//!< event function taking events for camera manipulation.
-		virtual void normaliseAngle() = 0;				//!< normalise the angle.
-	protected:
 		Camera m_camera;								//!< the camera.
+	protected:
+		glm::vec3 m_position = { 0.0f, 0.0f, 0.0f };						//!< vec3 to take position of camera.
+
+		
 	};
 }
