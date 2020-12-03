@@ -506,7 +506,7 @@ namespace Engine {
 
 #pragma endregion
 
-
+		/*
 		//need a view, a projection (for camera) and a model matrix.
 		//two mat4s for the camera.
 		glm::mat4 view = glm::lookAt(
@@ -515,6 +515,10 @@ namespace Engine {
 			glm::vec3(0.0f, 1.0f, 0.0f)		//up: make up, up (if that makes sense...)
 		);									//matrix for position and orientation.
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);	//matrix for how the camera views the world orthographic or perspective. first param field of view, so the camera ratio.
+		*/
+
+		FreeOthroCamController cam2D({ 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, static_cast<float>(m_window->getWidth()), static_cast<float>(m_window->getHeight()), 0.0f);
+		FreeEulerCamController cam3D({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, -1.0f }, { 0.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f });
 
 
 		//CAMERA UBO
@@ -526,11 +530,16 @@ namespace Engine {
 		//now attach to TPShader.
 		cameraUBO->attachShaderBlock(TPShader, "b_camera");
 		//now send camera data to uniform buffer object.
+
+		/*
 		cameraUBO->uploadDataToBlock("u_projection", glm::value_ptr(projection));
 		cameraUBO->uploadDataToBlock("u_view", glm::value_ptr(view));
+		*/
 
-		////////
-	//LIGHTING UBO	
+		cameraUBO->uploadDataToBlock("u_projection", glm::value_ptr(cam3D.m_camera.projection));
+		cameraUBO->uploadDataToBlock("u_view", glm::value_ptr(cam3D.m_camera.view));
+
+		//LIGHTING UBO	
 		blockNum++;											//move block number along one.
 		glm::vec3 lightPosition(1.0f, 4.0f, 6.0f);			//vec3 for light position.
 		glm::vec3 viewPosition(0.0f, 0.0f, 0.0f);			//vec3 for view position.
@@ -552,56 +561,33 @@ namespace Engine {
 		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::vec3), glm::value_ptr(lightPosition));					//uploading light position between 0 and sizeof vec3.
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4), sizeof(glm::vec3), glm::value_ptr(viewPosition));		//uploading view position starting at a vec4 (remember vec3 must have base alignment of 4N), then the size of a vec3.
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4) * 2, sizeof(glm::vec3), glm::value_ptr(lightColour));	//uploading light colour, same as above viewPosition but offsect vec4 * 2, as two vec4s prior.
-			////////
-		/*
-			DOES NOT WORK - SHIIIIIIT CODE - think issue is with uploadDataToBlock.
-		//glm::vec3 lightPosition(1.0f, 4.0f, 6.0f);			//vec3 for light position.
-		//glm::vec3 viewPosition(0.0f, 0.0f, 0.0f);				//vec3 for view position.
-		//glm::vec3 lightColour(1.0f, 1.0f, 1.0f);				//vec3 for light colour.
-		UniformBufferLayout lightLayout = { {"u_lightPos", ShaderDataType::Float3 }, {"u_viewPos", ShaderDataType::Float3 }, {"u_lightColour", ShaderDataType::Float3 } };
-		std::shared_ptr<UniformBuffer> lightUBO;
-		cameraUBO.reset(UniformBuffer::create(lightLayout));
-		//now attach to TPShader.
-		cameraUBO->attachShaderBlock(TPShader, "b_lights");
-		//now send lights data to uniform buffer object.
-		cameraUBO->uploadDataToBlock("u_lightPos", glm::value_ptr(lightPosition));
-		cameraUBO->uploadDataToBlock("u_viewPos", glm::value_ptr(viewPosition));
-		cameraUBO->uploadDataToBlock("u_lightColour", glm::value_ptr(lightColour));
-		*/
-
+		
 		//for the transofrm of the models, array as can have a pyramid and a cube.
 		glm::mat4 models[3];
 		models[0] = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.5f, -5.0f));
 		models[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-1.5f, -0.5f, -5.0f));
 		models[2] = glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, -0.5f, -5.0f));
-
-
-		//glm::mat4 view2D = glm::mat4(1.0f);
-		//glm::mat4 projection2D = glm::ortho(0.0f, static_cast<float>(m_window->getWidth()), static_cast<float>(m_window->getHeight()), 0.0f);		//orthographic projection.
-
-		FreeOthroCamController cam2D({ 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, static_cast<float>(m_window->getWidth()), static_cast<float>(m_window->getHeight()), 0.0f);
-		FreeEulerCamController cam3D({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f });
+		
+		//create the scene wide uniforms for 2D rendering.
+		SceneWideUniforms swu2D;
+		swu2D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(cam2D.m_camera.view)));
+		swu2D["u_projection"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(cam2D.m_camera.projection)));
 
 		//create the scene wide uniforms for 3D rendering.
 		SceneWideUniforms swu3D;
 		//what the scene wide uniforms, what is consistant across the scene.
+		swu3D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(cam3D.m_camera.view)));
+		swu3D["u_projection"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(cam3D.m_camera.projection)));
 		/*
 		swu3D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(view)));
 		swu3D["u_projection"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(projection)));
 		*/
-		swu3D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(cam3D.m_camera.view)));
-		swu3D["u_projection"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(cam3D.m_camera.projection)));
 
 		//vec3 to initialise the light data.
 		glm::vec3 lightData[3] = { { 1.0f, 1.0f, 1.0f }, { 1.0f, 4.0f, 6.0f }, { 0.0f, 0.0f, 0.0f } };
 		swu3D["u_lightColour"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightData[0])));
 		swu3D["u_lightPosition"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightData[1])));
 		swu3D["u_viewPosition"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightData[2])));
-		
-		//create the scene wide uniforms for 2D rendering.
-		SceneWideUniforms swu2D;
-		swu2D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(cam2D.m_camera.view)));
-		swu2D["u_projection"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(cam2D.m_camera.projection)));
 
 		//create a float for the time step and initialise at 0.
 		float timeStep = 0.0f;
@@ -616,8 +602,6 @@ namespace Engine {
 			Quad::createCentreHalfExtents({ 300.0f, 350.0f }, { 175.0f, 115.0f }),
 		};			//TO DO - some testing on the other create quads, using Simons example using paint to check they're working as expected.
 
-		//glEnable(GL_DEPTH_TEST);
-		//glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 
 		TextureUnitManager textureUnitManager(32);
 		uint32_t unit;
@@ -666,7 +650,7 @@ namespace Engine {
 			
 			glDisable(GL_DEPTH_TEST);
 
-			cam3D.onUpdate(timeStep);
+			//cam3D.onUpdate(timeStep);
 
 			//enable blending.
 			glEnable(GL_BLEND);
@@ -690,14 +674,13 @@ namespace Engine {
 			Renderer2D::submit("dickhead", { 100.0f, 200.0f }, { 1.0f, 1.0f, 1.0f, 1.0f });
 			Renderer2D::submit("bumhole!!!", { 100.0f, 300.0f }, { 0.0f, 0.0f, 1.0f, 1.0f });
 
-
-			
 			//end the rendering.
 			Renderer2D::end();
 			
 			glDisable(GL_BLEND);
 			
 			cam2D.onUpdate(timeStep);
+			cam3D.onUpdate(timeStep);
 
 			m_window->onUpdate(timeStep);
 		}
@@ -707,8 +690,31 @@ namespace Engine {
 
 
 
+/*
+	DOES NOT WORK - SHIIIIIIT CODE - think issue is with uploadDataToBlock.
+//glm::vec3 lightPosition(1.0f, 4.0f, 6.0f);			//vec3 for light position.
+//glm::vec3 viewPosition(0.0f, 0.0f, 0.0f);				//vec3 for view position.
+//glm::vec3 lightColour(1.0f, 1.0f, 1.0f);				//vec3 for light colour.
+UniformBufferLayout lightLayout = { {"u_lightPos", ShaderDataType::Float3 }, {"u_viewPos", ShaderDataType::Float3 }, {"u_lightColour", ShaderDataType::Float3 } };
+std::shared_ptr<UniformBuffer> lightUBO;
+cameraUBO.reset(UniformBuffer::create(lightLayout));
+//now attach to TPShader.
+cameraUBO->attachShaderBlock(TPShader, "b_lights");
+//now send lights data to uniform buffer object.
+cameraUBO->uploadDataToBlock("u_lightPos", glm::value_ptr(lightPosition));
+cameraUBO->uploadDataToBlock("u_viewPos", glm::value_ptr(viewPosition));
+cameraUBO->uploadDataToBlock("u_lightColour", glm::value_ptr(lightColour));
+*/
+
+
+
 
 /*
+		//glm::mat4 view2D = glm::mat4(1.0f);
+		//glm::mat4 projection2D = glm::ortho(0.0f, static_cast<float>(m_window->getWidth()), static_cast<float>(m_window->getHeight()), 0.0f);		//orthographic projection.
+
+				//glEnable(GL_DEPTH_TEST);
+		//glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 
 			/*
 			uint32_t x = 100.0f;
