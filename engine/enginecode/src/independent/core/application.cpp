@@ -635,6 +635,9 @@ namespace Engine {
 			cam2D.onUpdate(timeStep);
 			cam3D.onUpdate(timeStep);
 
+			//swu3D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(cam3D.m_camera.view)));
+			//swu3D["u_projection"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(cam3D.m_camera.projection)));
+
 			m_window->onUpdate(timeStep);
 		}
 	}
