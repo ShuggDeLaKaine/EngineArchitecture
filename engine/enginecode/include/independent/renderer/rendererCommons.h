@@ -14,13 +14,13 @@
 #include "rendering/renderAPI.h"
 #include "rendering/vertexArray.h"
 #include "rendering/shaderDataType.h"
+#include "rendering/uniformBuffer.h"
 
 #include "renderer/renderCommands.h"
 
 namespace Engine
 {
 	using SceneWideUniforms = std::unordered_map<const char*, std::pair<ShaderDataType, void *>>;
-
 	/* \class RendererCommons
 	*  \brief Class to take all the common vars used in both 2D & 3D renderers.
 	*/

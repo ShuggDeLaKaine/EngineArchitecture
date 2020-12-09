@@ -66,19 +66,24 @@ namespace Engine
 	class Renderer3D
 	{
 	public:
-		static void init();			//!< initiate the renderer.
-		static void begin(const SceneWideUniforms& sceneWideUniforms);		//!< begin a new 3D scene.
+		static void init();												//!< initiate the renderer.
+		static void begin(const SceneWideUniforms& sceneWideUniforms);	//!< begin a new 3D scene.
 		static void submit(const std::shared_ptr<VertexArray>& geometry, const std::shared_ptr<Material> material, const glm::mat4& model);		//!< submit a new piece of geometry to be rendered.
-		static void end();			//!< end of the current 3D scene.
-
+		static void end();												//!< end of the current 3D scene.
+		static void attachShader(std::shared_ptr<Shaders> shader);				//!< attach the shader.
 	private:
 		struct InternalData
 		{
 			SceneWideUniforms sceneWideUniforms;		//!< replace with UBO in the future.
 			std::shared_ptr<Textures> defaultTexture;	//!< empty white texture.
 			glm::vec4 defaultTint;						//!< default white tint.
-		};
+
+			std::shared_ptr<Shaders> shader;			//!< the shader.
+			std::shared_ptr<VertexArray> VAO;			//!< the vertex array.
+
+			std::shared_ptr<UniformBuffer> cameraUBO;	//!< UBO for the camera.
+			std::shared_ptr<UniformBuffer> lightingUBO;	//!< UBO for the lighting.
+		};												//!< to be used a PURE data.
 		static std::shared_ptr<InternalData> s_data;	//!< data internal to the renderer.
 	};
-
 }
