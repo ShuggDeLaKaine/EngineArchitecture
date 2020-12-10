@@ -46,7 +46,6 @@ namespace Engine
 		//TO DO - a test to make sure that it contains something.
 		auto& pair = m_uniformCache[uniformName];
 		glBufferSubData(GL_UNIFORM_BUFFER, pair.first, pair.second, data);
-
 	}
 
 }

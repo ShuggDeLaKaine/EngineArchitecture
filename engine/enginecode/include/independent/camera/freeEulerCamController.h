@@ -49,8 +49,8 @@ namespace Engine
 		const float m_zoom = 1.0f;											//!< rate of the zoom. 
 		float m_sensitivity = 0.1f;											//!< mouse sensitivity.
 		glm::vec3 m_rotation = { 0.0f, 0.0f, 0.0f };						//!< rotation of camera, vec3 as in 3d.
-		float m_CamMovementSpeed = 300.0f;									//!< speed of translation in scene.
-		float m_CamRotationSpeed = 20.0f;									//!< speed of rotation in scene.
+		float m_CamMovementSpeed = 50.0f;									//!< speed of translation in scene.
+		float m_CamRotationSpeed = 10.0f;									//!< speed of rotation in scene.
 
 		glm::vec2 m_lastMousePosition;										//!< last position of the mouse.
 		glm::mat4 m_orientation;											//!< mat4 for the orientation of the camera.

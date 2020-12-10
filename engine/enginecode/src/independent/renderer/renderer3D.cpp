@@ -16,6 +16,8 @@ namespace Engine
 		s_data->defaultTexture.reset(Textures::create(1, 1, 4, whitePixel));
 		s_data->defaultTint = { 1.0f, 1.0f, 1.0f, 1.0f };
 
+		//s_data->shader.reset(Shaders::create("./assets/shaders/texturedPhong.glsl"));
+
 		//set the UBOs for the camera.
 		s_data->cameraUBO.reset(UniformBuffer::create(UniformBufferLayout(
 			{
@@ -33,9 +35,6 @@ namespace Engine
 
 	void Renderer3D::begin(const SceneWideUniforms& sceneWideUniforms)
 	{
-		//s_data->sceneWideUniforms = sceneWideUniforms;
-		glUseProgram(s_data->shader->getID());
-
 		//bind that buffer to the cameraUBO.
 		glBindBuffer(GL_UNIFORM_BUFFER, s_data->cameraUBO->getID());
 		s_data->cameraUBO->uploadDataToBlock("u_projection", sceneWideUniforms.at("u_projection").second);
@@ -46,7 +45,6 @@ namespace Engine
 		s_data->lightingUBO->uploadDataToBlock("u_lightPos", sceneWideUniforms.at("u_lightPos").second);
 		s_data->lightingUBO->uploadDataToBlock("u_viewPos", sceneWideUniforms.at("u_viewPos").second);
 		s_data->lightingUBO->uploadDataToBlock("u_lightColour", sceneWideUniforms.at("u_lightColour").second);
-
 	}
 
 	void Renderer3D::submit(const std::shared_ptr<VertexArray>& geometry, const std::shared_ptr<Material> material, const glm::mat4 & model)
@@ -81,7 +79,7 @@ namespace Engine
 			}
 		}
 		*/
-
+		
 		//apply the material uniforms (per draw uniforms).
 		material->getShader()->uploadMat4("u_model", model);		//everything will have a model applied, so do this here before checking.
 
@@ -92,8 +90,8 @@ namespace Engine
 		{
 			glBindTexture(GL_TEXTURE_2D, s_data->defaultTexture->getID());
 		}
-		material->getShader()->uploadInt("u_texData", 0);
 
+		material->getShader()->uploadInt("u_texData", 0);
 
 		if (material->isFlagSet(Material::flag_tint))				//now check whether the tint flag is set.
 		{
@@ -121,6 +119,5 @@ namespace Engine
 		//attach them pesky shaders!
 		s_data->cameraUBO->attachShaderBlock(shader, "b_camera");
 		s_data->lightingUBO->attachShaderBlock(shader, "b_lights");
-		
 	}
 }
