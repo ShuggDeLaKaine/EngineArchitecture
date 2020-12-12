@@ -1,5 +1,6 @@
 # Coursework 2020
-You MUST use this repo to submit your coursework.
+please use branch '19-FINAL_SUBMISSION'.
 
-When you clone make sure you use recurse submodules.
-This is a tick box in visual studio or use the option --recurse-submodules at the command prompt.
+Movement
+'W,S,A,D' for movement in 2d and 3d modes.
+'Q,E' for camera clockwise and anti-clockwise rotation.
