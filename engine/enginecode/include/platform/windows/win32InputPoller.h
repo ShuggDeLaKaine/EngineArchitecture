@@ -6,8 +6,8 @@
 
 namespace Engine
 {
-	/* \class Win32InputPoller 
-	* API agnostic input poller to get current mouse and/or keyboard state, specific to the Win32 platform.
+	/*	\class Win32InputPoller 
+	*	\brief Win32 specific input poller to get current mouse and/or keyboard state.
 	*/
 	class Win32InputPoller
 	{
@@ -15,9 +15,7 @@ namespace Engine
 		static bool isKeyPressed(int32_t keycode);			//!< is key pressed?
 		static bool isMouseButtonPressed(int32_t button);	//!< is mouse button pressed?
 		static glm::vec2 getMousePosition();				//!< get current mouse position.
-	private:
-		 
+	private:	 
 
 	};
-
 }

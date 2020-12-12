@@ -58,5 +58,4 @@ namespace Engine
 	{
 		glfwSwapBuffers(m_window);
 	}
-
 }

@@ -18,7 +18,6 @@ namespace Engine
 	//initalise s_API here, as static and needs doing outside of class.
 	RenderAPI::API RenderAPI::s_API = RenderAPI::API::OpenGL;
 
-	//
 	IndexBuffer* IndexBuffer::create(uint32_t* indices, uint32_t count)
 	{
 		switch (RenderAPI::getAPI())
@@ -41,7 +40,6 @@ namespace Engine
 		return nullptr;
 	}
 
-	//
 	VertexBuffer* VertexBuffer::create(void* vertices, uint32_t size, const VertexBufferLayout& layout)
 	{
 		switch (RenderAPI::getAPI())
@@ -64,7 +62,6 @@ namespace Engine
 		return nullptr;
 	}
 
-	//
 	VertexArray* VertexArray::create()
 	{
 		switch (RenderAPI::getAPI())
@@ -87,7 +84,6 @@ namespace Engine
 		return nullptr;
 	}
 
-	//
 	Shaders* Shaders::create(const char* vertexFilePath, const char* fragmentFilePath)
 	{
 		switch (RenderAPI::getAPI())
@@ -110,7 +106,6 @@ namespace Engine
 		return nullptr;
 	}
 
-	//
 	Shaders* Shaders::create(const char* filePath)
 	{
 		switch (RenderAPI::getAPI())
@@ -133,7 +128,6 @@ namespace Engine
 		return nullptr;
 	}
 
-	//
 	Textures* Textures::create(const char* filepath)
 	{
 		switch (RenderAPI::getAPI())
@@ -156,7 +150,6 @@ namespace Engine
 		return nullptr;
 	}
 
-	//
 	Textures* Textures::create(uint32_t width, uint32_t height, uint32_t channel, unsigned char * data)
 	{
 		switch (RenderAPI::getAPI())
@@ -179,7 +172,6 @@ namespace Engine
 		return nullptr;
 	}
 
-	//
 	UniformBuffer* UniformBuffer::create(const UniformBufferLayout& layout)
 	{
 		switch (RenderAPI::getAPI())
@@ -201,5 +193,4 @@ namespace Engine
 		//otherwise return nullptr.
 		return nullptr;
 	}
-
 }

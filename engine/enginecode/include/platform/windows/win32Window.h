@@ -12,7 +12,7 @@
 namespace Engine
 {
 	/** \class Win32Window
-	*
+	*	\brief Win32 specific class for windows.
 	*/
 	class Win32Window : public Window
 	{
@@ -34,5 +34,4 @@ namespace Engine
 		WindowProperties m_properties;		//!< properties of the window.
 		float m_aspectRatio;				//!< aspect ratio of the window.
 	};
-
 }

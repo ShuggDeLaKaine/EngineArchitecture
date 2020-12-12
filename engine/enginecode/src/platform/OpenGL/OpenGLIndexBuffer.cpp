@@ -6,7 +6,6 @@
 
 namespace Engine
 {
-
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count) : m_count(count)
 	{
 		glCreateBuffers(1, &m_OpenGL_ID);
@@ -18,5 +17,4 @@ namespace Engine
 	{
 		glDeleteBuffers(1, &m_OpenGL_ID);
 	}
-
 }

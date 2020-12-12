@@ -7,8 +7,6 @@
 
 namespace Engine 
 {
-
-
 	void Win32Window::initWindow(const WindowProperties & properties)
 	{
 		//array of wide characters.
@@ -129,5 +127,4 @@ namespace Engine
 		}
 		return 0;
 	}
-
 }

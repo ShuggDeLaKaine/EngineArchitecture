@@ -35,17 +35,6 @@ namespace Engine
 
 	int32_t RandomNumberGenerator::uniformIntBetween(int32_t min, int32_t max)
 	{
-		//DEBUG STUFF - ***REMEMBER TO REMOVE***
-		/*
-		int32_t num = s_uniformInt(*s_generator);
-		float fNum = float(num);
-		float fRange = ((float)std::numeric_limits<int32_t>::max() - (float)std::numeric_limits<int32_t>::min());
-		float t = (fabs(fNum) / fRange);
-		float n = max - min;
-		int result = min + t * n;
-		return result;
-		*/
-
 		//***PROBLEM HERE*** result is always NEGATIVE!!!
 		return min + (fabs(static_cast<float>(s_uniformInt(*s_generator))) / s_intRange) * (max - min);
 	}

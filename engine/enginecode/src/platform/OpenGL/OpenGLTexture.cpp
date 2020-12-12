@@ -10,7 +10,6 @@
 
 namespace Engine
 {
-
 	OpenGLTexture::OpenGLTexture(const char * filepath)
 	{
 		int width, height, channel;
@@ -84,6 +83,4 @@ namespace Engine
 		m_height = height;
 		m_channel = channel;
 	}
-
-
 }

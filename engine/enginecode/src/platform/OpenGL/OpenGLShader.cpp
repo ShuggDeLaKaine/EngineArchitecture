@@ -222,7 +222,6 @@ namespace Engine
 			return;
 		}
 
-
 		//got to link them up with the program.
 		//all compile fined, so create the final shader program.
 		m_OpenGL_ID = glCreateProgram();
@@ -254,7 +253,5 @@ namespace Engine
 		//now linked, can deattach shaders as done with them, just need the final FCprogram.
 		glDetachShader(m_OpenGL_ID, vertexShader);
 		glDetachShader(m_OpenGL_ID, fragmentShader);
-
 	}
-
 }

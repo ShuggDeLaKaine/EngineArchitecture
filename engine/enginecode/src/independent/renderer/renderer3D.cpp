@@ -16,8 +16,6 @@ namespace Engine
 		s_data->defaultTexture.reset(Textures::create(1, 1, 4, whitePixel));
 		s_data->defaultTint = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-		//s_data->shader.reset(Shaders::create("./assets/shaders/texturedPhong.glsl"));
-
 		//set the UBOs for the camera.
 		s_data->cameraUBO.reset(UniformBuffer::create(UniformBufferLayout(
 			{
@@ -52,33 +50,6 @@ namespace Engine
 		//TO DO - to make API agnostic (below isn't, using opengl function), just put the bind functions into my classes. Need a shader bind function and VAO bind function, maybe submit render function too.
 		//first bind the shader.
 		glUseProgram(material->getShader()->getID());
-
-		/* COMMENTING OUT AS REPLACING WITH UBOS.
-		//apply scene wide uniforms; iterate over them.
-		//TO DO - later replace with UBOS
-		for (auto& dataPair : s_data->sceneWideUniforms)
-		{
-			const char* uniformName = dataPair.first;
-			ShaderDataType& sdt = dataPair.second.first;
-			void * addressValue = dataPair.second.second;
-
-			switch (sdt)
-			{
-			case ShaderDataType::Int:
-				material->getShader()->uploadInt(uniformName, *(int *)addressValue);
-				break;
-			case ShaderDataType::Float3:
-				material->getShader()->uploadFloat3(uniformName, *(glm::vec3 *)addressValue);
-				break;
-			case ShaderDataType::Float4:
-				material->getShader()->uploadFloat4(uniformName, *(glm::vec4 *)addressValue);
-				break;
-			case ShaderDataType::Mat4:
-				material->getShader()->uploadMat4(uniformName, *(glm::mat4 *)addressValue);
-				break;
-			}
-		}
-		*/
 		
 		//apply the material uniforms (per draw uniforms).
 		material->getShader()->uploadMat4("u_model", model);		//everything will have a model applied, so do this here before checking.

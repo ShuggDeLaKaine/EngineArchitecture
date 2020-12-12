@@ -5,8 +5,8 @@
 
 namespace Engine
 {
-	/* \class 
-	*
+	/*	\class Win32System
+	*	\brief Win32 specific class for all Win32 related systems.
 	*/
 	class Win32System : public System
 	{
@@ -16,7 +16,4 @@ namespace Engine
 	private:
 
 	};
-
-
-
 }

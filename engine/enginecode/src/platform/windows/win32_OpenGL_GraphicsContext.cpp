@@ -78,5 +78,4 @@ namespace Engine
 	{
 		SwapBuffers(m_deviceContext);
 	}
-
 }

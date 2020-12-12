@@ -8,7 +8,7 @@ namespace Engine
 	class OpenGLTexture : public Textures
 	{
 		/** \class OpenGLTexture
-		* class to take in image files for textures.
+		*	\brief OpenGL specific class to take in image files for textures.
 		*/
 	public:
 		OpenGLTexture(const char* filepath);	//!< constructor, takes the filepaths for texture.
@@ -25,7 +25,6 @@ namespace Engine
 
 	private:
 		void init(uint32_t width, uint32_t height, uint32_t channel, unsigned char * data);		//!< an initate function to be used in both of the OpenGLTexture(...) functions, does the bulk of the work for both of these.
-	
 		uint32_t m_OpenGL_ID;	//!< OpenGL handle.
 		uint32_t m_width;		//!< width of texture.
 		uint32_t m_height;		//!< height of texture.

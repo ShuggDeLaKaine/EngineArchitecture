@@ -27,5 +27,4 @@ namespace Engine
 		}
 		return glm::vec2(-1.0f, -1.0f);
 	}
-
 }

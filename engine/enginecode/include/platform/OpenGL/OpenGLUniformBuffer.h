@@ -6,7 +6,7 @@
 namespace Engine
 {
 	/* \class OpenGLUniformBuffer
-	*  \brief Class to create, set and attah the appropriate uniform buffer in OpenGL, inheriting from UniformBuffer.
+	*  \brief OpenGL specific class to create, set and attah the appropriate uniform buffer; inheriting from UniformBuffer.
 	*/
 	class OpenGLUniformBuffer : public UniformBuffer
 	{

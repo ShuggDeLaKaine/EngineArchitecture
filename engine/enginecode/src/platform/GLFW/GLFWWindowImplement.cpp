@@ -8,7 +8,6 @@
 namespace Engine
 {
 
-
 	GLFWWindowImplement::GLFWWindowImplement(const WindowProperties & properties)
 	{
 		initWindow(properties);
@@ -30,11 +29,8 @@ namespace Engine
 			m_nativeWindow = glfwCreateWindow(m_windowProperties.width, m_windowProperties.height, m_windowProperties.windowTitle, nullptr, nullptr);
 		}
 
-		//
 		m_graphicsContext.reset(new GLFW_OpenGL_GC(m_nativeWindow));
 		m_graphicsContext->init();
-
-
 
 		//set the void pointer for the native window to contain the event handler, stored as void pointer.
 		glfwSetWindowUserPointer(m_nativeWindow, static_cast<void*>(&m_eventHandler));

@@ -6,7 +6,7 @@
 namespace Engine
 {
 	/** \class OpenGLShader
-	*   \brieg Class to take in text, compile into shader program.
+	*   \brief OpenGL specific class to take in text, compile into shader program.
 	*/
 	class OpenGLShader : public Shaders
 	{
@@ -25,9 +25,6 @@ namespace Engine
 
 	private:
 		uint32_t m_OpenGL_ID;		//!< OpenGL render identifier. 
-		//TO DO: Below will work fine for these two shaders, for any further shaders (ie tessellation, geometry) this will need EXPANDING.
 		void compileAndLink(const char* vertexShaderScr, const char* fragmentShaderScr);		//!< compiles and links shaders, just the two at the moment.
 	};
-
-
 }

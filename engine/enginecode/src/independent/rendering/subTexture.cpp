@@ -38,6 +38,4 @@ namespace Engine
 	{
 		return m_UVStart + ((m_UVEnd - m_UVStart) * UV);
 	}
-
-
 }

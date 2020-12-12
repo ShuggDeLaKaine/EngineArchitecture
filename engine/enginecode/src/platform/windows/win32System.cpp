@@ -7,7 +7,6 @@
 
 namespace Engine
 {
-
 	void Win32System::start(SystemSignal init, ...)
 	{
 		WNDCLASSEX wndClass;
@@ -60,7 +59,5 @@ namespace Engine
 		{
 			Log::error("ERROR! Could not UNregister win32 class");
 		}
-
 	}
-
 }

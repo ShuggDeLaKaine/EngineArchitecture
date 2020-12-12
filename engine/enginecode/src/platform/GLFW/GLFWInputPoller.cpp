@@ -1,4 +1,4 @@
-/* \file GLFWInputPoller.cpp */
+/** \file GLFWInputPoller.cpp */
 
 #include "engine_pch.h"
 #include "platform/GLFW/GLFWInputPoller.h"
@@ -41,5 +41,4 @@ namespace Engine
 		}
 		return glm::vec2(-1.0f, -1.0f);
 	}
-
 }

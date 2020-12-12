@@ -10,8 +10,8 @@
 
 namespace Engine
 {
-	/* 
-	* \class win32_OpenGL_GraphicsContext
+	/*	\class win32_OpenGL_GraphicsContext
+	*	\brief Win32/OpenGL specific graphics context, for double buffering.
 	*/
 	class Win32_OpenGL_GraphicsContxt : public GraphicsContext
 	{
@@ -22,10 +22,8 @@ namespace Engine
 		virtual void swapBuffers() override;		//!< to swap the front and back buffers (aka double buffering).
 
 	private:
-		HWND m_window = nullptr;				//!< window handle for this native window.
+		HWND m_window = nullptr;					//!< window handle for this native window.
 		HDC	 m_deviceContext = nullptr;				//!< device context handle.
 		HGLRC m_resourceContext = nullptr;			//!< OpenGL resource context handle.
-
 	};
-
 }

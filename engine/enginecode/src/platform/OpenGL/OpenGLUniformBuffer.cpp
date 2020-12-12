@@ -47,5 +47,4 @@ namespace Engine
 		auto& pair = m_uniformCache[uniformName];
 		glBufferSubData(GL_UNIFORM_BUFFER, pair.first, pair.second, data);
 	}
-
 }

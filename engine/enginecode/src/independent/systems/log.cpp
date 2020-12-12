@@ -3,13 +3,11 @@
 #include "engine_pch.h"
 #include "systems/log.h"
 
-
 namespace Engine {
 
 	//initialising to have nullptrs
 	std::shared_ptr<spdlog::logger> Log::s_consolelogger = nullptr;
 	std::shared_ptr<spdlog::logger> Log::s_filelogger = nullptr;
-
 
 	void Log::start(SystemSignal init, ...)
 	{
@@ -47,8 +45,5 @@ namespace Engine {
 	{
 		s_consolelogger->info("Console Logger STOP");
 		s_consolelogger.reset();
-
-
 	}
-
 }

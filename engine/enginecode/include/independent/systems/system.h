@@ -4,7 +4,7 @@
 #include <cstdarg>
 
 /** \class Interface 
-*	\brief A class for all systems
+*	\brief A class for all systems.
 */
 
 namespace Engine {

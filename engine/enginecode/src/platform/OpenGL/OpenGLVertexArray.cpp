@@ -10,8 +10,6 @@ namespace Engine
 	{
 		static GLenum toGLType(ShaderDataType type)
 		{
-			//TO DO - make this faster can make an array.
-			//TO DO - need to consider Mat3 and Mat4s.
 			switch (type)
 			{
 			case ShaderDataType::Byte2:  return GL_UNSIGNED_BYTE;

@@ -7,7 +7,6 @@
 
 namespace Engine
 {
-
 	std::function<void(void)> RenderCommandsFactory::getClearColourAndDepthBufferCommand()
 	{
 		switch (RenderAPI::getAPI())
@@ -47,5 +46,4 @@ namespace Engine
 			return std::function<void(void)>();
 		}
 	}
-
 }

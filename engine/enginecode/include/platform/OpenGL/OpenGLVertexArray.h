@@ -6,7 +6,7 @@
 namespace Engine
 {
 	/** \class OpenGLVertexArray
-	* 
+	*	\brief OpenGL specific class for vertex arrays.
 	*/
 	class OpenGLVertexArray : public VertexArray
 	{
@@ -26,6 +26,4 @@ namespace Engine
 		uint32_t m_OpenGL_ID;						//!< OpenGL render identifier.
 		uint32_t m_verArrAttributeIndex = 0;		//!< attribute index.
 	};
-
-
 }

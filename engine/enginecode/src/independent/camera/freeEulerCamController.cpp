@@ -2,7 +2,6 @@
 #include "engine_pch.h"
 #include "camera/freeEulerCamController.h"
 
-
 namespace Engine
 {
 	void FreeEulerCamController::onUpdate(float time)
@@ -41,7 +40,6 @@ namespace Engine
 		m_transform = glm::translate(glm::mat4(1.0f), m_position) * m_orientation;
 		m_camera.view = glm::inverse(m_transform);
 	}
-
 
 	void FreeEulerCamController::onEvent(Event & event)
 	{

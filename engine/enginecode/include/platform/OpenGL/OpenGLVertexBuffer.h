@@ -6,7 +6,7 @@
 namespace Engine
 {
 	/** \class OpenGLVertexBuffer.
-	* 
+	*	\brief OpenGL specific class for vertex buffers.
 	*/
 	class OpenGLVertexBuffer : public VertexBuffer	
 	{
@@ -21,5 +21,4 @@ namespace Engine
 		uint32_t m_OpenGL_ID;		//!< OpenGL render identifier 
 		VertexBufferLayout m_layout;		//!< buffer layout
 	};
-
 }
