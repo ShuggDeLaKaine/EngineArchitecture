@@ -1,4 +1,4 @@
-/** \file freeEulerCamController.cpp */
+/** \file freeEulerCamController.h */
 
 #pragma once
 #include "camera/camera.h"

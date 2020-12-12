@@ -5,8 +5,8 @@
 
 namespace Engine
 {
-	/**
-	\class WindowEvent - class to take a number of funcs and vars that will be common in all window event classes.
+	/** \class WindowEvent
+	*	\brief A class to take a number of funcs and vars that will be common in all window event classes.
 	*/
 	class WindowEvent : public Event
 	{
@@ -14,8 +14,8 @@ namespace Engine
 		virtual inline int32_t getCategoryFlag() const override { return EventCategoryWindow; }	//!< get the category flag for the event.
 	};
 
-	/**
-	\class WindowCloseEvent - class for window closing event.
+	/** \class WindowCloseEvent 
+	*	\brief A class for window closing event.
 	*/
 	class WindowCloseEvent : public WindowEvent
 	{
@@ -24,8 +24,8 @@ namespace Engine
 		virtual inline EventType getEventType() const override { return getStaticType(); }		//!< get the event type.
 	};
 
-	/**
-	\class WindowResizeEvent - class for resizing window event.
+	/** \class WindowResizeEvent 
+	*	\brief A class for resizing window event.
 	*/
 	class WindowResizeEvent : public WindowEvent
 	{
@@ -41,30 +41,30 @@ namespace Engine
 		int32_t m_height;		//!< window height after resize.
 	};
 
-	/**
-	\class WindowFocusEvent - class for bringing window into focus event.
+	/** \class WindowFocusEvent 
+	*	\brief A class for bringing window into focus event.
 	*/
 	class WindowFocusEvent : public WindowEvent
 	{
 	public:
-		WindowFocusEvent() {}		//!< 
+		WindowFocusEvent() {}		//!< constructor.
 		static EventType getStaticType() { return EventType::WindowFocus; }						//!< returns static type; reason for static type is that is gives me something to compare with when implementing a handler.
 		virtual inline EventType getEventType() const override { return getStaticType(); }		//!< get the event type.
 	};
 
-	/**
-	\class WindowLostFocusEvent - class for minimising window out of focus event.
+	/** \class WindowLostFocusEvent
+	*	\brief A class for minimising window out of focus event.
 	*/
 	class WindowLostFocusEvent : public WindowEvent
 	{
 	public:
-		WindowLostFocusEvent() {}	//!< 
+		WindowLostFocusEvent() {}	//!< constructor.
 		static EventType getStaticType() { return EventType::WindowLostFocus; }					//!< returns static type; reason for static type is that is gives me something to compare with when implementing a handler.
 		virtual inline EventType getEventType() const override { return getStaticType(); }		//!< get the event type.
 	};
 
-	/**
-	\class WindowMoveEvent - class for window movement event.
+	/** \class WindowMoveEvent 
+	*	\brief A class for window movement event.
 	*/
 	class WindowMoveEvent : public WindowEvent
 	{

@@ -6,8 +6,8 @@
 
 namespace Engine
 {
-	/**
-	\class KeyEvent - class to take a number of funcs and vars that will be common in all key event classes.
+	/** \class KeyEvent
+	*	\brief A class to take a number of funcs and vars that will be common in all key event classes.
 	*/
 	class KeyEvent : public Event
 	{
@@ -15,12 +15,12 @@ namespace Engine
 		inline int32_t getKeycode() const { return m_keycode; }				//!< get the keycode that has been pressed.
 		virtual inline int32_t getCategoryFlag() const override { return EventCategoryKey | EventCategoryInput; }	//!< get the category flag/s for the event.
 	protected:
-		KeyEvent(int32_t keycode) : m_keycode(keycode) {}		//!< 
+		KeyEvent(int32_t keycode) : m_keycode(keycode) {}		//!< get the keycode.
 		int32_t m_keycode;		//!< int32_t to take keycode int.
 	};
 
-	/**
-	\class KeyPressedEvent - class for key pressed event.
+	/** \class KeyPressedEvent 
+	*	\brief A class for key pressed event.
 	*/
 	class KeyPressedEvent : public KeyEvent
 	{
@@ -33,8 +33,8 @@ namespace Engine
 		int32_t m_repeatCount;		//!< int32_t to take the count of repeated input.
 	};
 
-	/**
-	\class KeyReleasedEvent - class for key released event.
+	/** \class KeyReleasedEvent
+	*	\brief A class for key released event.
 	*/
 	class KeyReleasedEvent : public KeyEvent
 	{
@@ -44,8 +44,8 @@ namespace Engine
 		virtual inline EventType getEventType() const override { return getStaticType(); }		//!< get the event type.
 	};
 
-	/**
-	\class KeyTypedEvent - class for key typing event.
+	/** \class KeyTypedEvent 
+	*	\brief A class for key typing event.
 	*/
 	class KeyTypedEvent : public KeyEvent
 	{

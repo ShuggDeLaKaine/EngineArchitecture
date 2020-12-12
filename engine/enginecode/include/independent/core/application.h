@@ -10,20 +10,16 @@
 
 namespace Engine {
 
-	/**
-	\class Application
-	Fundemental class of the engine. A singleton which runs the game loop infinitely.
-	Provides ...
+	/** \class Application
+		\brief Fundemental class of the engine. A singleton which runs the game loop infinitely.
 	*/
-
 	class Application
 	{
 	protected:
 		Application();	//!< Constructor
-
-		std::shared_ptr<Log> m_logSystem;				//!< the log system.
+		std::shared_ptr<Log> m_logSystem;						//!< the log system.
 		std::shared_ptr<RandomNumberGenerator> m_ranNumSytem;	//!< the random number generator system.
-		std::shared_ptr<System> m_windowsSystem;		//!< the windows system.
+		std::shared_ptr<System> m_windowsSystem;				//!< the windows system.
 													
 		/*
 		* ***NOTE*** - IF MORE THAN ONE WINDOW. Should have a list or vector containing all windows.
@@ -46,11 +42,10 @@ namespace Engine {
 		bool onKeyReleased(KeyReleasedEvent& event);	//!< on key release.
 		//bool onKeyType(KeyTypedEvent& event);			//!< on key type.
 
-		bool onMouseMove(MouseMovementEvent& event);			//!< on mouse movement.
-		bool onMouseButtonPress(MouseButtonPressEvent& event);	//!< on mouse button press.
+		bool onMouseMove(MouseMovementEvent& event);				//!< on mouse movement.
+		bool onMouseButtonPress(MouseButtonPressEvent& event);		//!< on mouse button press.
 		bool onMouseButtonRelease(MouseButtonReleaseEvent& event);	//!< on mouse button release.
-		bool onMouseScroll(MouseScrollEvent& event);			//!< on mouse scrolling.
-
+		bool onMouseScroll(MouseScrollEvent& event);				//!< on mouse scrolling.
 		//bool fullscreenCheck();						//!< to check whether in fullscreen mode of current display monitor.
 
 	private:
@@ -64,11 +59,8 @@ namespace Engine {
 		* THAT then returns to new var m_CURRENTwindow.
 		*/
 		inline std::shared_ptr<Window> getWindow() { return m_window; }		//!< gets and returns our window from instance.
-
 		void run();				//!< Main loop
-
 	};
-
 	// To be defined in users code
 	Application* startApplication();		//!< Function definition which provides an entry hook
 }

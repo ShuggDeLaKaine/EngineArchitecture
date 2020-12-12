@@ -5,9 +5,11 @@
 #include "eventHeaders.h"
 #include <functional>
 
-
 namespace Engine
 {
+	/* \class EventHander
+	*  \brief Class to handling all incoming events for Windows, plus Key and Mouse user interaction.
+	*/
 	class EventHandler
 	{
 	public:

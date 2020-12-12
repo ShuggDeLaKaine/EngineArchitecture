@@ -6,16 +6,16 @@
 
 namespace Engine
 {
-	/**
-	\class MouseEvent - class to take a number of funcs and vars that will be common in all mouse event classes.
+	/** \class MouseEvent
+	*	\brief A class to take a number of funcs and vars that will be common in all mouse event classes.
 	*/
 	class MouseEvent : public Event
 	{
 		virtual inline int32_t getCategoryFlag() const override { return EventCategoryMouse | EventCategoryInput; }	//!< get the category flag for the event.
 	};
 
-	/**
-	\class MouseButtonPressEvent - class for mouse button press event.
+	/** \class MouseButtonPressEvent
+	*	\brief A class for mouse button press event.
 	*/
 	class MouseButtonPressEvent : public MouseEvent
 	{
@@ -28,8 +28,8 @@ namespace Engine
 		int32_t m_Button;		//!< int for mouse button pressed.
 	};
 
-	/**
-	\class MouseButtonReleaseEvent - class for mouse button release event.
+	/** \class MouseButtonReleaseEvent
+	*	\brief A class for mouse button release event.
 	*/
 	class MouseButtonReleaseEvent : public MouseEvent
 	{
@@ -42,8 +42,8 @@ namespace Engine
 		int32_t m_Button;		//!< int for mouse button released.
 	};
 
-	/**
-	\class MouseMouseEvent - class for mouse movement event.
+	/** \class MouseMouseEvent 
+	*	\brief A class for mouse movement event.
 	*/
 	class MouseMovementEvent : public MouseEvent
 	{
@@ -59,8 +59,8 @@ namespace Engine
 		float m_mouseMoveY;		//!< mouse movement Y coords.
 	};
 
-	/**
-	\class MouseScrollEvent - class for mouse scroll event.
+	/** \class MouseScrollEvent 
+	*	\brief A class for mouse scroll event.
 	*/
 	class MouseScrollEvent : public MouseEvent
 	{

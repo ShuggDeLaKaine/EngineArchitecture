@@ -5,8 +5,7 @@
 namespace Engine
 {
 	/** \enum EventType
-	* An enum class for all the event types. 
-	* Using the class type as safer than plain enum.
+	*	\brief An enum class for all the event types. Using the class type as safer than plain enum.
 	*/
 	enum class EventType
 	{
@@ -17,9 +16,7 @@ namespace Engine
 	};
 
 	/** \enum EventCategory
-	* An enum for type category flags.
-	* an older plain classical version of enum use bitshifting/operators; 
-	* as something can belong to more than one category, can use flags.
+	*	\brief An enum for type category flags. An older plain classical version of enum use bitshifting/operators. As something can belong to more than one category, can use flags.
 	*/
 	enum EventCategory
 	{
@@ -32,7 +29,7 @@ namespace Engine
 	};
 
 	/** \class Event
-	* Base class for Event.
+	*	\brief Base class for Event.
 	*/
 	class Event
 	{

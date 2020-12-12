@@ -5,7 +5,6 @@
 
 namespace Engine
 {
-
 	struct WindowProperties
 	{
 		const char * windowTitle;
@@ -13,13 +12,12 @@ namespace Engine
 		uint32_t height;
 		bool isFullScreen;
 		bool isVSync;
-
 		WindowProperties(char * title = "Window Numero Uno", uint32_t width = 800, uint32_t height = 600, bool fullscreen = false)
 			: windowTitle(title), width(width), height(height), isFullScreen(fullscreen) {}
 	};
 
 	/** \class Window
-	* Abstract base class for all implemented windows, which will code to this interface.
+	*	\brief Abstract base class for all implemented windows, which will code to this interface.
 	*/
 	class Window
 	{
@@ -36,11 +34,9 @@ namespace Engine
 		virtual bool isVSync() const = 0;				//!< func to check whether VSync-ed.
 
 		inline EventHandler& getEventHandler() { return m_eventHandler; };	//!< func to get an instance of the event handler.
-
 		static Window* createWindow(const WindowProperties& properties = WindowProperties());		//!< constructor, create a window using the properties definied in WindowProperties.
-	
 	protected:
-		EventHandler m_eventHandler;			//!< event handler. 
-		std::shared_ptr<GraphicsContext> m_graphicsContext;		//!< shared pointer to the graphics context.
+		EventHandler m_eventHandler;						//!< event handler. 
+		std::shared_ptr<GraphicsContext> m_graphicsContext;	//!< shared pointer to the graphics context.
 	};
 }

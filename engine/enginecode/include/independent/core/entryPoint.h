@@ -1,7 +1,5 @@
-/** \file entryPoint.h
-*/
+/** \file entryPoint.h */
 #pragma once
-
 #include "core/application.h"
 
 extern Engine::Application* Engine::startApplication();
@@ -14,4 +12,3 @@ int main(int argc, char** argv)
 
 	return 0;
 }
-
