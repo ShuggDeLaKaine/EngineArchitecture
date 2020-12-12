@@ -80,6 +80,7 @@ namespace Engine
 		glDrawElements(GL_TRIANGLES, geometry->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
+
 	void Renderer3D::end()
 	{
 		s_data->sceneWideUniforms.clear();
