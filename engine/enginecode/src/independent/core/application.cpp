@@ -483,8 +483,7 @@ namespace Engine {
 		numberCubeMaterial.reset(new Material(TPShader, numberTexture));
 
 #pragma endregion
-
-		//creating and setting the cameras.
+				//creating and setting the cameras.
 		FreeOthroCamController cam2D({ 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, static_cast<float>(m_window->getWidth()), static_cast<float>(m_window->getHeight()), 0.0f);
 		FreeEulerCamController cam3D({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, -1.0f }, { 0.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f });
 
