@@ -7,6 +7,9 @@
 
 namespace Engine
 {
+	/*	\class Log
+	*	\brief Class for the creation of a logging system, to be used throughout Engine. 
+	*/
 	class Log : public System
 	{
 	public:

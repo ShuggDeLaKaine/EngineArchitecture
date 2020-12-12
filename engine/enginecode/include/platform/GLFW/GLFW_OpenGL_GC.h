@@ -5,8 +5,8 @@
 
 namespace Engine
 {
-	/* \class GLFW_OpenGL_GC
-	*
+	/*	\class GLFW_OpenGL_GC
+	*	\brief Class for OpenGL specific graphic context and buffer swapping.
 	*/
 	class GLFW_OpenGL_GC : public GraphicsContext
 	{

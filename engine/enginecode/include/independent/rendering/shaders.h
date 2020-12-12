@@ -7,7 +7,7 @@
 namespace Engine
 {
 	/** \class Shaders
-	* class for an API agnostic shaders.
+	*	\brief A class for an API agnostic shaders.
 	*/
 	class Shaders
 	{

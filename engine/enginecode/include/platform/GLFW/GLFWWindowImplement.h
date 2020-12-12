@@ -1,4 +1,4 @@
-/* \file GLFWWindowImplement.h */
+/** \file GLFWWindowImplement.h */
 #pragma once
 
 #include "core/window.h"
@@ -7,7 +7,7 @@
 namespace Engine
 {
 	/** \class GLFWWindowImplement
-	* Implemenation of a window using GLFW, inheriting from Window.
+	*	\brief Implemenation of a window using GLFW, inheriting from Window.
 	*/
 	class GLFWWindowImplement : public Window
 	{
@@ -28,5 +28,4 @@ namespace Engine
 		GLFWwindow * m_nativeWindow;			//!< native GLFW window.
 		float m_aspectRatio;					//!< aspect ratio.
 	};
-
 }

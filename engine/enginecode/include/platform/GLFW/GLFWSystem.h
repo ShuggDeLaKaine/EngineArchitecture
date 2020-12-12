@@ -8,7 +8,7 @@
 namespace Engine
 {
 	/** \class GLFWSystem
-	* GLFW System class, inheriting from System. To initiate and terminate the GLFW System.
+	*	\brief GLFW System class, inheriting from System. To initiate and terminate the GLFW System.
 	*/
 	class GLFWSystem : public System
 	{
@@ -25,5 +25,4 @@ namespace Engine
 			glfwTerminate();
 		}
 	};
-
 }

@@ -7,7 +7,7 @@
 namespace Engine
 {
 	/* \class Quad
-	*  \brief 
+	*  \brief Class to create Quads for 2D rendering.
 	*/
 	class Quad
 	{
@@ -18,7 +18,6 @@ namespace Engine
 		static Quad createCreateTopLeftSize(const glm::vec2& topLeft, const glm::vec2& size);				//!< create a quad with from top left, half extents as a vec2.
 		static Quad createCreateTopLeftSize(const glm::vec2& topLeft, float size);							//!< create a quad with from top left, half extents as a single float.
 		static Quad createCreateTopLeftBottomRight(const glm::vec2& topLeft, const glm::vec2& bottomRight);	//!< create a quad with from top left, this with a vec2 as the bottom right.
-
 	private:
 		glm::vec3 m_translate = glm::vec3(0.0f);	//!< translation vector.
 		glm::vec3 m_scale = glm::vec3(1.0f);		//!< scale vector.
@@ -40,11 +39,10 @@ namespace Engine
 		static void submit(const Quad& quad, const std::shared_ptr<Textures>& texture, float angle, bool degrees = false);		//!< render a textured & rotated quad.
 		static void submit(const Quad& quad, const glm::vec4& tint, const std::shared_ptr<Textures>& texture, float angle, bool degrees = false);		//!< render a tinted, textured & rotated quad.
 
-		static void submit(char ch, const glm::vec2& position, float& advance, const glm::vec4& tint);		//!< render a single character, with tint.
-		static void submit(const char* text, const glm::vec2& position, const glm::vec4& tint);		//!< render a string, with tint.
+		static void submit(char ch, const glm::vec2& position, float& advance, const glm::vec4& tint);	//!< render a single character, with tint.
+		static void submit(const char* text, const glm::vec2& position, const glm::vec4& tint);			//!< render a string, with tint.
 
 		static void end();					//!< end of the current 2D scene.
-
 	private:
 		struct InternalData
 		{
@@ -64,5 +62,4 @@ namespace Engine
 		static std::shared_ptr<InternalData> s_data;	//!< data internal to the renderer.
 		static void RtoRGBA(unsigned char * rBuffer, uint32_t width, uint32_t height);		//!< method to set memory block and fill with glyph(rbuffer) data.
 	};
-
 }

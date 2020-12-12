@@ -8,7 +8,7 @@
 namespace Engine
 {
 	/** \class Textures
-	* class for an API agnostic textures.
+	*	\brief A class for an API agnostic textures.
 	*/
 	class Textures
 	{

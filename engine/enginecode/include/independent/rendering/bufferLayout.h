@@ -7,8 +7,7 @@
 namespace Engine
 {
 	/** \class VertexBufferElement
-	* Class to take data for each individual element that the vertex buffer layout is made up of.
-	* Things like the data type, the size of the take data type, normalised, offset of data type.
+	*	\brief Class to take data for each individual element that the vertex buffer layout is made up of. Things like the data type, the size of the take data type, normalised, offset of data type.
 	*/
 	class VertexBufferElement
 	{
@@ -30,8 +29,7 @@ namespace Engine
 	};
 
 	/** \class UniformBufferElement
-	* Class to take data for each element that the uniform buffer layout is made up of.
-	* Such as data type, the size of the take data type, normalised, offset of data type.
+	*	\brief Class to take data for each element that the uniform buffer layout is made up of. Such as data type, the size of the take data type, normalised, offset of data type.
 	*/
 	class UniformBufferElement
 	{
@@ -52,8 +50,8 @@ namespace Engine
 
 	};
 
-	/* \class BufferLayout
-	* Class that's an abstraction of the notion of a buffer layout.
+	/*	\class BufferLayout
+	*	\brief Class that's an abstraction of the notion of a buffer layout.
 	*/
 	template <class G>
 	class BufferLayout
@@ -68,17 +66,15 @@ namespace Engine
 		}							//!< constructor with params, returns the calculation of stride and offset.
 		inline uint32_t getStride() const { return m_stride; }		//!< get the length of the stride.
 		void addBufferElement(G element);							//!< add a buffer element.
-		inline typename std::vector<G>::iterator begin() { return m_elements.begin(); }				//!< 
-		inline typename std::vector<G>::iterator end() { return m_elements.end(); }					//!< 
-		inline typename std::vector<G>::const_iterator begin() const { return m_elements.begin(); }	//!< 
-		inline typename std::vector<G>::const_iterator end() const { return m_elements.end(); }		//!< 
+		inline typename std::vector<G>::iterator begin() { return m_elements.begin(); }				//!< begin, taking first element.
+		inline typename std::vector<G>::iterator end() { return m_elements.end(); }					//!< end, taking last element.
+		inline typename std::vector<G>::const_iterator begin() const { return m_elements.begin(); }	//!< const begin, taking first element.
+		inline typename std::vector<G>::const_iterator end() const { return m_elements.end(); }		//!< const end, taking last element.
 	private:
 		std::vector<G> m_elements;				//!< buffer elements.
 		uint32_t m_stride;						//!< width in bytes of a buffer line.
 		void calculateStrideAndOffset();		//!< calculate the stride and offset based on the elements. 
-
 	}; 
-
 
 	template <class G>
 	void BufferLayout<G>::addBufferElement(G element)
@@ -101,9 +97,6 @@ namespace Engine
 		* now initialised stride to 0, if stride has a none 0 value, need to leave it.
 		*/
 
-		//if(m_stride == 0)
-		//{
-
 		//create local offset variable and set to 0
 		uint32_t l_offset = 0;
 
@@ -121,10 +114,7 @@ namespace Engine
 		{
 			m_stride = l_offset;
 		}
-
-		//}
 	}
-
 	using VertexBufferLayout = BufferLayout<VertexBufferElement>;	//type alias whenever use VertexBufferLayout this what is meant.
 	using UniformBufferLayout = BufferLayout<UniformBufferElement>;	//type alias whenever use UniformBufferLayout this what is meant.
 }

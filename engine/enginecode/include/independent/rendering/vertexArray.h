@@ -10,7 +10,7 @@
 namespace Engine
 {
 	/** \class VertexArray
-	* class for an API agnostic vertex arrays.
+	*	\brief A class for an API agnostic vertex arrays.
 	*/
 	class VertexArray
 	{
@@ -21,13 +21,11 @@ namespace Engine
 		virtual uint32_t getDrawCount() = 0;				//!< get the draw count of index buffer.
 		virtual inline uint32_t getID() const = 0;			//!< gets and returns the renderer ID.
 
-		virtual std::vector<std::shared_ptr<VertexBuffer>> getVertexBuffer() const = 0;		//!< get the vertex buffers.
+		virtual std::vector<std::shared_ptr<VertexBuffer>> getVertexBuffer() const = 0;			//!< get the vertex buffers.
 		virtual std::shared_ptr<IndexBuffer> getIndexBuffer() const = 0;		//!< get the index buffers.
 
 		static VertexArray* create();		//!< please note, function declared in renderAPI.cpp
-
 	private:
 
 	};
-
 }

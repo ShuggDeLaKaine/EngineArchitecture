@@ -1,4 +1,4 @@
-/* \file GLFWInputPoller.h */
+/** \file GLFWInputPoller.h */
 #pragma once
 
 #include <glm/glm.hpp>
@@ -6,8 +6,8 @@
 
 namespace Engine
 {
-	/* \class GLFWInputPoller
-	* API agnostic input poller to get current mouse and/or keyboard state; specific to the GLFW platform.
+	/*	\class GLFWInputPoller
+	*	\brief OpenGL specific input poller to get current mouse and/or keyboard state.
 	*/
 	class GLFWInputPoller
 	{
@@ -19,5 +19,4 @@ namespace Engine
 	private:
 		static GLFWwindow* s_window;		//!< current GLFW window.
 	};
-
 }

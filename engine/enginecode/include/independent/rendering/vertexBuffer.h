@@ -7,7 +7,7 @@
 namespace Engine
 {
 	/** \class VertexBuffer
-	* class for an API agnostic vertex buffer.
+	*	\brief A class for an API agnostic vertex buffer.
 	*/
 	class VertexBuffer
 	{
@@ -21,7 +21,5 @@ namespace Engine
 
 	private:
 		
-
 	};
-
 }

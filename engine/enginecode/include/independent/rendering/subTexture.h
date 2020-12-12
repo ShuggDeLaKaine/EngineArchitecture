@@ -8,7 +8,7 @@
 namespace Engine
 {
 	/** \class SubTexture
-	* class to deal with sub textures and texture atlas's.
+	*	\brief A class to deal with sub textures and texture atlas's.
 	*/
 	class SubTexture
 	{

@@ -42,8 +42,6 @@ namespace Engine
 		inline std::shared_ptr<Textures> getTexture() const { return m_texture; }	//!< accessor function for getting the texture.
 		inline glm::vec4 getTint() const { return m_tint; }		//!< accessor function to get the tint.
 
-		//setShader() removed as shouldn't be able to change a shader once it's been set with material; need a new shader then make a new material.
-		//void setShader(const std::shared_ptr<Shaders>& shader) { m_shader = shader; }		//!< function to set the shader.
 		void setTexture(const std::shared_ptr<Textures>& texture) { m_texture = texture; }	//!< function to set the texture.
 		void setTint(const glm::vec4 tint) { m_tint = tint; }		//!< function to set the tint colour.
 
@@ -51,7 +49,6 @@ namespace Engine
 
 		constexpr static uint32_t flag_texture = 1 << 0;	//!< 00000001
 		constexpr static uint32_t flag_tint = 1 << 1;		//!< 00000010
-
 	private:
 		uint32_t m_flags = 0;						//!< bitfield representation of the shader settings.
 		std::shared_ptr<Shaders> m_shader;			//!< the shader.
@@ -77,10 +74,7 @@ namespace Engine
 			SceneWideUniforms sceneWideUniforms;		//!< replace with UBO in the future.
 			std::shared_ptr<Textures> defaultTexture;	//!< empty white texture.
 			glm::vec4 defaultTint;						//!< default white tint.
-
-			//std::shared_ptr<Shaders> shader;			//!< the shader.
 			std::shared_ptr<VertexArray> VAO;			//!< the vertex array.
-
 			std::shared_ptr<UniformBuffer> cameraUBO;	//!< UBO for the camera.
 			std::shared_ptr<UniformBuffer> lightingUBO;	//!< UBO for the lighting.
 		};												//!< to be used a PURE data.

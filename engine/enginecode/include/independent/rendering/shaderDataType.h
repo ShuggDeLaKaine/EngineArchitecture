@@ -4,8 +4,8 @@
 
 namespace Engine
 {
-	/* \enum shaderDataType.h 
-	* Enum class for all the shader data types.
+	/*	\enum shaderDataType.h 
+	*	\brief Enum class for all the shader data types.
 	*/
 	enum class ShaderDataType
 	{
@@ -17,13 +17,10 @@ namespace Engine
 		Int,
 	};
 
-	//SDT- Shader Data Type
 	namespace SDT
 	{
 		static uint32_t size(ShaderDataType type)
 		{
-			//TODO: change these to a static array, then just have to access to element in the array.
-			//Will be MUCH FASTER.
 			switch (type)
 			{
 			case ShaderDataType::Mat3:   return 4 * 3 * 3;	//size of a mat3 is 36 bytes.
@@ -84,5 +81,4 @@ namespace Engine
 			}
 		}
 	}
-
 }

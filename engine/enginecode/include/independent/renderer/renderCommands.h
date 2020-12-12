@@ -7,18 +7,16 @@ namespace Engine
 	class RendererCommons;
 
 	/** \class RenderCommands
-	*	\brief 
+	*	\brief Class to take Rendering Commands and can be used API agnostic within the main application.
 	*/
 	class RenderCommands
 	{
 	public:
 		enum class Commands { clearDepthBuffer, clearColourBuffer, clearColourAndDepthBuffer, setClearColour  };		//!< enum class to take types of commands.
-
 	private:
 		std::function<void(void)> m_action;		//!< action of the render command.
 		friend class RenderCommandsFactory;		//!< coupled with friend RenderCommandFactory, as both won't work without the other.
 		friend class RendererCommons;			//!< coupled with friend RendererCommons, as both will action commands from here.
-
 	};
 
 	/** \class RenderCommandsFactory
@@ -51,20 +49,10 @@ namespace Engine
 				return result;
 
 			}
-		}			//!<template with typename arguements; creates commands, with switch statements for command type and the action required for each.
+		}			//!< template with typename arguements; creates commands, with switch statements for command type and the action required for each.
 	private:
 		static std::function<void(void)> getClearColourAndDepthBufferCommand();							//!< command to clear colour and depth buffers.
 		static std::function<void(void)> setClearColourCommand(float r, float g, float b, float a);		//!< command to clear colour, with float RBGA params.
-
-
-		/*
-		static std::function<void(void)>
-		glEnable(GL_DEPTH_TEST);
-		glDisable(GL_DEPTH_TEST);
-		glEnable(GL_BLEND);		&&	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glDisable(GL_BLEND);
-		*/
-
 
 		//following code based on https://www.geeksforgeeks.org/how-to-iterate-over-the-elements-of-an-stdtuple-in-c/		
 		//check value I - if MORE OR EQUALSs number of values in tuple (size of parameter pack) then do nothing for these.
