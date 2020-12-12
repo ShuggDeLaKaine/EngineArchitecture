@@ -52,6 +52,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>A class for an API agnostic textures.  
+ <a href="class_engine_1_1_textures.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="textures_8h_source.html">textures.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Engine::Textures:</div>
@@ -68,9 +71,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a164b8291d23a1eb676341b51ba345f42"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_textures.html#a164b8291d23a1eb676341b51ba345f42">~Textures</a> ()=default</td></tr>
 <tr class="memdesc:a164b8291d23a1eb676341b51ba345f42"><td class="mdescLeft">&#160;</td><td class="mdescRight">deconstructor.  <a href="class_engine_1_1_textures.html#a164b8291d23a1eb676341b51ba345f42">More...</a><br /></td></tr>
 <tr class="separator:a164b8291d23a1eb676341b51ba345f42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa994f1196afee933e5634837d58e29b9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_textures.html#aa994f1196afee933e5634837d58e29b9">edit</a> (glm::vec2 offset, uint32_t width, uint32_t height, uint32_t channel, unsigned char *data)=0</td></tr>
-<tr class="memdesc:aa994f1196afee933e5634837d58e29b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">edit the texture  <a href="class_engine_1_1_textures.html#aa994f1196afee933e5634837d58e29b9">More...</a><br /></td></tr>
-<tr class="separator:aa994f1196afee933e5634837d58e29b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5aa419f013258c1692ede7e1e2f59f1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_textures.html#aa5aa419f013258c1692ede7e1e2f59f1">edit</a> (uint32_t xOffset, uint32_t yOffset, uint32_t width, uint32_t height, unsigned char *data)=0</td></tr>
+<tr class="memdesc:aa5aa419f013258c1692ede7e1e2f59f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">edit the texture  <a href="class_engine_1_1_textures.html#aa5aa419f013258c1692ede7e1e2f59f1">More...</a><br /></td></tr>
+<tr class="separator:aa5aa419f013258c1692ede7e1e2f59f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef6ec6295e89e4aaba881490c73f1f22"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_textures.html#aef6ec6295e89e4aaba881490c73f1f22">getID</a> ()=0</td></tr>
 <tr class="memdesc:aef6ec6295e89e4aaba881490c73f1f22"><td class="mdescLeft">&#160;</td><td class="mdescRight">accessor to get openGL handle.  <a href="class_engine_1_1_textures.html#aef6ec6295e89e4aaba881490c73f1f22">More...</a><br /></td></tr>
 <tr class="separator:aef6ec6295e89e4aaba881490c73f1f22"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -101,7 +104,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:ac8b3b4812990f07389160b1b9a6258d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>class for an API agnostic textures. </p>
+<div class="textblock"><p>A class for an API agnostic textures. </p>
 
 <p class="definition">Definition at line <a class="el" href="textures_8h_source.html#l00013">13</a> of file <a class="el" href="textures_8h_source.html">textures.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -159,7 +162,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>constructor, takes the filepaths for texture; declared <a class="el" href="render_a_p_i_8cpp.html">renderAPI.cpp</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="render_a_p_i_8cpp_source.html#l00143">143</a> of file <a class="el" href="render_a_p_i_8cpp_source.html">renderAPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="render_a_p_i_8cpp_source.html#l00131">131</a> of file <a class="el" href="render_a_p_i_8cpp_source.html">renderAPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -211,12 +214,12 @@ Static Public Member Functions</h2></td></tr>
 
 <p>constructor; width, height and channel plus data in bytes (what unsigned char is); declared <a class="el" href="render_a_p_i_8cpp.html">renderAPI.cpp</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="render_a_p_i_8cpp_source.html#l00166">166</a> of file <a class="el" href="render_a_p_i_8cpp_source.html">renderAPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="render_a_p_i_8cpp_source.html#l00153">153</a> of file <a class="el" href="render_a_p_i_8cpp_source.html">renderAPI.cpp</a>.</p>
 
 </div>
 </div>
-<a id="aa994f1196afee933e5634837d58e29b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa994f1196afee933e5634837d58e29b9">&#9670;&nbsp;</a></span>edit()</h2>
+<a id="aa5aa419f013258c1692ede7e1e2f59f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5aa419f013258c1692ede7e1e2f59f1">&#9670;&nbsp;</a></span>edit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -227,8 +230,14 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">virtual void Engine::Textures::edit </td>
           <td>(</td>
-          <td class="paramtype">glm::vec2&#160;</td>
-          <td class="paramname"><em>offset</em>, </td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>xOffset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>yOffset</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -241,12 +250,6 @@ Static Public Member Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>height</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>channel</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -269,7 +272,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>edit the texture </p>
 
-<p>Implemented in <a class="el" href="class_engine_1_1_open_g_l_texture.html#aadf0c08bb3edb78036580f39da54e864">Engine::OpenGLTexture</a>.</p>
+<p>Implemented in <a class="el" href="class_engine_1_1_open_g_l_texture.html#abebe5ba1f2befd820f9dad4ff1a33c69">Engine::OpenGLTexture</a>.</p>
 
 </div>
 </div>

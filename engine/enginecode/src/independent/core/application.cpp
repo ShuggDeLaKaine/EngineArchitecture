@@ -7,29 +7,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "core/headerList.h"
+
 #ifdef  NG_PLATFORM_WINDOWS
 /*  #include "platform/windows/win32System.h"
 	#include "platform/windows/winTimer.h"
 	#else */
 	#include "platform/GLFW/GLFWSystem.h"
 #endif //  NG_PLATFORM_WINDOWS
-
-#include "rendering/subTexture.h"
-#include "rendering/indexBuffer.h"
-#include "rendering/vertexBuffer.h"
-#include "rendering/vertexArray.h"
-#include "rendering/shaders.h"
-#include "rendering/textures.h"
-#include "rendering/bufferLayout.h"
-#include "rendering/uniformBuffer.h"
-#include "rendering/textureUnitManager.h"
-
-#include "renderer/renderer3D.h"
-#include "renderer/renderer2D.h"
-
-#include "camera/freeOrthoCamController.h"
-#include "camera/freeEulerCamController.h"
-
 
 namespace Engine {
 #pragma region TEMP_CLASS
@@ -229,10 +214,8 @@ namespace Engine {
 		//stop the systems in the REVERSE ORDER to how they start.
 		//stop the random number system.
 		m_ranNumSytem->stop();
-
 		//stop the windows system.
 		m_windowsSystem->stop();
-
 		//stop the log system.
 		m_logSystem->stop();
 	}
@@ -572,10 +555,10 @@ namespace Engine {
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-			/*
+			
 			//begin rendering with the scene wide uniforms.		
 			Renderer2D::begin(swu2D);
-			
+			/*
 			//submit renderer info.
 			Renderer2D::submit(quads[0], { 0.0f, 0.0f, 1.0f, 1.0f });
 			Renderer2D::submit(quads[1], letterTexture);
@@ -584,14 +567,13 @@ namespace Engine {
 			Renderer2D::submit(quads[4], letterTexture, -20.0f, true);
 			Renderer2D::submit(quads[5], { 0.0f, 1.0f, 0.0f, 0.5f }, letterTexture, 90.0f, true);
 			Renderer2D::submit(quads[5], { 0.0f, 0.0f, 1.0f, 0.5f }, letterTexture, glm::radians(-60.0f));
-
-			Renderer2D::submit("shit fuck cunt", { 100.0f, 100.0f }, { 0.0f, 1.0f, 0.0f, 1.0f });
-			Renderer2D::submit("dickhead", { 100.0f, 200.0f }, { 1.0f, 1.0f, 1.0f, 1.0f });
-			Renderer2D::submit("bumhole!!!", { 100.0f, 300.0f }, { 0.0f, 0.0f, 1.0f, 1.0f });
+			*/
+			Renderer2D::submit("Welcome", { 230.0f, 75.0f }, { 1.0f, 1.0f, 1.0f, 1.0f });
+			Renderer2D::submit("To my demo", { 160.0f, 580.0f }, { 0.0f, 1.0f, 0.0f, 1.0f });
 			
 			//end the rendering.
 			Renderer2D::end();
-			*/
+			
 			glDisable(GL_BLEND);
 			
 			//updates on cameras.
@@ -602,80 +584,3 @@ namespace Engine {
 		}
 	}
 }
-
-
-/*
-//need a view, a projection (for camera) and a model matrix.
-//two mat4s for the camera.
-glm::mat4 view = glm::lookAt(
-	glm::vec3(0.0f, 0.0f, 0.0f),	//eye: aka the position; 0.0f, 0.0f, 0.0f, is origin.
-	glm::vec3(0.0f, 0.0f, -1.0f),	//centre: aka which way we're looking, convention is to look down the Z axis
-	glm::vec3(0.0f, 1.0f, 0.0f)		//up: make up, up (if that makes sense...)
-);									//matrix for position and orientation.
-glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);	//matrix for how the camera views the world orthographic or perspective. first param field of view, so the camera ratio.
-*/
-
-/*
-	uint32_t blockNum = 0;								//which block are we using.
-	//generate, bind and set UBO for camera.
-	UniformBufferLayout cameraLayout = { {"u_projection", ShaderDataType::Mat4 }, {"u_view", ShaderDataType::Mat4 } };
-	std::shared_ptr<UniformBuffer> cameraUBO;
-	cameraUBO.reset(UniformBuffer::create(cameraLayout));
-	*/
-	/*
-	//now attach to TPShader.
-	cameraUBO->attachShaderBlock(TPShader, "b_camera");
-	//now send camera data to uniform buffer object.
-	cameraUBO->uploadDataToBlock("u_projection", glm::value_ptr(cam3D.m_camera.projection));
-	cameraUBO->uploadDataToBlock("u_view", glm::value_ptr(cam3D.m_camera.view));
-	*/
-
-	//LIGHTING UBO
-	/*
-	blockNum++;											//move block number along one.
-	glm::vec3 lightPosition(1.0f, 4.0f, 6.0f);			//vec3 for light position.
-	glm::vec3 viewPosition(0.0f, 0.0f, 0.0f);			//vec3 for view position.
-	glm::vec3 lightColour(1.0f, 1.0f, 1.0f);			//vec3 for light colour.
-	uint32_t lightsUBO_ID;								//openGL ID for lights UBO.
-	uint32_t lightsDataSize = sizeof(glm::vec4) * 3;	//how big this is; BUT can't use vec3! OpenGL needs either a 2N or 4N, so must use a vec4 here as a base alignment for a vec3 or WILL NOT WORK.
-	*/
-	/*
-	//generate, bind and set UBO for lights.
-	glGenBuffers(1, &lightsUBO_ID);														//generate Buffer for light UBO.
-	glBindBuffer(GL_UNIFORM_BUFFER, lightsUBO_ID);										//bind buffer for light UBO.
-	glBufferData(GL_UNIFORM_BUFFER, lightsDataSize, nullptr, GL_DYNAMIC_DRAW);			//send data and size.
-	glBindBufferRange(GL_UNIFORM_BUFFER, blockNum, lightsUBO_ID, 0, lightsDataSize);	//bind the range; to UNI_BUFFER, this block, this ubo, from 0 to data siz (ie all of it).
-
-	//now attach to shaders, as lights just for the TPShader.
-	uint32_t blockIndex = glGetUniformBlockIndex(TPShader->getID(), "b_lights");	//first get the block number off the shader.
-	glUniformBlockBinding(TPShader->getID(), blockIndex, blockNum);				//link to binding point.
-	*/
-	/*
-	//now send light data to uniform buffer object. These MUST be in the same order as in the shader file.
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::vec3), glm::value_ptr(lightPosition));					//uploading light position between 0 and sizeof vec3.
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4), sizeof(glm::vec3), glm::value_ptr(viewPosition));		//uploading view position starting at a vec4 (remember vec3 must have base alignment of 4N), then the size of a vec3.
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::vec4) * 2, sizeof(glm::vec3), glm::value_ptr(lightColour));	//uploading light colour, same as above viewPosition but offsect vec4 * 2, as two vec4s prior.
-	*/
-
-	/*
-	cameraUBO->uploadDataToBlock("u_projection", glm::value_ptr(projection));
-	cameraUBO->uploadDataToBlock("u_view", glm::value_ptr(view));
-	*/
-
-	/*
-	swu3D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(view)));
-	swu3D["u_projection"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(projection)));
-	*/
-
-	/*
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	RendererCommons::actionCommand(clearCommand);
-	*/
-
-	/*examples of how you can check the the byte aligned of raw data.
-	//use uint32_t's though.
-	int alignVec3 = alignof(glm::vec3);
-	int alignFCVertex = alignof(FCVertex);
-	int sizeofVec3 = sizeof(glm::vec3);
-	int sizeofFCVertex = sizeof(FCVertex);
-	*/

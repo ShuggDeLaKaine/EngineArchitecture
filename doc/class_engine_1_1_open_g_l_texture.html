@@ -60,7 +60,7 @@ Inheritance diagram for Engine::OpenGLTexture:</div>
  <div class="center">
   <img src="class_engine_1_1_open_g_l_texture.png" usemap="#Engine::OpenGLTexture_map" alt=""/>
   <map id="Engine::OpenGLTexture_map" name="Engine::OpenGLTexture_map">
-<area href="class_engine_1_1_textures.html" alt="Engine::Textures" shape="rect" coords="0,0,146,24"/>
+<area href="class_engine_1_1_textures.html" title="A class for an API agnostic textures." alt="Engine::Textures" shape="rect" coords="0,0,146,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -75,9 +75,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a82ab7632d24a0e3944081da73b6ebe48"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_open_g_l_texture.html#a82ab7632d24a0e3944081da73b6ebe48">~OpenGLTexture</a> ()</td></tr>
 <tr class="memdesc:a82ab7632d24a0e3944081da73b6ebe48"><td class="mdescLeft">&#160;</td><td class="mdescRight">deconstructor.  <a href="class_engine_1_1_open_g_l_texture.html#a82ab7632d24a0e3944081da73b6ebe48">More...</a><br /></td></tr>
 <tr class="separator:a82ab7632d24a0e3944081da73b6ebe48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadf0c08bb3edb78036580f39da54e864"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_open_g_l_texture.html#aadf0c08bb3edb78036580f39da54e864">edit</a> (glm::vec2 offset, uint32_t width, uint32_t height, uint32_t channel, unsigned char *data) override</td></tr>
-<tr class="memdesc:aadf0c08bb3edb78036580f39da54e864"><td class="mdescLeft">&#160;</td><td class="mdescRight">edit the texture  <a href="class_engine_1_1_open_g_l_texture.html#aadf0c08bb3edb78036580f39da54e864">More...</a><br /></td></tr>
-<tr class="separator:aadf0c08bb3edb78036580f39da54e864"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abebe5ba1f2befd820f9dad4ff1a33c69"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_open_g_l_texture.html#abebe5ba1f2befd820f9dad4ff1a33c69">edit</a> (uint32_t xOffset, uint32_t yOffset, uint32_t width, uint32_t height, unsigned char *data) override</td></tr>
+<tr class="memdesc:abebe5ba1f2befd820f9dad4ff1a33c69"><td class="mdescLeft">&#160;</td><td class="mdescRight">edit the texture.  <a href="class_engine_1_1_open_g_l_texture.html#abebe5ba1f2befd820f9dad4ff1a33c69">More...</a><br /></td></tr>
+<tr class="separator:abebe5ba1f2befd820f9dad4ff1a33c69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4946d687ef39399fab4b1bef910cf856"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_open_g_l_texture.html#a4946d687ef39399fab4b1bef910cf856">getID</a> () override</td></tr>
 <tr class="memdesc:a4946d687ef39399fab4b1bef910cf856"><td class="mdescLeft">&#160;</td><td class="mdescRight">accessor to get openGL handle.  <a href="class_engine_1_1_open_g_l_texture.html#a4946d687ef39399fab4b1bef910cf856">More...</a><br /></td></tr>
 <tr class="separator:a4946d687ef39399fab4b1bef910cf856"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -105,7 +105,7 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:a301029c27749ce763ecad9b5d140efdf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_open_g_l_texture.html#a301029c27749ce763ecad9b5d140efdf">init</a> (uint32_t width, uint32_t height, uint32_t channel, unsigned char *data)</td></tr>
-<tr class="memdesc:a301029c27749ce763ecad9b5d140efdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">an initate function to be used in both of the <a class="el" href="class_open_g_l_texture.html">OpenGLTexture(...)</a> functions, does the bulk of the work for both of these.  <a href="class_engine_1_1_open_g_l_texture.html#a301029c27749ce763ecad9b5d140efdf">More...</a><br /></td></tr>
+<tr class="memdesc:a301029c27749ce763ecad9b5d140efdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">an initate function to be used in both of the <a class="el" href="class_open_g_l_texture.html" title="OpenGL specific class to take in image files for textures.">OpenGLTexture(...)</a> functions, does the bulk of the work for both of these.  <a href="class_engine_1_1_open_g_l_texture.html#a301029c27749ce763ecad9b5d140efdf">More...</a><br /></td></tr>
 <tr class="separator:a301029c27749ce763ecad9b5d140efdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
@@ -155,7 +155,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>constructor, takes the filepaths for texture. </p>
 
-<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8cpp_source.html#l00014">14</a> of file <a class="el" href="_open_g_l_texture_8cpp_source.html">OpenGLTexture.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8cpp_source.html#l00013">13</a> of file <a class="el" href="_open_g_l_texture_8cpp_source.html">OpenGLTexture.cpp</a>.</p>
 
 </div>
 </div>
@@ -199,7 +199,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>constructor; width, height and channel plus data in bytes (what unsigned char is). </p>
 
-<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8cpp_source.html#l00035">35</a> of file <a class="el" href="_open_g_l_texture_8cpp_source.html">OpenGLTexture.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8cpp_source.html#l00024">24</a> of file <a class="el" href="_open_g_l_texture_8cpp_source.html">OpenGLTexture.cpp</a>.</p>
 
 </div>
 </div>
@@ -228,13 +228,13 @@ Additional Inherited Members</h2></td></tr>
 
 <p>deconstructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8cpp_source.html#l00050">50</a> of file <a class="el" href="_open_g_l_texture_8cpp_source.html">OpenGLTexture.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8cpp_source.html#l00029">29</a> of file <a class="el" href="_open_g_l_texture_8cpp_source.html">OpenGLTexture.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aadf0c08bb3edb78036580f39da54e864"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aadf0c08bb3edb78036580f39da54e864">&#9670;&nbsp;</a></span>edit()</h2>
+<a id="abebe5ba1f2befd820f9dad4ff1a33c69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abebe5ba1f2befd820f9dad4ff1a33c69">&#9670;&nbsp;</a></span>edit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -245,8 +245,14 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">void OpenGLTexture::edit </td>
           <td>(</td>
-          <td class="paramtype">glm::vec2&#160;</td>
-          <td class="paramname"><em>offset</em>, </td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>xOffset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>yOffset</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -259,12 +265,6 @@ Additional Inherited Members</h2></td></tr>
           <td></td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>height</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>channel</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -285,11 +285,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>edit the texture </p>
+<p>edit the texture. </p>
 
-<p>Implements <a class="el" href="class_engine_1_1_textures.html#aa994f1196afee933e5634837d58e29b9">Engine::Textures</a>.</p>
+<p>Implements <a class="el" href="class_engine_1_1_textures.html#aa5aa419f013258c1692ede7e1e2f59f1">Engine::Textures</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8cpp_source.html#l00055">55</a> of file <a class="el" href="_open_g_l_texture_8cpp_source.html">OpenGLTexture.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8cpp_source.html#l00034">34</a> of file <a class="el" href="_open_g_l_texture_8cpp_source.html">OpenGLTexture.cpp</a>.</p>
 
 </div>
 </div>
@@ -526,9 +526,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>an initate function to be used in both of the <a class="el" href="class_open_g_l_texture.html">OpenGLTexture(...)</a> functions, does the bulk of the work for both of these. </p>
+<p>an initate function to be used in both of the <a class="el" href="class_open_g_l_texture.html" title="OpenGL specific class to take in image files for textures.">OpenGLTexture(...)</a> functions, does the bulk of the work for both of these. </p>
 
-<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8cpp_source.html#l00074">74</a> of file <a class="el" href="_open_g_l_texture_8cpp_source.html">OpenGLTexture.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8cpp_source.html#l00053">53</a> of file <a class="el" href="_open_g_l_texture_8cpp_source.html">OpenGLTexture.cpp</a>.</p>
 
 </div>
 </div>
@@ -555,7 +555,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>channel of texture. </p>
 
-<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8h_source.html#l00032">32</a> of file <a class="el" href="_open_g_l_texture_8h_source.html">OpenGLTexture.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8h_source.html#l00031">31</a> of file <a class="el" href="_open_g_l_texture_8h_source.html">OpenGLTexture.h</a>.</p>
 
 </div>
 </div>
@@ -581,7 +581,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>height of texture. </p>
 
-<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8h_source.html#l00031">31</a> of file <a class="el" href="_open_g_l_texture_8h_source.html">OpenGLTexture.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8h_source.html#l00030">30</a> of file <a class="el" href="_open_g_l_texture_8h_source.html">OpenGLTexture.h</a>.</p>
 
 </div>
 </div>
@@ -607,7 +607,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>OpenGL handle. </p>
 
-<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8h_source.html#l00029">29</a> of file <a class="el" href="_open_g_l_texture_8h_source.html">OpenGLTexture.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8h_source.html#l00028">28</a> of file <a class="el" href="_open_g_l_texture_8h_source.html">OpenGLTexture.h</a>.</p>
 
 </div>
 </div>
@@ -633,7 +633,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>width of texture. </p>
 
-<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8h_source.html#l00030">30</a> of file <a class="el" href="_open_g_l_texture_8h_source.html">OpenGLTexture.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_open_g_l_texture_8h_source.html#l00029">29</a> of file <a class="el" href="_open_g_l_texture_8h_source.html">OpenGLTexture.h</a>.</p>
 
 </div>
 </div>

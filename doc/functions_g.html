@@ -46,14 +46,18 @@ $(function() {
 : <a class="el" href="class_engine_1_1_render_a_p_i.html#a26d10223697446899204fcbcebb721d0">Engine::RenderAPI</a>
 </li>
 <li>getBufferLayout()
-: <a class="el" href="class_engine_1_1_f_c_vertex.html#ad2504a74a4d0f29aa7dc66f08d198cb6">Engine::FCVertex</a>
-, <a class="el" href="class_engine_1_1_t_p_vertex_normalised.html#aeef01dbfd18ba94c8d9454ba12832b59">Engine::TPVertexNormalised</a>
+: <a class="el" href="class_engine_1_1_t_p_vertex_normalised.html#aeef01dbfd18ba94c8d9454ba12832b59">Engine::TPVertexNormalised</a>
 </li>
 <li>getButtonPressed()
 : <a class="el" href="class_engine_1_1_mouse_button_press_event.html#a6ee78747a0a72c3d497fcae17ea09592">Engine::MouseButtonPressEvent</a>
 </li>
 <li>getButtonReleased()
 : <a class="el" href="class_engine_1_1_mouse_button_release_event.html#acb2c534fa9944154b5db0733a21c22f8">Engine::MouseButtonReleaseEvent</a>
+</li>
+<li>getCamera()
+: <a class="el" href="class_engine_1_1_camera_controller.html#aa89f85c28c3d9f9722395160347c27e3">Engine::CameraController</a>
+, <a class="el" href="class_engine_1_1_free_euler_cam_controller.html#ad739a23b636387589e8ac98d76ae80e7">Engine::FreeEulerCamController</a>
+, <a class="el" href="class_engine_1_1_free_othro_cam_controller.html#a37809ad1e833221c020f1459ac7847cc">Engine::FreeOthroCamController</a>
 </li>
 <li>getCategoryFlag()
 : <a class="el" href="class_engine_1_1_event.html#a1e38da5585157d961a77a16bf2262d10">Engine::Event</a>
@@ -64,6 +68,9 @@ $(function() {
 <li>getChannel()
 : <a class="el" href="class_engine_1_1_open_g_l_texture.html#ab854c10cb74b59cb150141531d34cd76">Engine::OpenGLTexture</a>
 , <a class="el" href="class_engine_1_1_textures.html#a27e28f0d4ace596055a61e6c0b9cc567">Engine::Textures</a>
+</li>
+<li>getClearColourAndDepthBufferCommand()
+: <a class="el" href="class_engine_1_1_render_commands_factory.html#a2dbe06303a99b7855de1cde00a968be4">Engine::RenderCommandsFactory</a>
 </li>
 <li>getCount()
 : <a class="el" href="class_engine_1_1_index_buffer.html#afb9190f76502b51a6a3fa15085f8b4df">Engine::IndexBuffer</a>
@@ -111,8 +118,22 @@ $(function() {
 , <a class="el" href="class_engine_1_1_textures.html#aba817137f80c59bef9c21878f1b417a8">Engine::Textures</a>
 </li>
 <li>getID()
-: <a class="el" href="class_engine_1_1_open_g_l_texture.html#a4946d687ef39399fab4b1bef910cf856">Engine::OpenGLTexture</a>
+: <a class="el" href="class_engine_1_1_index_buffer.html#a992205d1f2a0cfff8dee0feafe10e1cd">Engine::IndexBuffer</a>
+, <a class="el" href="class_engine_1_1_open_g_l_index_buffer.html#a11602ba9a68a4a7e72c647b26b318d00">Engine::OpenGLIndexBuffer</a>
+, <a class="el" href="class_engine_1_1_open_g_l_shader.html#acb0a8536c57a9ac4bf1ff3e59fb1ca6d">Engine::OpenGLShader</a>
+, <a class="el" href="class_engine_1_1_open_g_l_texture.html#a4946d687ef39399fab4b1bef910cf856">Engine::OpenGLTexture</a>
+, <a class="el" href="class_engine_1_1_open_g_l_uniform_buffer.html#a679aff472b55e582f20760dead7be456">Engine::OpenGLUniformBuffer</a>
+, <a class="el" href="class_engine_1_1_open_g_l_vertex_array.html#a3c3cb8fddb7144f764d1023b0dbaed4c">Engine::OpenGLVertexArray</a>
+, <a class="el" href="class_engine_1_1_open_g_l_vertex_buffer.html#aa431768db0e19483332ee02adfedf248">Engine::OpenGLVertexBuffer</a>
+, <a class="el" href="class_engine_1_1_shaders.html#ae7fe3ee775d52be17c48972d7b554242">Engine::Shaders</a>
 , <a class="el" href="class_engine_1_1_textures.html#aef6ec6295e89e4aaba881490c73f1f22">Engine::Textures</a>
+, <a class="el" href="class_engine_1_1_uniform_buffer.html#a67ab01a1f55ba192eb399edc24e3b7a4">Engine::UniformBuffer</a>
+, <a class="el" href="class_engine_1_1_vertex_array.html#a68bd27da1a49cfd0d60f39ab6a1757b7">Engine::VertexArray</a>
+, <a class="el" href="class_engine_1_1_vertex_buffer.html#a10e2b4a84457bfd2789cc8f923b07347">Engine::VertexBuffer</a>
+</li>
+<li>getIndexBuffer()
+: <a class="el" href="class_engine_1_1_open_g_l_vertex_array.html#ae580291484f61f76a085380a85cc32cc">Engine::OpenGLVertexArray</a>
+, <a class="el" href="class_engine_1_1_vertex_array.html#ab9cc2dcb82c7775ce6e65371edd245cc">Engine::VertexArray</a>
 </li>
 <li>getInstance()
 : <a class="el" href="class_engine_1_1_application.html#aa5d77d6feaafcbc72aa6433f74164902">Engine::Application</a>
@@ -179,20 +200,11 @@ $(function() {
 <li>getOnWindowResizeCallback()
 : <a class="el" href="class_engine_1_1_event_handler.html#a9104019f1815f537dc6cafaddffba63b">Engine::EventHandler</a>
 </li>
-<li>getRenderID()
-: <a class="el" href="class_engine_1_1_index_buffer.html#a9fc091ee053f558cee115e3413644f91">Engine::IndexBuffer</a>
-, <a class="el" href="class_engine_1_1_open_g_l_index_buffer.html#a195167dfa6af83cdc5055d5b8c879915">Engine::OpenGLIndexBuffer</a>
-, <a class="el" href="class_engine_1_1_open_g_l_shader.html#aae1c7260fd68c8e71f383feb0eed2fa3">Engine::OpenGLShader</a>
-, <a class="el" href="class_engine_1_1_open_g_l_uniform_buffer.html#a96e7a6c47839975da728a1458c2374a7">Engine::OpenGLUniformBuffer</a>
-, <a class="el" href="class_engine_1_1_open_g_l_vertex_array.html#aae7083a6e6093639424bb290d223befe">Engine::OpenGLVertexArray</a>
-, <a class="el" href="class_engine_1_1_open_g_l_vertex_buffer.html#a2c4a4eb4dbd7baf270792136f2e631c2">Engine::OpenGLVertexBuffer</a>
-, <a class="el" href="class_engine_1_1_shaders.html#a09c561412ce14f6fd065e845294bf07e">Engine::Shaders</a>
-, <a class="el" href="class_engine_1_1_uniform_buffer.html#a98b0a03eb02505af025288dbc44d0e30">Engine::UniformBuffer</a>
-, <a class="el" href="class_engine_1_1_vertex_array.html#aee4283abba27dfd381de3e0e85be4e40">Engine::VertexArray</a>
-, <a class="el" href="class_engine_1_1_vertex_buffer.html#ad502866c4efce7564a463bb3bb9e1f30">Engine::VertexBuffer</a>
-</li>
 <li>getRepeatCount()
 : <a class="el" href="class_engine_1_1_key_pressed_event.html#a873aefc59bd8a91910bd6ba8775c46c0">Engine::KeyPressedEvent</a>
+</li>
+<li>getShader()
+: <a class="el" href="class_engine_1_1_material.html#a0b4b61671c0860a927d2d573ddb38c53">Engine::Material</a>
 </li>
 <li>getStaticType()
 : <a class="el" href="class_engine_1_1_key_pressed_event.html#a4c4de26cdfe0be310fa4e9b47fa7c610">Engine::KeyPressedEvent</a>
@@ -211,11 +223,17 @@ $(function() {
 <li>getStride()
 : <a class="el" href="class_engine_1_1_buffer_layout.html#ac907ae4295505d40a888f3add28be3c4">Engine::BufferLayout&lt; G &gt;</a>
 </li>
+<li>getTexture()
+: <a class="el" href="class_engine_1_1_material.html#abfd9105ccc240bd95e602bdfa3bb98ed">Engine::Material</a>
+</li>
 <li>getTextureSize()
 : <a class="el" href="class_engine_1_1_sub_texture.html#a082195132766f390ea96b1f0686e778c">Engine::SubTexture</a>
 </li>
 <li>getTextureSizeF()
 : <a class="el" href="class_engine_1_1_sub_texture.html#a206c25153154c050ef94c1df5f5b2b55">Engine::SubTexture</a>
+</li>
+<li>getTint()
+: <a class="el" href="class_engine_1_1_material.html#adaba6865860063d4d0d8849b8a3d1267">Engine::Material</a>
 </li>
 <li>getUnit()
 : <a class="el" href="class_engine_1_1_texture_unit_manager.html#a778d5367aa70234f8f2fe9ee53d10bfe">Engine::TextureUnitManager</a>
@@ -225,6 +243,13 @@ $(function() {
 </li>
 <li>getUVStart()
 : <a class="el" href="class_engine_1_1_sub_texture.html#aa68f47191e735d04888df09037535bf9">Engine::SubTexture</a>
+</li>
+<li>getValue()
+: <a class="el" href="class_engine_1_1_render_commands_factory.html#a335891e6a53722eba28d9190df655777">Engine::RenderCommandsFactory</a>
+</li>
+<li>getVertexBuffer()
+: <a class="el" href="class_engine_1_1_open_g_l_vertex_array.html#a52773ca34442e09cf07c8f854bc65394">Engine::OpenGLVertexArray</a>
+, <a class="el" href="class_engine_1_1_vertex_array.html#a50c7b025f22c86351208a85ad59c93cf">Engine::VertexArray</a>
 </li>
 <li>getWidth()
 : <a class="el" href="class_engine_1_1_g_l_f_w_window_implement.html#aeb8637a6a88a8c449cd2baa1323f78f6">Engine::GLFWWindowImplement</a>
@@ -272,6 +297,15 @@ $(function() {
 </li>
 <li>GLFWWindowImplement()
 : <a class="el" href="class_engine_1_1_g_l_f_w_window_implement.html#ad6a72121ad01f1272406d61e4a2eeb04">Engine::GLFWWindowImplement</a>
+</li>
+<li>glyphBuffer
+: <a class="el" href="struct_engine_1_1_renderer2_d_1_1_internal_data.html#abb8ce9385bfb4ad11241ddcd8b96b77b">Engine::Renderer2D::InternalData</a>
+</li>
+<li>glyphBufferDimensions
+: <a class="el" href="struct_engine_1_1_renderer2_d_1_1_internal_data.html#af385b9464c169eb056cd03e7585503b6">Engine::Renderer2D::InternalData</a>
+</li>
+<li>glyphBufferSize
+: <a class="el" href="struct_engine_1_1_renderer2_d_1_1_internal_data.html#adc4ff7e913d4c40010371d0c92b66fd5">Engine::Renderer2D::InternalData</a>
 </li>
 </ul>
 </div><!-- contents -->

@@ -52,6 +52,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>A class for an API agnostic index buffer.  
+ <a href="class_engine_1_1_index_buffer.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="index_buffer_8h_source.html">indexBuffer.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Engine::IndexBuffer:</div>
@@ -59,7 +62,7 @@ Inheritance diagram for Engine::IndexBuffer:</div>
  <div class="center">
   <img src="class_engine_1_1_index_buffer.png" usemap="#Engine::IndexBuffer_map" alt=""/>
   <map id="Engine::IndexBuffer_map" name="Engine::IndexBuffer_map">
-<area href="class_engine_1_1_open_g_l_index_buffer.html" alt="Engine::OpenGLIndexBuffer" shape="rect" coords="0,56,169,80"/>
+<area href="class_engine_1_1_open_g_l_index_buffer.html" title="OpenGL specific index buffer." alt="Engine::OpenGLIndexBuffer" shape="rect" coords="0,56,169,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -68,9 +71,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af1dc67790f86f8270e8ee24885214d03"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_index_buffer.html#af1dc67790f86f8270e8ee24885214d03">~IndexBuffer</a> ()=default</td></tr>
 <tr class="memdesc:af1dc67790f86f8270e8ee24885214d03"><td class="mdescLeft">&#160;</td><td class="mdescRight">virtual destructor.  <a href="class_engine_1_1_index_buffer.html#af1dc67790f86f8270e8ee24885214d03">More...</a><br /></td></tr>
 <tr class="separator:af1dc67790f86f8270e8ee24885214d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fc091ee053f558cee115e3413644f91"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_index_buffer.html#a9fc091ee053f558cee115e3413644f91">getRenderID</a> () const =0</td></tr>
-<tr class="memdesc:a9fc091ee053f558cee115e3413644f91"><td class="mdescLeft">&#160;</td><td class="mdescRight">virtual function to get and return the renderer ID.  <a href="class_engine_1_1_index_buffer.html#a9fc091ee053f558cee115e3413644f91">More...</a><br /></td></tr>
-<tr class="separator:a9fc091ee053f558cee115e3413644f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a992205d1f2a0cfff8dee0feafe10e1cd"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_index_buffer.html#a992205d1f2a0cfff8dee0feafe10e1cd">getID</a> () const =0</td></tr>
+<tr class="memdesc:a992205d1f2a0cfff8dee0feafe10e1cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">virtual function to get and return the renderer ID.  <a href="class_engine_1_1_index_buffer.html#a992205d1f2a0cfff8dee0feafe10e1cd">More...</a><br /></td></tr>
+<tr class="separator:a992205d1f2a0cfff8dee0feafe10e1cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb9190f76502b51a6a3fa15085f8b4df"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_index_buffer.html#afb9190f76502b51a6a3fa15085f8b4df">getCount</a> () const =0</td></tr>
 <tr class="memdesc:afb9190f76502b51a6a3fa15085f8b4df"><td class="mdescLeft">&#160;</td><td class="mdescRight">virtual function to get and return the count.  <a href="class_engine_1_1_index_buffer.html#afb9190f76502b51a6a3fa15085f8b4df">More...</a><br /></td></tr>
 <tr class="separator:afb9190f76502b51a6a3fa15085f8b4df"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -82,7 +85,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a8d25190a430a7aa2ac4374edb27e28e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>class for an API agnostic index buffer. </p>
+<div class="textblock"><p>A class for an API agnostic index buffer. </p>
 
 <p class="definition">Definition at line <a class="el" href="index_buffer_8h_source.html#l00010">10</a> of file <a class="el" href="index_buffer_8h_source.html">indexBuffer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -150,7 +153,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>please note, function declared in <a class="el" href="render_a_p_i_8cpp.html">renderAPI.cpp</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="render_a_p_i_8cpp_source.html#l00028">28</a> of file <a class="el" href="render_a_p_i_8cpp_source.html">renderAPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="render_a_p_i_8cpp_source.html#l00021">21</a> of file <a class="el" href="render_a_p_i_8cpp_source.html">renderAPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -183,8 +186,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a9fc091ee053f558cee115e3413644f91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9fc091ee053f558cee115e3413644f91">&#9670;&nbsp;</a></span>getRenderID()</h2>
+<a id="a992205d1f2a0cfff8dee0feafe10e1cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a992205d1f2a0cfff8dee0feafe10e1cd">&#9670;&nbsp;</a></span>getID()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -193,7 +196,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual uint32_t Engine::IndexBuffer::getRenderID </td>
+          <td class="memname">virtual uint32_t Engine::IndexBuffer::getID </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -208,7 +211,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>virtual function to get and return the renderer ID. </p>
 
-<p>Implemented in <a class="el" href="class_engine_1_1_open_g_l_index_buffer.html#a195167dfa6af83cdc5055d5b8c879915">Engine::OpenGLIndexBuffer</a>.</p>
+<p>Implemented in <a class="el" href="class_engine_1_1_open_g_l_index_buffer.html#a11602ba9a68a4a7e72c647b26b318d00">Engine::OpenGLIndexBuffer</a>.</p>
 
 </div>
 </div>

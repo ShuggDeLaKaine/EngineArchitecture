@@ -210,7 +210,7 @@ $(function() {
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        glUniform4f(location, value.x, value.y, value.z, value.w);</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    }</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
-<div class="line"><a name="l00165"></a><span class="lineno"><a class="line" href="class_engine_1_1_open_g_l_shader.html#ad6eb051260b74c07351e076ee07c7f36">  165</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_engine_1_1_open_g_l_shader.html#ad6eb051260b74c07351e076ee07c7f36">OpenGLShader::uploatMat4</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * name, <span class="keyword">const</span> glm::mat4 &amp; value)</div>
+<div class="line"><a name="l00165"></a><span class="lineno"><a class="line" href="class_engine_1_1_open_g_l_shader.html#a616f92f71b625db3d17e499605d2f05d">  165</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_engine_1_1_open_g_l_shader.html#a616f92f71b625db3d17e499605d2f05d">OpenGLShader::uploadMat4</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * name, <span class="keyword">const</span> glm::mat4 &amp; value)</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    {</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        uint32_t location = glGetUniformLocation(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>, name);</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));</div>
@@ -270,45 +270,42 @@ $(function() {
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;            <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        }</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        <span class="comment">//got to link them up with the program.</span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        <span class="comment">//all compile fined, so create the final shader program.</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        <a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a> = glCreateProgram();</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        <span class="comment">//attach the vertex and fragment shaders and link them.</span></div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        glAttachShader(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>, vertexShader);</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        glAttachShader(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>, fragmentShader);</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        glLinkProgram(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>);</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        GLint isLinked = 0;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        glGetProgramiv(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>, GL_LINK_STATUS, (<span class="keywordtype">int</span>*)&amp;isLinked);</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160; </div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        <span class="comment">//check whether they have linked, if not delete all three shaders.</span></div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        <span class="keywordflow">if</span> (isLinked == GL_FALSE)</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        {</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;            GLint maxLength = 0;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;            glGetProgramiv(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>, GL_INFO_LOG_LENGTH, &amp;maxLength);</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;            std::vector&lt;GLchar&gt; infoLog(maxLength);</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            glGetProgramInfoLog(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>, maxLength, &amp;maxLength, &amp;infoLog[0]);</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            <a class="code" href="class_engine_1_1_log.html#a29d5c2bf5e24fdb508cc1a1cc54607fb">Log::error</a>(<span class="stringliteral">&quot;Shader linking error: {0}&quot;</span>, std::string(infoLog.begin(), infoLog.end()));</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            glDeleteProgram(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>);</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            glDeleteShader(vertexShader);</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;            glDeleteShader(fragmentShader);</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        }</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="comment">//now linked, can deattach shaders as done with them, just need the final FCprogram.</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        glDetachShader(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>, vertexShader);</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        glDetachShader(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>, fragmentShader);</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160; </div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    }</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;}</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <span class="comment">//got to link them up with the program.</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        <span class="comment">//all compile fined, so create the final shader program.</span></div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        <a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a> = glCreateProgram();</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        <span class="comment">//attach the vertex and fragment shaders and link them.</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        glAttachShader(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>, vertexShader);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        glAttachShader(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>, fragmentShader);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        glLinkProgram(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>);</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        GLint isLinked = 0;</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        glGetProgramiv(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>, GL_LINK_STATUS, (<span class="keywordtype">int</span>*)&amp;isLinked);</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        <span class="comment">//check whether they have linked, if not delete all three shaders.</span></div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        <span class="keywordflow">if</span> (isLinked == GL_FALSE)</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        {</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;            GLint maxLength = 0;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;            glGetProgramiv(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>, GL_INFO_LOG_LENGTH, &amp;maxLength);</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            std::vector&lt;GLchar&gt; infoLog(maxLength);</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;            glGetProgramInfoLog(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>, maxLength, &amp;maxLength, &amp;infoLog[0]);</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            <a class="code" href="class_engine_1_1_log.html#a29d5c2bf5e24fdb508cc1a1cc54607fb">Log::error</a>(<span class="stringliteral">&quot;Shader linking error: {0}&quot;</span>, std::string(infoLog.begin(), infoLog.end()));</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            glDeleteProgram(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>);</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            glDeleteShader(vertexShader);</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            glDeleteShader(fragmentShader);</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        }</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <span class="comment">//now linked, can deattach shaders as done with them, just need the final FCprogram.</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        glDetachShader(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>, vertexShader);</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        glDetachShader(<a class="code" href="class_engine_1_1_open_g_l_shader.html#af23d410649b809ed8738583d18e8d1a6">m_OpenGL_ID</a>, fragmentShader);</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    }</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclass_engine_1_1_open_g_l_shader_html_ad6eb051260b74c07351e076ee07c7f36"><div class="ttname"><a href="class_engine_1_1_open_g_l_shader.html#ad6eb051260b74c07351e076ee07c7f36">Engine::OpenGLShader::uploatMat4</a></div><div class="ttdeci">virtual void uploatMat4(const char *name, const glm::mat4 &amp;value) override</div><div class="ttdoc">upload model matrices.</div><div class="ttdef"><b>Definition:</b> <a href="_open_g_l_shader_8cpp_source.html#l00165">OpenGLShader.cpp:165</a></div></div>
-<div class="ttc" id="anamespace_engine_html"><div class="ttname"><a href="namespace_engine.html">Engine</a></div><div class="ttdef"><b>Definition:</b> <a href="application_8h_source.html#l00011">application.h:11</a></div></div>
+<div class="ttc" id="anamespace_engine_html"><div class="ttname"><a href="namespace_engine.html">Engine</a></div><div class="ttdef"><b>Definition:</b> <a href="camera_8h_source.html#l00006">camera.h:6</a></div></div>
+<div class="ttc" id="aclass_engine_1_1_open_g_l_shader_html_a616f92f71b625db3d17e499605d2f05d"><div class="ttname"><a href="class_engine_1_1_open_g_l_shader.html#a616f92f71b625db3d17e499605d2f05d">Engine::OpenGLShader::uploadMat4</a></div><div class="ttdeci">virtual void uploadMat4(const char *name, const glm::mat4 &amp;value) override</div><div class="ttdoc">upload model matrices.</div><div class="ttdef"><b>Definition:</b> <a href="_open_g_l_shader_8cpp_source.html#l00165">OpenGLShader.cpp:165</a></div></div>
 <div class="ttc" id="anamespace_engine_html_ab6f2674ce1800efd90047198d1cf45b7a6adf97f83acf6453d4a6a4b1070f3754"><div class="ttname"><a href="namespace_engine.html#ab6f2674ce1800efd90047198d1cf45b7a6adf97f83acf6453d4a6a4b1070f3754">Engine::ShaderDataType::None</a></div></div>
 <div class="ttc" id="aclass_engine_1_1_open_g_l_shader_html_a00688242fc8bdfa0ca56ef3fa7b24b41"><div class="ttname"><a href="class_engine_1_1_open_g_l_shader.html#a00688242fc8bdfa0ca56ef3fa7b24b41">Engine::OpenGLShader::uploadFloat4</a></div><div class="ttdeci">virtual void uploadFloat4(const char *name, const glm::vec4 &amp;value) override</div><div class="ttdoc">upload 4 float combination.</div><div class="ttdef"><b>Definition:</b> <a href="_open_g_l_shader_8cpp_source.html#l00159">OpenGLShader.cpp:159</a></div></div>
 <div class="ttc" id="aclass_engine_1_1_open_g_l_shader_html_a6f0346397a490bb514674f4af5108875"><div class="ttname"><a href="class_engine_1_1_open_g_l_shader.html#a6f0346397a490bb514674f4af5108875">Engine::OpenGLShader::uploadFloat2</a></div><div class="ttdeci">virtual void uploadFloat2(const char *name, const glm::vec2 &amp;value) override</div><div class="ttdoc">upload 2 float combination.</div><div class="ttdef"><b>Definition:</b> <a href="_open_g_l_shader_8cpp_source.html#l00147">OpenGLShader.cpp:147</a></div></div>

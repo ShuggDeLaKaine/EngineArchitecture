@@ -52,6 +52,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>A class for an API agnostic vertex arrays.  
+ <a href="class_engine_1_1_vertex_array.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="vertex_array_8h_source.html">vertexArray.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Engine::VertexArray:</div>
@@ -59,7 +62,7 @@ Inheritance diagram for Engine::VertexArray:</div>
  <div class="center">
   <img src="class_engine_1_1_vertex_array.png" usemap="#Engine::VertexArray_map" alt=""/>
   <map id="Engine::VertexArray_map" name="Engine::VertexArray_map">
-<area href="class_engine_1_1_open_g_l_vertex_array.html" alt="Engine::OpenGLVertexArray" shape="rect" coords="0,56,174,80"/>
+<area href="class_engine_1_1_open_g_l_vertex_array.html" title="OpenGL specific class for vertex arrays." alt="Engine::OpenGLVertexArray" shape="rect" coords="0,56,174,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -77,9 +80,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a93b0c25a8635403152c3405b71fa54b3"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_vertex_array.html#a93b0c25a8635403152c3405b71fa54b3">getDrawCount</a> ()=0</td></tr>
 <tr class="memdesc:a93b0c25a8635403152c3405b71fa54b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">get the draw count of index buffer.  <a href="class_engine_1_1_vertex_array.html#a93b0c25a8635403152c3405b71fa54b3">More...</a><br /></td></tr>
 <tr class="separator:a93b0c25a8635403152c3405b71fa54b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee4283abba27dfd381de3e0e85be4e40"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_vertex_array.html#aee4283abba27dfd381de3e0e85be4e40">getRenderID</a> () const =0</td></tr>
-<tr class="memdesc:aee4283abba27dfd381de3e0e85be4e40"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets and returns the renderer ID.  <a href="class_engine_1_1_vertex_array.html#aee4283abba27dfd381de3e0e85be4e40">More...</a><br /></td></tr>
-<tr class="separator:aee4283abba27dfd381de3e0e85be4e40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68bd27da1a49cfd0d60f39ab6a1757b7"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_vertex_array.html#a68bd27da1a49cfd0d60f39ab6a1757b7">getID</a> () const =0</td></tr>
+<tr class="memdesc:a68bd27da1a49cfd0d60f39ab6a1757b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets and returns the renderer ID.  <a href="class_engine_1_1_vertex_array.html#a68bd27da1a49cfd0d60f39ab6a1757b7">More...</a><br /></td></tr>
+<tr class="separator:a68bd27da1a49cfd0d60f39ab6a1757b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50c7b025f22c86351208a85ad59c93cf"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::shared_ptr&lt; <a class="el" href="class_engine_1_1_vertex_buffer.html">VertexBuffer</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_vertex_array.html#a50c7b025f22c86351208a85ad59c93cf">getVertexBuffer</a> () const =0</td></tr>
+<tr class="memdesc:a50c7b025f22c86351208a85ad59c93cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">get the vertex buffers.  <a href="class_engine_1_1_vertex_array.html#a50c7b025f22c86351208a85ad59c93cf">More...</a><br /></td></tr>
+<tr class="separator:a50c7b025f22c86351208a85ad59c93cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9cc2dcb82c7775ce6e65371edd245cc"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="class_engine_1_1_index_buffer.html">IndexBuffer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_vertex_array.html#ab9cc2dcb82c7775ce6e65371edd245cc">getIndexBuffer</a> () const =0</td></tr>
+<tr class="memdesc:ab9cc2dcb82c7775ce6e65371edd245cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">get the index buffers.  <a href="class_engine_1_1_vertex_array.html#ab9cc2dcb82c7775ce6e65371edd245cc">More...</a><br /></td></tr>
+<tr class="separator:ab9cc2dcb82c7775ce6e65371edd245cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -88,7 +97,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a602266ed8242c057923b5bd39fe2d41a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>class for an API agnostic vertex arrays. </p>
+<div class="textblock"><p>A class for an API agnostic vertex arrays. </p>
 
 <p class="definition">Definition at line <a class="el" href="vertex_array_8h_source.html#l00015">15</a> of file <a class="el" href="vertex_array_8h_source.html">vertexArray.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -175,7 +184,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>please note, function declared in <a class="el" href="render_a_p_i_8cpp.html">renderAPI.cpp</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="render_a_p_i_8cpp_source.html#l00074">74</a> of file <a class="el" href="render_a_p_i_8cpp_source.html">renderAPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="render_a_p_i_8cpp_source.html#l00065">65</a> of file <a class="el" href="render_a_p_i_8cpp_source.html">renderAPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -208,8 +217,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aee4283abba27dfd381de3e0e85be4e40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee4283abba27dfd381de3e0e85be4e40">&#9670;&nbsp;</a></span>getRenderID()</h2>
+<a id="a68bd27da1a49cfd0d60f39ab6a1757b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68bd27da1a49cfd0d60f39ab6a1757b7">&#9670;&nbsp;</a></span>getID()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -218,7 +227,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual uint32_t Engine::VertexArray::getRenderID </td>
+          <td class="memname">virtual uint32_t Engine::VertexArray::getID </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -233,7 +242,65 @@ Static Public Member Functions</h2></td></tr>
 
 <p>gets and returns the renderer ID. </p>
 
-<p>Implemented in <a class="el" href="class_engine_1_1_open_g_l_vertex_array.html#aae7083a6e6093639424bb290d223befe">Engine::OpenGLVertexArray</a>.</p>
+<p>Implemented in <a class="el" href="class_engine_1_1_open_g_l_vertex_array.html#a3c3cb8fddb7144f764d1023b0dbaed4c">Engine::OpenGLVertexArray</a>.</p>
+
+</div>
+</div>
+<a id="ab9cc2dcb82c7775ce6e65371edd245cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9cc2dcb82c7775ce6e65371edd245cc">&#9670;&nbsp;</a></span>getIndexBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::shared_ptr&lt;<a class="el" href="class_engine_1_1_index_buffer.html">IndexBuffer</a>&gt; Engine::VertexArray::getIndexBuffer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>get the index buffers. </p>
+
+<p>Implemented in <a class="el" href="class_engine_1_1_open_g_l_vertex_array.html#ae580291484f61f76a085380a85cc32cc">Engine::OpenGLVertexArray</a>.</p>
+
+</div>
+</div>
+<a id="a50c7b025f22c86351208a85ad59c93cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50c7b025f22c86351208a85ad59c93cf">&#9670;&nbsp;</a></span>getVertexBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::vector&lt;std::shared_ptr&lt;<a class="el" href="class_engine_1_1_vertex_buffer.html">VertexBuffer</a>&gt; &gt; Engine::VertexArray::getVertexBuffer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>get the vertex buffers. </p>
+
+<p>Implemented in <a class="el" href="class_engine_1_1_open_g_l_vertex_array.html#a52773ca34442e09cf07c8f854bc65394">Engine::OpenGLVertexArray</a>.</p>
 
 </div>
 </div>

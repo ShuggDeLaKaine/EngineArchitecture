@@ -52,6 +52,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>A class for an API agnostic shaders.  
+ <a href="class_engine_1_1_shaders.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="shaders_8h_source.html">shaders.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Engine::Shaders:</div>
@@ -59,7 +62,7 @@ Inheritance diagram for Engine::Shaders:</div>
  <div class="center">
   <img src="class_engine_1_1_shaders.png" usemap="#Engine::Shaders_map" alt=""/>
   <map id="Engine::Shaders_map" name="Engine::Shaders_map">
-<area href="class_engine_1_1_open_g_l_shader.html" alt="Engine::OpenGLShader" shape="rect" coords="0,56,145,80"/>
+<area href="class_engine_1_1_open_g_l_shader.html" title="OpenGL specific class to take in text, compile into shader program." alt="Engine::OpenGLShader" shape="rect" coords="0,56,145,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -68,9 +71,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaa6d9fe9a019d2eb0e8978301197b81b"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_shaders.html#aaa6d9fe9a019d2eb0e8978301197b81b">~Shaders</a> ()=default</td></tr>
 <tr class="memdesc:aaa6d9fe9a019d2eb0e8978301197b81b"><td class="mdescLeft">&#160;</td><td class="mdescRight">destructor.  <a href="class_engine_1_1_shaders.html#aaa6d9fe9a019d2eb0e8978301197b81b">More...</a><br /></td></tr>
 <tr class="separator:aaa6d9fe9a019d2eb0e8978301197b81b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09c561412ce14f6fd065e845294bf07e"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_shaders.html#a09c561412ce14f6fd065e845294bf07e">getRenderID</a> () const =0</td></tr>
-<tr class="memdesc:a09c561412ce14f6fd065e845294bf07e"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets and returns the renderer ID.  <a href="class_engine_1_1_shaders.html#a09c561412ce14f6fd065e845294bf07e">More...</a><br /></td></tr>
-<tr class="separator:a09c561412ce14f6fd065e845294bf07e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7fe3ee775d52be17c48972d7b554242"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_shaders.html#ae7fe3ee775d52be17c48972d7b554242">getID</a> () const =0</td></tr>
+<tr class="memdesc:ae7fe3ee775d52be17c48972d7b554242"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets and returns the renderer ID.  <a href="class_engine_1_1_shaders.html#ae7fe3ee775d52be17c48972d7b554242">More...</a><br /></td></tr>
+<tr class="separator:ae7fe3ee775d52be17c48972d7b554242"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a678984cf8239932de8ebd001685e05a3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_shaders.html#a678984cf8239932de8ebd001685e05a3">uploadInt</a> (const char *name, int value)=0</td></tr>
 <tr class="memdesc:a678984cf8239932de8ebd001685e05a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">uploading a texture (just an int)  <a href="class_engine_1_1_shaders.html#a678984cf8239932de8ebd001685e05a3">More...</a><br /></td></tr>
 <tr class="separator:a678984cf8239932de8ebd001685e05a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -86,9 +89,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3fa44dc1b1b16d77fca755763eaef319"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_shaders.html#a3fa44dc1b1b16d77fca755763eaef319">uploadFloat4</a> (const char *name, const glm::vec4 &amp;value)=0</td></tr>
 <tr class="memdesc:a3fa44dc1b1b16d77fca755763eaef319"><td class="mdescLeft">&#160;</td><td class="mdescRight">upload 4 float combination.  <a href="class_engine_1_1_shaders.html#a3fa44dc1b1b16d77fca755763eaef319">More...</a><br /></td></tr>
 <tr class="separator:a3fa44dc1b1b16d77fca755763eaef319"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af680f0c4ef8d2f0bbd7909f8c72e1e0c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_shaders.html#af680f0c4ef8d2f0bbd7909f8c72e1e0c">uploatMat4</a> (const char *name, const glm::mat4 &amp;value)=0</td></tr>
-<tr class="memdesc:af680f0c4ef8d2f0bbd7909f8c72e1e0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">upload model matrices.  <a href="class_engine_1_1_shaders.html#af680f0c4ef8d2f0bbd7909f8c72e1e0c">More...</a><br /></td></tr>
-<tr class="separator:af680f0c4ef8d2f0bbd7909f8c72e1e0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14c756a52ab786bd78e2ba0e7b08d73f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine_1_1_shaders.html#a14c756a52ab786bd78e2ba0e7b08d73f">uploadMat4</a> (const char *name, const glm::mat4 &amp;value)=0</td></tr>
+<tr class="memdesc:a14c756a52ab786bd78e2ba0e7b08d73f"><td class="mdescLeft">&#160;</td><td class="mdescRight">upload model matrices.  <a href="class_engine_1_1_shaders.html#a14c756a52ab786bd78e2ba0e7b08d73f">More...</a><br /></td></tr>
+<tr class="separator:a14c756a52ab786bd78e2ba0e7b08d73f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -100,7 +103,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a81058d41faf99bab160bdffd8c154765"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>class for an API agnostic shaders. </p>
+<div class="textblock"><p>A class for an API agnostic shaders. </p>
 
 <p class="definition">Definition at line <a class="el" href="shaders_8h_source.html#l00012">12</a> of file <a class="el" href="shaders_8h_source.html">shaders.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -158,7 +161,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>constructor, takes a single file path, can put all shaders into a single file; NOTE declared <a class="el" href="render_a_p_i_8cpp.html">renderAPI.cpp</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="render_a_p_i_8cpp_source.html#l00120">120</a> of file <a class="el" href="render_a_p_i_8cpp_source.html">renderAPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="render_a_p_i_8cpp_source.html#l00109">109</a> of file <a class="el" href="render_a_p_i_8cpp_source.html">renderAPI.cpp</a>.</p>
 
 </div>
 </div>
@@ -198,12 +201,12 @@ Static Public Member Functions</h2></td></tr>
 
 <p>constructor, takes the filepaths for text files; NOTE declared <a class="el" href="render_a_p_i_8cpp.html">renderAPI.cpp</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="render_a_p_i_8cpp_source.html#l00097">97</a> of file <a class="el" href="render_a_p_i_8cpp_source.html">renderAPI.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="render_a_p_i_8cpp_source.html#l00087">87</a> of file <a class="el" href="render_a_p_i_8cpp_source.html">renderAPI.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a09c561412ce14f6fd065e845294bf07e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a09c561412ce14f6fd065e845294bf07e">&#9670;&nbsp;</a></span>getRenderID()</h2>
+<a id="ae7fe3ee775d52be17c48972d7b554242"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7fe3ee775d52be17c48972d7b554242">&#9670;&nbsp;</a></span>getID()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -212,7 +215,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual uint32_t Engine::Shaders::getRenderID </td>
+          <td class="memname">virtual uint32_t Engine::Shaders::getID </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -227,7 +230,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>gets and returns the renderer ID. </p>
 
-<p>Implemented in <a class="el" href="class_engine_1_1_open_g_l_shader.html#aae1c7260fd68c8e71f383feb0eed2fa3">Engine::OpenGLShader</a>.</p>
+<p>Implemented in <a class="el" href="class_engine_1_1_open_g_l_shader.html#acb0a8536c57a9ac4bf1ff3e59fb1ca6d">Engine::OpenGLShader</a>.</p>
 
 </div>
 </div>
@@ -431,8 +434,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="af680f0c4ef8d2f0bbd7909f8c72e1e0c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af680f0c4ef8d2f0bbd7909f8c72e1e0c">&#9670;&nbsp;</a></span>uploatMat4()</h2>
+<a id="a14c756a52ab786bd78e2ba0e7b08d73f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14c756a52ab786bd78e2ba0e7b08d73f">&#9670;&nbsp;</a></span>uploadMat4()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -441,7 +444,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void Engine::Shaders::uploatMat4 </td>
+          <td class="memname">virtual void Engine::Shaders::uploadMat4 </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -467,7 +470,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>upload model matrices. </p>
 
-<p>Implemented in <a class="el" href="class_engine_1_1_open_g_l_shader.html#ad6eb051260b74c07351e076ee07c7f36">Engine::OpenGLShader</a>.</p>
+<p>Implemented in <a class="el" href="class_engine_1_1_open_g_l_shader.html#a616f92f71b625db3d17e499605d2f05d">Engine::OpenGLShader</a>.</p>
 
 </div>
 </div>
