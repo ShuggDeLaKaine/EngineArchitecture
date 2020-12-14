@@ -16,6 +16,7 @@
 	#include "platform/GLFW/GLFWSystem.h"
 #endif //  NG_PLATFORM_WINDOWS
 
+
 namespace Engine {
 #pragma region TEMP_CLASS
 //temporary class for vertex
