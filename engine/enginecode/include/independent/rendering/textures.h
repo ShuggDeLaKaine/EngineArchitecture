@@ -20,8 +20,8 @@ namespace Engine
 		virtual inline uint32_t getWidth() = 0;			//!< accessor to get the texture width.		
 		virtual inline uint32_t getHeight() = 0;		//!< accessor to get the texture height.
 		virtual inline uint32_t getChannel() = 0;		//!< accessor to get the texture channel.
-		virtual inline uint32_t getWidthF() = 0;		//!< accessor to get the floating point texture width.
-		virtual inline uint32_t getHeightF() = 0;		//!< accessor to get the floating point texture height.
+		virtual inline uint32_t getWidthF() = 0;			//!< accessor to get the floating point texture width.
+		virtual inline uint32_t getHeightF() = 0;			//!< accessor to get the floating point texture height.
 
 		static Textures* create(const char* filepath);	//!< constructor, takes the filepaths for texture; declared renderAPI.cpp.
 		static Textures* create(uint32_t width, uint32_t height, uint32_t channel, unsigned char * data);	//!< constructor; width, height and channel plus data in bytes (what unsigned char is); declared renderAPI.cpp.

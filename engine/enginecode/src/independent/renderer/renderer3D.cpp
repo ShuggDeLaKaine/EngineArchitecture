@@ -53,24 +53,27 @@ namespace Engine
 		
 		//apply the material uniforms (per draw uniforms).
 		material->getShader()->uploadMat4("u_model", model);		//everything will have a model applied, so do this here before checking.
-
-		if (material->isFlagSet(Material::flag_texture))			//check whether the flags are set; firstly with the texture.
-		{
-			glBindTexture(GL_TEXTURE_2D, material->getTexture()->getID());
-		} else
-		{
+		
+		if (material->isFlagSet(Material::flag_defaultTexture))
 			glBindTexture(GL_TEXTURE_2D, s_data->defaultTexture->getID());
-		}
-
+		else if (material->isFlagSet(Material::flag_diffuseTexture))
+			glBindTexture(GL_TEXTURE_2D, material->getTexture(Material::flag_diffuseTexture)->getID());
+		else if (material->isFlagSet(Material::flag_specularTexture))
+			glBindTexture(GL_TEXTURE_2D, material->getTexture(Material::flag_specularTexture)->getID());
+		else if (material->isFlagSet(Material::flag_reflectionTexture))
+			glBindTexture(GL_TEXTURE_2D, material->getTexture(Material::flag_reflectionTexture)->getID());
+		else if (material->isFlagSet(Material::flag_emmisiveTexture))
+			glBindTexture(GL_TEXTURE_2D, material->getTexture(Material::flag_emmisiveTexture)->getID());
+		else if (material->isFlagSet(Material::flag_normalTexture))
+			glBindTexture(GL_TEXTURE_2D, material->getTexture(Material::flag_normalTexture)->getID());
+		else glBindTexture(GL_TEXTURE_2D, s_data->defaultTexture->getID());														
 		material->getShader()->uploadInt("u_texData", 0);
 
-		if (material->isFlagSet(Material::flag_tint))				//now check whether the tint flag is set.
-		{
+		//now check whether the tint flag is set.
+		if (material->isFlagSet(Material::flag_tint))				
 			material->getShader()->uploadFloat4("u_tint", material->getTint());
-		} else
-		{
+		else
 			material->getShader()->uploadFloat4("u_tint", s_data->defaultTint);
-		}
 
 		//bind geometry (VAO & IBO).
 		glBindVertexArray(geometry->getID());
@@ -91,5 +94,31 @@ namespace Engine
 		//attach them pesky shaders!
 		s_data->cameraUBO->attachShaderBlock(shader, "b_camera");
 		s_data->lightingUBO->attachShaderBlock(shader, "b_lights");
+	}
+
+	inline std::shared_ptr<Textures> Material::getTexture(uint32_t textureFlag) const
+	{
+		if (isFlagSet(textureFlag))
+		{
+			switch (m_flags & textureFlag)
+			{	
+			case flag_diffuseTexture : 
+				return m_texture[0];
+				break;
+			case flag_specularTexture:
+				return m_texture[1];
+				break;
+			case flag_reflectionTexture:
+				return m_texture[2];
+				break;
+			case flag_emmisiveTexture:
+				return m_texture[3];
+				break;
+			case flag_normalTexture:
+				return m_texture[4];
+				break;
+			}
+		}
+		return nullptr;
 	}
 }

@@ -457,14 +457,21 @@ namespace Engine {
 #pragma endregion
 
 #pragma region MATERIALS
+		//initialise materials for 3D objects, uses Material Class; as well as the Texture Type Struct that hold the various types of textures.
 		std::shared_ptr<Material> pyramidMaterial;
+		TextureTypeStruct textureStructPyramid;
+
 		std::shared_ptr<Material> letterCubeMaterial;
+		TextureTypeStruct textureStructLetter;
+		textureStructLetter.diffuseTexture = letterTexture;
+
 		std::shared_ptr<Material> numberCubeMaterial;
+		TextureTypeStruct textureStructNumber;
+		textureStructNumber.diffuseTexture = numberTexture;
 
-		pyramidMaterial.reset(new Material(TPShader, { 0.3f, 0.9f, 0.4f, 1.0f }));
-		letterCubeMaterial.reset(new Material(TPShader, letterTexture));
-		numberCubeMaterial.reset(new Material(TPShader, numberTexture));
-
+		pyramidMaterial.reset(new Material(TPShader, textureStructPyramid, { 0.3f, 0.9f, 0.4f, 1.0f }));
+		letterCubeMaterial.reset(new Material(TPShader, textureStructLetter));
+		numberCubeMaterial.reset(new Material(TPShader, textureStructNumber));
 #pragma endregion
 		
 #pragma region CAMERAS_LIGHTS_ACTION!
