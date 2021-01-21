@@ -87,7 +87,7 @@ namespace Engine {
 		m_timer->start();
 
 		//modify the window a little.
-		WindowProperties properties("MY FIRST WINDOW", 800, 600, false);
+		WindowProperties properties("IT'S AN ENGINE!", 800, 600, false);
 		//create a default window.
 		m_window.reset(Window::createWindow(properties));
 
@@ -214,11 +214,8 @@ namespace Engine {
 	Application::~Application()
 	{
 		//stop the systems in the REVERSE ORDER to how they start.
-		//stop the random number system.
 		m_ranNumSytem->stop();
-		//stop the windows system.
 		m_windowsSystem->stop();
-		//stop the log system.
 		m_logSystem->stop();
 	}
 
@@ -445,6 +442,8 @@ namespace Engine {
 
 #pragma region TEXTURES
 
+		TextureUnitManager textUnitMan(32);
+
 		std::shared_ptr<Textures> letterTexture;
 		letterTexture.reset(Textures::create("assets/textures/letterCube.png"));
 
@@ -479,6 +478,17 @@ namespace Engine {
 		models[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-1.5f, -0.5f, -5.0f));
 		models[2] = glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, -0.5f, -5.0f));
 
+		//quads created for testing 2d renderer; textures to be place over this quads and then placed in scene using 2d renderer.
+		Quad quads[7] =
+		{
+			Quad::createCentreHalfExtents({ 400.0f, 200.0f }, { 100.0f, 50.0f }),
+			Quad::createCentreHalfExtents({ 200.0f, 300.0f }, { 50.0f, 100.0f }),
+			Quad::createCentreHalfExtents({ 400.0f, 500.0f }, { 100.0f, 75.0f }),
+			Quad::createCentreHalfExtents({ 100.0f, 200.0f }, { 75.0f, 50.0f }),
+			Quad::createCentreHalfExtents({ 500.0f, 100.0f }, { 50.0f, 25.0f }),
+			Quad::createCentreHalfExtents({ 300.0f, 350.0f }, { 175.0f, 115.0f }),
+		};
+
 		//create the scene wide uniforms for 2D rendering.
 		SceneWideUniforms swu2D;
 		swu2D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast<void *>(glm::value_ptr(cam2D.m_camera.view)));
@@ -497,24 +507,42 @@ namespace Engine {
 		swu3D["u_viewPos"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightData[2])));
 #pragma endregion
 
-		//create a float for the time step and initialise at 0.
-		float timeStep = 0.0f;
-
-		TextureUnitManager textureUnitManager(32);
-		uint32_t unit;
-
-		Renderer3D::init();
-		Renderer3D::attachShader(TPShader);
-
-		Renderer2D::init();
+#pragma region OPEN_GL_COMMANDS
 
 		std::shared_ptr<RenderCommands> clearCommand;
 		clearCommand.reset(RenderCommandsFactory::createCommand(RenderCommands::Commands::clearColourAndDepthBuffer));
+
+		std::shared_ptr<RenderCommands> enableDepthTestCommand;
+		enableDepthTestCommand.reset(RenderCommandsFactory::createCommand(RenderCommands::Commands::setglEnableDepthTest));
+
+		std::shared_ptr<RenderCommands> disableDepthTestCommand;
+		disableDepthTestCommand.reset(RenderCommandsFactory::createCommand(RenderCommands::Commands::setglDisableDepthTest));
+
+		std::shared_ptr<RenderCommands> enableBlendCommand;
+		enableBlendCommand.reset(RenderCommandsFactory::createCommand(RenderCommands::Commands::setglEnableBlend));
+
+		std::shared_ptr<RenderCommands> disableBlendCommand;
+		disableBlendCommand.reset(RenderCommandsFactory::createCommand(RenderCommands::Commands::setglDisableBlend));
+
+		std::shared_ptr<RenderCommands> blendFuncCommand;
+		blendFuncCommand.reset(RenderCommandsFactory::createCommand(RenderCommands::Commands::setglBlendFunc));
+
 		{
 			std::shared_ptr<RenderCommands> setClearCommand;
 			setClearCommand.reset(RenderCommandsFactory::createCommand(RenderCommands::Commands::setClearColour, 1.0f, 0.0f, 1.0f, 1.0f));
 			RendererCommons::actionCommand(setClearCommand);
-		}		//scope around as the memory used to create the the .reset() part will go out of scope. 
+		}		//scope around as the memory used to create the the .reset() part will go out of scope and gets cleared before the program is in the running loop.
+#pragma endregion
+
+		//create a float for the time step and initialise at 0.
+		float timeStep = 0.0f;
+
+		//initiate 2D renderer.
+		Renderer2D::init();
+
+		//initiate 3D renderer & attach shaders.
+		Renderer3D::init();
+		Renderer3D::attachShader(TPShader);
 
 
 		while (m_running)
@@ -523,43 +551,41 @@ namespace Engine {
 			timeStep = m_timer->getElapsedTime();
 			m_timer->reset();
 
-			//things to do in the frame...
+			/*** DO STUFF IN THE FRAME... ***/
+
+			//clear the commands.
 			RendererCommons::actionCommand(clearCommand);
+			//enable depth testing.
+			RendererCommons::actionCommand(enableDepthTestCommand);
 
 			//get the model to rotate (easier to see whether it is a 3d shape)
 			for (auto& model : models) model = glm::rotate(model, timeStep, glm::vec3(0.0f, 1.0f, 0.5f));
 
-			glEnable(GL_DEPTH_TEST);
-
 			//begin rendering with the scene wide uniforms. 
 			Renderer3D::begin(swu3D);
-			
 			//submit renderer info with vertex array, material and mat4 model of object that needs to be drawn.
 			Renderer3D::submit(pyramidVAO, pyramidMaterial, models[0]);		
 			Renderer3D::submit(cubeVAO, numberCubeMaterial, models[1]);
 			Renderer3D::submit(cubeVAO, letterCubeMaterial, models[2]);
-
 			//end the rendering.
 			Renderer3D::end();
-			
-			glDisable(GL_DEPTH_TEST);
 
+			//disable the depth test.
+			RendererCommons::actionCommand(disableDepthTestCommand);
 			//enable blending.
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			RendererCommons::actionCommand(enableBlendCommand);
+			RendererCommons::actionCommand(blendFuncCommand);
 
-			
 			//begin rendering with the scene wide uniforms.		
 			Renderer2D::begin(swu2D);
-
 			//submit required 2d rendering information.
 			Renderer2D::submit("Welcome", { 230.0f, 75.0f }, { 1.0f, 1.0f, 1.0f, 1.0f });
-			Renderer2D::submit("To my demo", { 160.0f, 580.0f }, { 0.0f, 1.0f, 0.0f, 1.0f });
-			
+			Renderer2D::submit("To this demo", { 160.0f, 580.0f }, { 0.0f, 1.0f, 0.0f, 1.0f });
 			//end the rendering.
 			Renderer2D::end();
 			
-			glDisable(GL_BLEND);
+			//disable blending.
+			RendererCommons::actionCommand(disableBlendCommand);
 			
 			//updates on cameras.
 			cam2D.onUpdate(timeStep);

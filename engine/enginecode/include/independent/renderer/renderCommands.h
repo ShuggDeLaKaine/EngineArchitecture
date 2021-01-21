@@ -38,23 +38,23 @@ namespace Engine
 				return result;
 
 			case RenderCommands::Commands::setglEnableDepthTest : 
-				//result->m_action = 
+				result->m_action = getSetglEnableDepthTestCommand();
 				return result;
 
 			case RenderCommands::Commands::setglDisableDepthTest:
-				//result->m_action = 
+				result->m_action = getSetglDisableDepthTestCommand();
 				return result;
 
 			case RenderCommands::Commands::setglEnableBlend:
-				//result->m_action = 
+				result->m_action = getSetglEnableBlendCommand();
 				return result;
 
 			case RenderCommands::Commands::setglDisableBlend:
-				//result->m_action = 
+				result->m_action = getSetglDisableBlendCommand();
 				return result;
 
 			case RenderCommands::Commands::setglBlendFunc:
-				//result->m_action = 
+				result->m_action = getSetglBlendFuncCommand();
 				return result;
 
 			case RenderCommands::Commands::setClearColour :
@@ -68,7 +68,7 @@ namespace Engine
 				getValue<float, 2>(b, argTuple);
 				getValue<float, 3>(a, argTuple);
 
-				result->m_action = setClearColourCommand(r, g, b, a);
+				result->m_action = getSetClearColourCommand(r, g, b, a);
 				return result;
 			}
 		}			//!< template with typename arguements; creates commands, with switch statements for command type and the action required for each.
