@@ -49,14 +49,16 @@ namespace Engine {
 	private:
 		static VertexBufferLayout s_BufferLayout;
 	};
-
 #pragma endregion
 
 	//setting temp static vars 
 	VertexBufferLayout TPVertexNormalised::s_BufferLayout = {{ShaderDataType::Float3, { ShaderDataType::Short3, true }, { ShaderDataType::Short2, true }}, 24 };
+	//VertexBufferLayout TPVertexNormalised::s_BufferLayout = {{ShaderDataType::Float3, { ShaderDataType::Float3, true }, { ShaderDataType::Float2, true }}, 24 };
+
 
 	// Set static vars
 	Application* Application::s_instance = nullptr;
+
 
 	Application::Application() 
 	{
@@ -218,147 +220,65 @@ namespace Engine {
 		m_windowsSystem->stop();
 		m_logSystem->stop();
 	}
-
-#pragma region GEN_FUNCS
-	//TO DO!!! PUT THESE FUNCTIONS SOMEWHERE BETTER!
-	//utility functions, so maybe static functions in some class... maybe the BUFFERLAYOUT CLASS.
-	std::array<int16_t, 3> normalise(const glm::vec3& norm) 
-	{
-		std::array<int16_t, 3> result;
-
-		//do x first.
-		if (norm.x == 1.0)
-			result.at(0) = INT16_MAX;
-		else if (norm.x == -1.0)
-			result.at(0) = INT16_MIN;
-		else
-			result.at(0) = static_cast<int16_t>(norm.x * static_cast<float>(INT16_MAX));
-
-		//now y
-		if (norm.y == 1.0)
-			result.at(1) = INT16_MAX;
-		else if (norm.y == -1.0)
-			result.at(1) = INT16_MIN;
-		else
-			result.at(1) = static_cast<int16_t>(norm.y * static_cast<float>(INT16_MAX));
-
-		//and now z
-		if (norm.z == 1.0)
-			result.at(2) = INT16_MAX;
-		else if (norm.z == -1.0)
-			result.at(2) = INT16_MIN;
-		else
-			result.at(2) = static_cast<int16_t>(norm.z * static_cast<float>(INT16_MAX));
-
-		//finally, return the result.
-		return result;
-	};
-
-	std::array<int16_t, 2> normalise(const glm::vec2& uv)
-	{
-		std::array<int16_t, 2> result;
-
-		//do x first.
-		if (uv.x == 1.0)
-			result.at(0) = INT16_MAX;
-		else if (uv.x == -1.0)
-			result.at(0) = INT16_MIN;
-		else
-			result.at(0) = static_cast<int16_t>(uv.x * static_cast<float>(INT16_MAX));
-
-		//now y
-		if (uv.y == 1.0)
-			result.at(1) = INT16_MAX;
-		else if (uv.y == -1.0)
-			result.at(1) = INT16_MIN;
-		else
-			result.at(1) = static_cast<int16_t>(uv.y * static_cast<float>(INT16_MAX));
-
-		//finally, return the result.
-		return result;
-	};
-
-	uint32_t package(const glm::vec4& colour)
-	{
-		//int to return the result, initialised to 0.
-		uint32_t result = 0;
-
-		//vars for each of the colour channels; R, G, B & A.
-		//converting them from 0-1 to 0-255, static casting from float to uint32_T
-		uint32_t r = (static_cast<uint32_t>(colour.r * 255.0f)) << 0;	//bytewise - 000R
-		uint32_t g = (static_cast<uint32_t>(colour.g * 255.0f)) << 8;	//00B0
-		uint32_t b = (static_cast<uint32_t>(colour.b * 255.0f)) << 16;	//0G00
-		uint32_t a = (static_cast<uint32_t>(colour.a * 255.0f)) << 24;	//A000
-
-		result = (r | g | b | a);
-		return result;
-	}
-
-	uint32_t package(const glm::vec3& colour)
-	{
-		return package({ colour.x, colour.y, colour.z, 1.0f});
-	}
-
-#pragma endregion
-
+	
 	void Application::run()
 	{
 #pragma region RAW_DATA
 
 		std::vector<TPVertexNormalised> cubeVertices(24);
 		//										 <------- Pos ------->             <----- normal ----->             <---- UV ---->
-		cubeVertices.at(0) = TPVertexNormalised({ 0.5f,  0.5f, -0.5f }, normalise({ 0.0f,  0.0f, -1.0f }), normalise({ 0.0f,  0.0f }));
-		cubeVertices.at(1) = TPVertexNormalised({ 0.5f, -0.5f, -0.5f }, normalise({ 0.0f,  0.0f, -1.0f }), normalise({ 0.0f,  0.5f }));
-		cubeVertices.at(2) = TPVertexNormalised({ -0.5f, -0.5f, -0.5f }, normalise({ 0.0f,  0.0f, -1.0f }), normalise({ 0.33f, 0.5f }));
-		cubeVertices.at(3) = TPVertexNormalised({ -0.5f,  0.5f, -0.5f }, normalise({ 0.0f,  0.0f, -1.0f }), normalise({ 0.33f, 0.0f }));
+		cubeVertices.at(0) = TPVertexNormalised({ 0.5f,  0.5f, -0.5f },  GenFuncs::normalise({ 0.0f,  0.0f, -1.0f }), GenFuncs::normalise({ 0.0f,  0.0f }));
+		cubeVertices.at(1) = TPVertexNormalised({ 0.5f, -0.5f, -0.5f },  GenFuncs::normalise({ 0.0f,  0.0f, -1.0f }), GenFuncs::normalise({ 0.0f,  0.5f }));
+		cubeVertices.at(2) = TPVertexNormalised({ -0.5f, -0.5f, -0.5f }, GenFuncs::normalise({ 0.0f,  0.0f, -1.0f }), GenFuncs::normalise({ 0.33f, 0.5f }));
+		cubeVertices.at(3) = TPVertexNormalised({ -0.5f,  0.5f, -0.5f }, GenFuncs::normalise({ 0.0f,  0.0f, -1.0f }), GenFuncs::normalise({ 0.33f, 0.0f }));
 
-		cubeVertices.at(4) = TPVertexNormalised({ -0.5f, -0.5f,  0.5f }, normalise({ 0.0f,  0.0f,  1.0f }), normalise({ 0.33f, 0.5f }));
-		cubeVertices.at(5) = TPVertexNormalised({ 0.5f, -0.5f,  0.5f }, normalise({ 0.0f,  0.0f,  1.0f }), normalise({ 0.66f, 0.5f }));
-		cubeVertices.at(6) = TPVertexNormalised({ 0.5f,  0.5f,  0.5f }, normalise({ 0.0f,  0.0f,  1.0f }), normalise({ 0.66f, 0.0f }));
-		cubeVertices.at(7) = TPVertexNormalised({ -0.5f,  0.5f,  0.5f }, normalise({ 0.0f,  0.0f,  1.0f }), normalise({ 0.33f, 0.0f }));
+		cubeVertices.at(4) = TPVertexNormalised({ -0.5f, -0.5f,  0.5f }, GenFuncs::normalise({ 0.0f,  0.0f,  1.0f }), GenFuncs::normalise({ 0.33f, 0.5f }));
+		cubeVertices.at(5) = TPVertexNormalised({ 0.5f, -0.5f,  0.5f },  GenFuncs::normalise({ 0.0f,  0.0f,  1.0f }), GenFuncs::normalise({ 0.66f, 0.5f }));
+		cubeVertices.at(6) = TPVertexNormalised({ 0.5f,  0.5f,  0.5f },  GenFuncs::normalise({ 0.0f,  0.0f,  1.0f }), GenFuncs::normalise({ 0.66f, 0.0f }));
+		cubeVertices.at(7) = TPVertexNormalised({ -0.5f,  0.5f,  0.5f }, GenFuncs::normalise({ 0.0f,  0.0f,  1.0f }), GenFuncs::normalise({ 0.33f, 0.0f }));
 
-		cubeVertices.at(8) = TPVertexNormalised({ -0.5f, -0.5f, -0.5f }, normalise({ 0.0f, -1.0f,  0.0f }), normalise({ 1.0f,  0.0f }));
-		cubeVertices.at(9) = TPVertexNormalised({ 0.5f, -0.5f, -0.5f }, normalise({ 0.0f, -1.0f,  0.0f }), normalise({ 0.66f, 0.0f }));
-		cubeVertices.at(10) = TPVertexNormalised({ 0.5f, -0.5f,  0.5f }, normalise({ 0.0f, -1.0f,  0.0f }), normalise({ 0.66f, 0.5f }));
-		cubeVertices.at(11) = TPVertexNormalised({ -0.5f, -0.5f,  0.5f }, normalise({ 0.0f, -1.0f,  0.0f }), normalise({ 1.0f,  0.5f }));
+		cubeVertices.at(8) = TPVertexNormalised({ -0.5f, -0.5f, -0.5f }, GenFuncs::normalise({ 0.0f, -1.0f,  0.0f }), GenFuncs::normalise({ 1.0f,  0.0f }));
+		cubeVertices.at(9) = TPVertexNormalised({ 0.5f, -0.5f, -0.5f },  GenFuncs::normalise({ 0.0f, -1.0f,  0.0f }), GenFuncs::normalise({ 0.66f, 0.0f }));
+		cubeVertices.at(10) = TPVertexNormalised({ 0.5f, -0.5f,  0.5f }, GenFuncs::normalise({ 0.0f, -1.0f,  0.0f }), GenFuncs::normalise({ 0.66f, 0.5f }));
+		cubeVertices.at(11) = TPVertexNormalised({ -0.5f, -0.5f,  0.5f },GenFuncs::normalise({ 0.0f, -1.0f,  0.0f }), GenFuncs::normalise({ 1.0f,  0.5f }));
 
-		cubeVertices.at(12) = TPVertexNormalised({ 0.5f,  0.5f,  0.5f }, normalise({ 0.0f,  1.0f,  0.0f }), normalise({ 0.0f,  0.5f }));
-		cubeVertices.at(13) = TPVertexNormalised({ 0.5f,  0.5f, -0.5f }, normalise({ 0.0f,  1.0f,  0.0f }), normalise({ 0.0f,  1.0f }));
-		cubeVertices.at(14) = TPVertexNormalised({ -0.5f,  0.5f, -0.5f }, normalise({ 0.0f,  1.0f,  0.0f }), normalise({ 0.33f, 1.0f }));
-		cubeVertices.at(15) = TPVertexNormalised({ -0.5f,  0.5f,  0.5f }, normalise({ 0.0f,  1.0f,  0.0f }), normalise({ 0.3f,  0.5f }));
+		cubeVertices.at(12) = TPVertexNormalised({ 0.5f,  0.5f,  0.5f },  GenFuncs::normalise({ 0.0f,  1.0f,  0.0f }), GenFuncs::normalise({ 0.0f,  0.5f }));
+		cubeVertices.at(13) = TPVertexNormalised({ 0.5f,  0.5f, -0.5f },  GenFuncs::normalise({ 0.0f,  1.0f,  0.0f }), GenFuncs::normalise({ 0.0f,  1.0f }));
+		cubeVertices.at(14) = TPVertexNormalised({ -0.5f,  0.5f, -0.5f }, GenFuncs::normalise({ 0.0f,  1.0f,  0.0f }), GenFuncs::normalise({ 0.33f, 1.0f }));
+		cubeVertices.at(15) = TPVertexNormalised({ -0.5f,  0.5f,  0.5f }, GenFuncs::normalise({ 0.0f,  1.0f,  0.0f }), GenFuncs::normalise({ 0.3f,  0.5f }));
 
-		cubeVertices.at(16) = TPVertexNormalised({ -0.5f,  0.5f,  0.5f }, normalise({ -1.0f,  0.0f,  0.0f }), normalise({ 0.66f, 0.5f }));
-		cubeVertices.at(17) = TPVertexNormalised({ -0.5f,  0.5f, -0.5f }, normalise({ -1.0f,  0.0f,  0.0f }), normalise({ 0.33f, 0.5f }));
-		cubeVertices.at(18) = TPVertexNormalised({ -0.5f, -0.5f, -0.5f }, normalise({ -1.0f,  0.0f,  0.0f }), normalise({ 0.33f, 1.0f }));
-		cubeVertices.at(19) = TPVertexNormalised({ -0.5f, -0.5f,  0.5f }, normalise({ -1.0f,  0.0f,  0.0f }), normalise({ 0.66f, 1.0f }));
+		cubeVertices.at(16) = TPVertexNormalised({ -0.5f,  0.5f,  0.5f }, GenFuncs::normalise({ -1.0f,  0.0f,  0.0f }), GenFuncs::normalise({ 0.66f, 0.5f }));
+		cubeVertices.at(17) = TPVertexNormalised({ -0.5f,  0.5f, -0.5f }, GenFuncs::normalise({ -1.0f,  0.0f,  0.0f }), GenFuncs::normalise({ 0.33f, 0.5f }));
+		cubeVertices.at(18) = TPVertexNormalised({ -0.5f, -0.5f, -0.5f }, GenFuncs::normalise({ -1.0f,  0.0f,  0.0f }), GenFuncs::normalise({ 0.33f, 1.0f }));
+		cubeVertices.at(19) = TPVertexNormalised({ -0.5f, -0.5f,  0.5f }, GenFuncs::normalise({ -1.0f,  0.0f,  0.0f }), GenFuncs::normalise({ 0.66f, 1.0f }));
 
-		cubeVertices.at(20) = TPVertexNormalised({ 0.5f, -0.5f, -0.5f }, normalise({ 1.0f,  0.0f,  0.0f }), normalise({ 1.0f,  1.0f }));
-		cubeVertices.at(21) = TPVertexNormalised({ 0.5f,  0.5f, -0.5f }, normalise({ 1.0f,  0.0f,  0.0f }), normalise({ 1.0f,  0.5f }));
-		cubeVertices.at(22) = TPVertexNormalised({ 0.5f,  0.5f,  0.5f }, normalise({ 1.0f,  0.0f,  0.0f }), normalise({ 0.66f, 0.5f }));
-		cubeVertices.at(23) = TPVertexNormalised({ 0.5f, -0.5f,  0.5f }, normalise({ 1.0f,  0.0f,  0.0f }), normalise({ 0.66f, 1.0f }));
+		cubeVertices.at(20) = TPVertexNormalised({ 0.5f, -0.5f, -0.5f }, GenFuncs::normalise({ 1.0f,  0.0f,  0.0f }), GenFuncs::normalise({ 1.0f,  1.0f }));
+		cubeVertices.at(21) = TPVertexNormalised({ 0.5f,  0.5f, -0.5f }, GenFuncs::normalise({ 1.0f,  0.0f,  0.0f }), GenFuncs::normalise({ 1.0f,  0.5f }));
+		cubeVertices.at(22) = TPVertexNormalised({ 0.5f,  0.5f,  0.5f }, GenFuncs::normalise({ 1.0f,  0.0f,  0.0f }), GenFuncs::normalise({ 0.66f, 0.5f }));
+		cubeVertices.at(23) = TPVertexNormalised({ 0.5f, -0.5f,  0.5f }, GenFuncs::normalise({ 1.0f,  0.0f,  0.0f }), GenFuncs::normalise({ 0.66f, 1.0f }));
 
 		std::vector<TPVertexNormalised> pyramidVertices(16);
 		//										     <------- Pos ------->            <--------- normal --------->               <---- UV ---->		
-		pyramidVertices.at(0) = TPVertexNormalised({ -0.5f, -0.5f, -0.5f }, normalise({ 0.0f,	-1.0f,     0.0f }), normalise({ 0.0f,  0.0f }));
-		pyramidVertices.at(1) = TPVertexNormalised({ 0.5f, -0.5f, -0.5f }, normalise({ 0.0f,	-1.0f,	   0.0f }), normalise({ 0.0f,  0.0f }));
-		pyramidVertices.at(2) = TPVertexNormalised({ 0.5f, -0.5f,  0.5f }, normalise({ 0.0f,	-1.0f,     0.0f }), normalise({ 0.0f,  0.0f }));
-		pyramidVertices.at(3) = TPVertexNormalised({ -0.5f, -0.5f,  0.5f }, normalise({ 0.0f,	-1.0f,     0.0f }), normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(0) = TPVertexNormalised({ -0.5f, -0.5f, -0.5f }, GenFuncs::normalise({ 0.0f,	-1.0f,     0.0f }), GenFuncs::normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(1) = TPVertexNormalised({ 0.5f, -0.5f, -0.5f },  GenFuncs::normalise({ 0.0f,	-1.0f,	   0.0f }), GenFuncs::normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(2) = TPVertexNormalised({ 0.5f, -0.5f,  0.5f },  GenFuncs::normalise({ 0.0f,	-1.0f,     0.0f }), GenFuncs::normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(3) = TPVertexNormalised({ -0.5f, -0.5f,  0.5f }, GenFuncs::normalise({ 0.0f,	-1.0f,     0.0f }), GenFuncs::normalise({ 0.0f,  0.0f }));
+																			
+		pyramidVertices.at(4) = TPVertexNormalised({ -0.5f, -0.5f, -0.5f }, GenFuncs::normalise({ -0.8944f, 0.4472f,  0.0f }), GenFuncs::normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(5) = TPVertexNormalised({ -0.5f, -0.5f,  0.5f }, GenFuncs::normalise({ -0.8944f, 0.4472f,  0.0f }), GenFuncs::normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(6) = TPVertexNormalised({ 0.0f,  0.5f,  0.0f },  GenFuncs::normalise({ -0.8944f, 0.4472f,  0.0f }), GenFuncs::normalise({ 0.0f,  0.0f }));
+																			
+		pyramidVertices.at(7) = TPVertexNormalised({ -0.5f, -0.5f,  0.5f }, GenFuncs::normalise({ 0.0f,	 0.4472f,  0.8944f }), GenFuncs::normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(8) = TPVertexNormalised({ 0.5f, -0.5f,  0.5f },  GenFuncs::normalise({ 0.0f,	 0.4472f,  0.8944f }), GenFuncs::normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(9) = TPVertexNormalised({ 0.0f,  0.5f,  0.0f },  GenFuncs::normalise({ 0.0f,	 0.4472f,  0.8944f }), GenFuncs::normalise({ 0.0f,  0.0f }));
+																			
+		pyramidVertices.at(10) = TPVertexNormalised({ 0.5f, -0.5f,  0.5f }, GenFuncs::normalise({ 0.8944f, 0.4472f,  0.0f }), GenFuncs::normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(11) = TPVertexNormalised({ 0.5f, -0.5f, -0.5f }, GenFuncs::normalise({ 0.8944f, 0.4472f,  0.0f }), GenFuncs::normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(12) = TPVertexNormalised({ 0.0f,  0.5f,  0.0f }, GenFuncs::normalise({ 0.8944f, 0.4472f,  0.0f }), GenFuncs::normalise({ 0.0f,  0.0f }));
 
-		pyramidVertices.at(4) = TPVertexNormalised({ -0.5f, -0.5f, -0.5f }, normalise({ -0.8944f, 0.4472f,  0.0f }), normalise({ 0.0f,  0.0f }));
-		pyramidVertices.at(5) = TPVertexNormalised({ -0.5f, -0.5f,  0.5f }, normalise({ -0.8944f, 0.4472f,  0.0f }), normalise({ 0.0f,  0.0f }));
-		pyramidVertices.at(6) = TPVertexNormalised({ 0.0f,  0.5f,  0.0f }, normalise({ -0.8944f, 0.4472f,  0.0f }), normalise({ 0.0f,  0.0f }));
-
-		pyramidVertices.at(7) = TPVertexNormalised({ -0.5f, -0.5f,  0.5f }, normalise({ 0.0f,	 0.4472f,  0.8944f }), normalise({ 0.0f,  0.0f }));
-		pyramidVertices.at(8) = TPVertexNormalised({ 0.5f, -0.5f,  0.5f }, normalise({ 0.0f,	 0.4472f,  0.8944f }), normalise({ 0.0f,  0.0f }));
-		pyramidVertices.at(9) = TPVertexNormalised({ 0.0f,  0.5f,  0.0f }, normalise({ 0.0f,	 0.4472f,  0.8944f }), normalise({ 0.0f,  0.0f }));
-
-		pyramidVertices.at(10) = TPVertexNormalised({ 0.5f, -0.5f,  0.5f }, normalise({ 0.8944f, 0.4472f,  0.0f }), normalise({ 0.0f,  0.0f }));
-		pyramidVertices.at(11) = TPVertexNormalised({ 0.5f, -0.5f, -0.5f }, normalise({ 0.8944f, 0.4472f,  0.0f }), normalise({ 0.0f,  0.0f }));
-		pyramidVertices.at(12) = TPVertexNormalised({ 0.0f,  0.5f,  0.0f }, normalise({ 0.8944f, 0.4472f,  0.0f }), normalise({ 0.0f,  0.0f }));
-
-		pyramidVertices.at(13) = TPVertexNormalised({ 0.5f, -0.5f, -0.5f }, normalise({ 0.0f,	 0.4472f, -0.8944f }), normalise({ 0.0f,  0.0f }));
-		pyramidVertices.at(14) = TPVertexNormalised({ -0.5f, -0.5f, -0.5f }, normalise({ 0.0f,	 0.4472f, -0.8944f }), normalise({ 0.0f,  0.0f }));
-		pyramidVertices.at(15) = TPVertexNormalised({ 0.0f,  0.5f,  0.0f }, normalise({ 0.0f,	 0.4472f, -0.8944f }), normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(13) = TPVertexNormalised({ 0.5f, -0.5f, -0.5f },  GenFuncs::normalise({ 0.0f,	 0.4472f, -0.8944f }), GenFuncs::normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(14) = TPVertexNormalised({ -0.5f, -0.5f, -0.5f }, GenFuncs::normalise({ 0.0f,	 0.4472f, -0.8944f }), GenFuncs::normalise({ 0.0f,  0.0f }));
+		pyramidVertices.at(15) = TPVertexNormalised({ 0.0f,  0.5f,  0.0f },  GenFuncs::normalise({ 0.0f,	 0.4472f, -0.8944f }), GenFuncs::normalise({ 0.0f,  0.0f }));
 
 
 		uint32_t pyramidIndices[3 * 6] =

@@ -14,5 +14,9 @@
 #include "renderer/renderer3D.h"
 #include "renderer/renderer2D.h"
 
+#include "shaders/FCVertex.h"
+
+#include "systems/generalFunctions.h"
+
 #include "camera/freeOrthoCamController.h"
 #include "camera/freeEulerCamController.h"
