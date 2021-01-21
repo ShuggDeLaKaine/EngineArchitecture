@@ -12,7 +12,9 @@ namespace Engine
 	class RenderCommands
 	{
 	public:
-		enum class Commands { clearDepthBuffer, clearColourBuffer, clearColourAndDepthBuffer, setClearColour  };		//!< enum class to take types of commands.
+		enum class Commands { clearDepthBuffer, clearColourBuffer, clearColourAndDepthBuffer, setClearColour,
+								setglEnableDepthTest, setglDisableDepthTest, setglEnableBlend, setglDisableBlend, 
+								setglBlendFunc };		//!< enum class to take types of commands.
 	private:
 		std::function<void(void)> m_action;		//!< action of the render command.
 		friend class RenderCommandsFactory;		//!< coupled with friend RenderCommandFactory, as both won't work without the other.
@@ -27,7 +29,7 @@ namespace Engine
 	public:
 		template<typename ... Args> static RenderCommands* createCommand(RenderCommands::Commands command, Args&& ...args)
 		{
-			RenderCommands* result = new RenderCommands;
+			RenderCommands* result = new RenderCommands;		//raw pointer prevent ownership attached to the pointer; used instead of shared_ptr.
 
 			switch (command)
 			{
@@ -35,9 +37,30 @@ namespace Engine
 				result->m_action = getClearColourAndDepthBufferCommand();
 				return result;
 
+			case RenderCommands::Commands::setglEnableDepthTest : 
+				//result->m_action = 
+				return result;
+
+			case RenderCommands::Commands::setglDisableDepthTest:
+				//result->m_action = 
+				return result;
+
+			case RenderCommands::Commands::setglEnableBlend:
+				//result->m_action = 
+				return result;
+
+			case RenderCommands::Commands::setglDisableBlend:
+				//result->m_action = 
+				return result;
+
+			case RenderCommands::Commands::setglBlendFunc:
+				//result->m_action = 
+				return result;
+
 			case RenderCommands::Commands::setClearColour :
 				float r, g, b, a;
 
+				//make tuple from parameter pack. Note - a tuple is not fixed in length.
 				auto argTuple = std::make_tuple(args...);
 
 				getValue<float, 0>(r, argTuple);
@@ -47,12 +70,16 @@ namespace Engine
 
 				result->m_action = setClearColourCommand(r, g, b, a);
 				return result;
-
 			}
 		}			//!< template with typename arguements; creates commands, with switch statements for command type and the action required for each.
 	private:
-		static std::function<void(void)> getClearColourAndDepthBufferCommand();							//!< command to clear colour and depth buffers.
-		static std::function<void(void)> setClearColourCommand(float r, float g, float b, float a);		//!< command to clear colour, with float RBGA params.
+		static std::function<void(void)> getClearColourAndDepthBufferCommand();	//!< function to clear colour and depth buffers.
+		static std::function<void(void)> getSetglEnableDepthTestCommand();		//!< function to enable the GL depth test.
+		static std::function<void(void)> getSetglDisableDepthTestCommand();		//!< function to disable the GL depth test.
+		static std::function<void(void)> getSetglEnableBlendCommand();			//!< function to enable the GL blend.
+		static std::function<void(void)> getSetglDisableBlendCommand();			//!< function to disable the GL blend.
+		static std::function<void(void)> getSetglBlendFuncCommand();			//!< function to set the GL blend function.
+		static std::function<void(void)> getSetClearColourCommand(float r, float g, float b, float a);		//!< command to clear colour, with float RBGA params.
 
 		//following code based on https://www.geeksforgeeks.org/how-to-iterate-over-the-elements-of-an-stdtuple-in-c/		
 		//check value I - if MORE OR EQUALSs number of values in tuple (size of parameter pack) then do nothing for these.

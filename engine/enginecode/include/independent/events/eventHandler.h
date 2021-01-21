@@ -68,7 +68,4 @@ namespace Engine
 		std::function<bool(MouseButtonPressEvent&)> m_onMouseButtonPressCallback = std::bind(&EventHandler::defaultOnMouseButtonPress, this, std::placeholders::_1);		//!< binding function to this instance, wrapped with 1 param passed.
 		std::function<bool(MouseButtonReleaseEvent&)> m_onMouseButtonReleaseCallback = std::bind(&EventHandler::defaultOnMouseButtonRelease, this, std::placeholders::_1);	//!< binding function to this instance, wrapped with 1 param passed.
 	};
-
-
-
 }

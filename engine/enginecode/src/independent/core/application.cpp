@@ -16,7 +16,6 @@
 	#include "platform/GLFW/GLFWSystem.h"
 #endif //  NG_PLATFORM_WINDOWS
 
-
 namespace Engine {
 #pragma region TEMP_CLASS
 //temporary class for vertex
@@ -25,7 +24,9 @@ namespace Engine {
 * one for static 3d vertices,
 * one for animated 3d vertices. */
 
-	//textured phong normalised vertex class
+/** \class TPVertexNormalised
+*	\brief A class that normalises the normal and uv with reduced data size for efficiency
+*/
 	class TPVertexNormalised
 	{
 	public:
@@ -63,10 +64,10 @@ namespace Engine {
 			s_instance = this;
 
 		//start the systems.
-		//start the log system.
+		//starting with the log system.
 		m_logSystem.reset(new Log);
 		m_logSystem->start();
-
+		
 		//start the windows system.
 #ifdef NG_PLATFORM_WINDOWS
 		/* m_windowsSystem.reset(new Win32System);
@@ -454,7 +455,6 @@ namespace Engine {
 		std::shared_ptr<Textures> plainWhiteTexture;
 		plainWhiteTexture.reset(Textures::create(1, 1, 4, whitePixel));
 
-
 #pragma endregion
 
 #pragma region MATERIALS
@@ -468,6 +468,7 @@ namespace Engine {
 
 #pragma endregion
 		
+#pragma region CAMERAS_LIGHTS_ACTION!
 		//creating and setting the cameras.
 		FreeOthroCamController cam2D({ 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, static_cast<float>(m_window->getWidth()), static_cast<float>(m_window->getHeight()), 0.0f);
 		FreeEulerCamController cam3D({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, -1.0f }, { 0.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f });
@@ -494,19 +495,10 @@ namespace Engine {
 		swu3D["u_lightColour"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightData[0])));
 		swu3D["u_lightPos"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightData[1])));
 		swu3D["u_viewPos"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightData[2])));
+#pragma endregion
 
 		//create a float for the time step and initialise at 0.
 		float timeStep = 0.0f;
-
-		Quad quads[7] =
-		{
-			Quad::createCentreHalfExtents({ 400.0f, 200.0f }, { 100.0f, 50.0f }),
-			Quad::createCentreHalfExtents({ 200.0f, 300.0f }, { 50.0f, 100.0f }),
-			Quad::createCentreHalfExtents({ 400.0f, 500.0f }, { 100.0f, 75.0f }),
-			Quad::createCentreHalfExtents({ 100.0f, 200.0f }, { 75.0f, 50.0f }),
-			Quad::createCentreHalfExtents({ 500.0f, 100.0f }, { 50.0f, 25.0f }),
-			Quad::createCentreHalfExtents({ 300.0f, 350.0f }, { 175.0f, 115.0f }),
-		};			//TO DO - some testing on the other create quads, using Simons example using paint to check they're working as expected.
 
 		TextureUnitManager textureUnitManager(32);
 		uint32_t unit;
@@ -559,16 +551,8 @@ namespace Engine {
 			
 			//begin rendering with the scene wide uniforms.		
 			Renderer2D::begin(swu2D);
-			/*
-			//submit renderer info.
-			Renderer2D::submit(quads[0], { 0.0f, 0.0f, 1.0f, 1.0f });
-			Renderer2D::submit(quads[1], letterTexture);
-			Renderer2D::submit(quads[2], { 0.0f, 1.0f, 0.0f, 1.0f }, numberTexture);
-			Renderer2D::submit(quads[3], { 0.0f, 1.0f, 1.0f, 1.0f }, numberTexture, 45.0f, true);
-			Renderer2D::submit(quads[4], letterTexture, -20.0f, true);
-			Renderer2D::submit(quads[5], { 0.0f, 1.0f, 0.0f, 0.5f }, letterTexture, 90.0f, true);
-			Renderer2D::submit(quads[5], { 0.0f, 0.0f, 1.0f, 0.5f }, letterTexture, glm::radians(-60.0f));
-			*/
+
+			//submit required 2d rendering information.
 			Renderer2D::submit("Welcome", { 230.0f, 75.0f }, { 1.0f, 1.0f, 1.0f, 1.0f });
 			Renderer2D::submit("To my demo", { 160.0f, 580.0f }, { 0.0f, 1.0f, 0.0f, 1.0f });
 			
