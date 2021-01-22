@@ -1,6 +1,11 @@
 /** \file headerList.h */
 #pragma once
 
+#include "camera/freeOrthoCamController.h"
+#include "camera/freeEulerCamController.h"
+
+#include "events/userEvents.h"
+
 #include "rendering/subTexture.h"
 #include "rendering/indexBuffer.h"
 #include "rendering/vertexBuffer.h"
@@ -17,6 +22,3 @@
 #include "shaders/FCVertex.h"
 
 #include "systems/generalFunctions.h"
-
-#include "camera/freeOrthoCamController.h"
-#include "camera/freeEulerCamController.h"

@@ -23,10 +23,11 @@ namespace Engine {
 * one for 2d rendering - 2d vertices,
 * one for static 3d vertices,
 * one for animated 3d vertices. */
-
+	
 /** \class TPVertexNormalised
 *	\brief A class that normalises the normal and uv with reduced data size for efficiency
 */
+	/*
 	class TPVertexNormalised
 	{
 	public:
@@ -49,6 +50,7 @@ namespace Engine {
 	private:
 		static VertexBufferLayout s_BufferLayout;
 	};
+	*/
 #pragma endregion
 
 	//setting temp static vars 
@@ -105,9 +107,11 @@ namespace Engine {
 		m_timer->reset();
 	}
 
+
 #pragma region USER_EVENTS
 	void Application::bindAllEventsTypes()
 	{
+
 		//window events.
 		m_window->getEventHandler().setOnWindowCloseCallback(std::bind(&Application::onWindowClose, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnWindowResizeCallback(std::bind(&Application::onWindowResize, this, std::placeholders::_1));
@@ -470,7 +474,6 @@ namespace Engine {
 		//initiate 3D renderer & attach shaders.
 		Renderer3D::init();
 		Renderer3D::attachShader(TPShader);
-
 
 		while (m_running)
 		{

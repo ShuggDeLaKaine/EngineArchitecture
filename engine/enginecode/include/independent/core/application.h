@@ -3,7 +3,9 @@
 
 #include "systems/log.h"
 #include "systems/randomNumberGenerator.h"
+
 #include "events/eventHeaders.h"
+
 #include "core/window.h"
 #include "core/timer.h"
 #include "core/inputPoller.h"

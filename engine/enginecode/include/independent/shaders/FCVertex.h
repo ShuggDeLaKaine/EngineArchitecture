@@ -46,7 +46,7 @@ namespace Engine
 	/*	\class TPVertexNormalised
 	*	\brief A class that normalises the normal and uv with reduced data size for efficiency.
 	*/
-	/*
+	
 	class TPVertexNormalised
 	{
 	public:
@@ -55,34 +55,40 @@ namespace Engine
 			m_normalise({ 0, 0, 0 }),
 			m_UVcoords({ 0, 0 })
 		{};		//!< default constructor, initalising values to 0.
+
+		//THIS IS A NEW VERSION OF THE FUNC BELOW, 
+		//Using glm::vec3& instead to avoid the issue with std::array<int16_t, 3>
+		/*
 		TPVertexNormalised(const glm::vec3& position, const glm::vec3& normal, const glm::vec2& uv) :
 			m_position(position),
 			m_normalise(normal),
 			m_UVcoords(uv)
 		{};		//!< constructor with params for a textured phong, position, normal values and UV coordinates.
+		*/
+		//THIS IS THE ORIGINAL VERSION OF ABOVE CONSTUCTOR.
+		//ISSUE WITH THE std::array<int16_t, 3>
+		TPVertexNormalised(const glm::vec3& position, const std::array<int16_t, 3> normal, const std::array<int16_t, 2> uv) :
+			m_position(position),
+			m_normalise(normal),
+			m_UVcoords(uv)
+		{};		//!< constructor with params for a textured phong, position, normal values and UV coordinates.
+		
 
-		glm::vec3 m_position;						//!< vec3 to take position of vertex.
-		glm::vec3 m_normalise; 		//!< short var to take normalised values. Array used as very easy to pass back arrays from functions.
-		glm::vec2 m_UVcoords;			//!< short var to take UV coordinate values. Array used as very easy to pass back arrays from functions.
+		glm::vec3 m_position;			//!< vec3 to take position of vertex.
+
+		//glm::vec3 m_normalise; 		//!< short var to take normalised values. Array used as very easy to pass back arrays from functions.
+		//glm::vec2 m_UVcoords;			//!< short var to take UV coordinate values. Array used as very easy to pass back arrays from functions.
+
+		//THESE TWO THE ORIGINAL VERSIONS OF vec VARS ABOVE.
+		//Having issue with the std::array<int16_t, 3>
+		std::array<int16_t, 3> m_normalise; 		//!< short var to take normalised values. Array used as very easy to pass back arrays from functions.
+		std::array<int16_t, 2> m_UVcoords;			//!< short var to take UV coordinate values. Array used as very easy to pass back arrays from functions.
+
 
 		inline VertexBufferLayout static getBufferLayout() { return s_BufferLayout; }		//!< accessor function to get the static buffer layout.
 	private:
 		static VertexBufferLayout s_BufferLayout;
 	};
-	*/
+	
 
 }
-
-
-
-/*
-TPVertexNormalised(const glm::vec3& position, const std::array<int16_t, 3> normal, const std::array<int16_t, 2> uv) :
-			m_position(position),
-			m_normalise(normal),
-			m_UVcoords(uv)
-		{};		//!< constructor with params for a textured phong, position, normal values and UV coordinates.
-
-std::array<int16_t, 3> m_normalise; 		//!< short var to take normalised values. Array used as very easy to pass back arrays from functions.
-std::array<int16_t, 2> m_UVcoords;			//!< short var to take UV coordinate values. Array used as very easy to pass back arrays from functions.
-
-*/
