@@ -45,7 +45,14 @@ project "Engine"
 		"vendor/STBimage",
 		"vendor/freetype2/include",
 		"vendor/json/single_include/nlohmann",
-		"vendor/IMGui"
+		"vendor/IMGui",
+		"vendor/enTT/single_include",
+		"vendor/luaBridge/Source",
+		"vendor/assimp/include",
+		"vendor/box2d/include",
+		"vendor/lua",
+		"vendor/react3D/include"
+		
 	}
 	
 	links 
@@ -53,7 +60,11 @@ project "Engine"
 		"GLFW",
 		"Glad",
 		"Freetype",
-		"IMGui"
+		"IMGui",
+		"assimp",
+		"box2d",
+		"lua",
+		"ReactPhysics3d"
 	}
 	
 	filter "system:windows"
@@ -106,7 +117,13 @@ project "Sandbox"
 		"vendor/glm/",
 		"vendor/spdlog/include",
 		"vendor/json/single_include/nlohmann",
-		"vendor/IMGui"
+		"vendor/IMGui",
+		"vendor/enTT/single_include",
+		"vendor/luaBridge/Source",
+		"vendor/assimp/include",
+		"vendor/box2d/include",
+		"vendor/lua",
+		"vendor/react3D/include"
 	}
 
 	links
@@ -162,7 +179,13 @@ project "Sandbox"
 			"vendor/Glad/include",
 			"vendor/glm/",
 			"vendor/STBimage",
-			"vendor/freetype2/include"
+			"vendor/freetype2/include",
+			"vendor/enTT/single_include",
+			"vendor/luaBridge/Source",
+			"vendor/assimp/include",
+			"vendor/box2d/include",
+			"vendor/lua",
+			"vendor/react3D/include"
 			
 		}
 
@@ -207,7 +230,13 @@ project "Spike"
 		"vendor/glm/",
 		"vendor/Glad/include",
 		"vendor/glfw/include",
-		"vendor/json/single_include/nlohmann"
+		"vendor/json/single_include/nlohmann",
+		"vendor/enTT/single_include",
+		"vendor/luaBridge/Source",
+		"vendor/assimp/include",
+		"vendor/box2d/include",
+		"vendor/lua",
+		"vendor/react3D/include"
 	}
 	
 	links 
@@ -245,3 +274,7 @@ group "Vendor"
 	include "vendor/Glad"
 	include "vendor/freetype2"
 	include "vendor/IMGui"
+	include "vendor/assimp"
+	include "vendor/box2d"
+	include "vendor/lua"
+	include "vendor/react3D"
